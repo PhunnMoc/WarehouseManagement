@@ -1,7 +1,6 @@
 package com.example.warehousemanagement.test
 
 import com.example.warehousemanagement.domain.model.Address
-import com.example.warehousemanagement.domain.model.Area
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
@@ -12,553 +11,533 @@ import com.example.warehousemanagement.domain.model.NotificationType
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.Report
 import com.example.warehousemanagement.domain.model.Role
-import com.example.warehousemanagement.domain.model.Status
+import com.example.warehousemanagement.domain.model.StatusPackage
+import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.model.User
 import java.util.Date
 import java.util.UUID
 
-val products = listOf(
-    Product(
-        id = UUID.randomUUID().toString(),
-        productName = "Laptop ABC",
-        genre = Genre(
-            idGenre = "1",
-            genreName = "Electronics"
+//Customer
+    val customer1 = Customer(
+        idCustomer = "C001",
+        email = "john.doe@example.com",
+        customerName = "John Doe",
+        address = Address(
+            idAddress = "A001",
+            street = "123 Le Loi Street",
+            district = "District 1",
+            city = "Ho Chi Minh City",
+            postalCode = "700000",
+            phone = "0909123456")
+    )
+
+    val customer2 = Customer(
+        idCustomer = "C002",
+        email = "jane.smith@example.com",
+        customerName = "Jane Smith",
+        address = Address(
+            idAddress = "A002",
+            street = "456 Hai Ba Trung Street",
+            district = "District 3",
+            city = "Ho Chi Minh City",
+            postalCode = "700001",
+            phone = "0912345678"
+        )
+    )
+
+    val customer3 = Customer(
+        idCustomer = "C003",
+        email = "michael.brown@example.com",
+        customerName = "Michael Brown",
+        address = Address(
+            idAddress = "A003",
+            street = "789 Nguyen Trai Street",
+            district = "District 5",
+            city = "Ho Chi Minh City",
+            postalCode = "700002",
+            phone = "0987654321"
+        )
+    )
+
+    val customer4 = Customer(
+        idCustomer = "C004",
+        email = "emily.davis@example.com",
+        customerName = "Emily Davis",
+        address = Address(
+            idAddress = "A004",
+            street = "101 Tran Hung Dao Street",
+            district = "District 1",
+            city = "Ho Chi Minh City",
+            postalCode = "700003",
+            phone = "0932123456"
+        )
+    )
+
+    val customer5 = Customer(
+        idCustomer = "C005",
+        email = "david.johnson@example.com",
+        customerName = "David Johnson",
+        address = Address(
+            idAddress = "A005",
+            street = "202 Le Duan Street",
+            district = "District 3",
+            city = "Ho Chi Minh City",
+            postalCode = "700004",
+            phone = "0909876543"
+        )
+    )
+// List customer
+    val listCustomer= listOf<Customer>(customer1, customer2, customer3, customer4, customer5)
+
+//Genre
+    val genre1 = Genre(
+        idGenre = "G001",
+        genreName = "Electronics"
+    )
+    val genre2 = Genre(
+        idGenre = "G002",
+        genreName = "Books"
+    )
+    val genre3 = Genre(
+        idGenre = "G003",
+        genreName = "Clothing"
+    )
+    val genre4 = Genre(
+        idGenre = "G004",
+        genreName = "Home Appliances"
+    )
+    val genre5 = Genre(
+        idGenre = "G005",
+        genreName = "Sports Equipment"
+    )
+//Supplier
+    val supplier1 = Supplier(
+        idSupplier = "S001",
+        name = "Tech Supplies Ltd.",
+        email = "contact@techsupplies.com",
+        address = Address(
+            idAddress = "A101",
+            street = "789 Le Loi Street",
+            district = "District 1",
+            city = "Ho Chi Minh City",
+            postalCode = "700005",
+            phone = "0908123456"
         ),
-        quantity = 50,
-        description = "High-performance laptop for gaming and work.",
-        supplier = Supplier(
-            idSupplier = "101",
-            name = "Tech Supplies Co.",
+        stability = 4.5f
+    )
+
+    val supplier2 = Supplier(
+        idSupplier = "S002",
+        name = "Book World Co.",
+        email = "support@bookworld.com",
+        address = Address(
+            idAddress = "A102",
+            street = "123 Nguyen Thi Minh Khai Street",
+            district = "District 3",
+            city = "Ho Chi Minh City",
+            postalCode = "700006",
+            phone = "0909345678"
+        ),
+        stability = 4.2f
+    )
+
+    val supplier3 = Supplier(
+        idSupplier = "S003",
+        name = "Clothiers International",
+        email = "info@clothiers.com",
+        address = Address(
+            idAddress = "A103",
+            street = "45 Pasteur Street",
+            district = "District 1",
+            city = "Ho Chi Minh City",
+            postalCode = "700007",
+            phone = "0912345678"
+        ),
+        stability = 4.7f
+    )
+
+    val supplier4 = Supplier(
+            idSupplier = "S004",
+            name = "Appliance Masters",
+            email = "sales@appliancemasters.com",
             address = Address(
-                street = "123 Tech Street",
-                district = "Tech District",
-                city = "Tech City",
-                postalCode = "12345",
-                phone = "0123-456789"
-            )
-        ),
-        isInStock = true,
-        barcode = "ABC123456",
-        area = Area(
-            idArea = "A1",
-            areaName = "Main Warehouse",
-            areaImage = "http://example.com/images/warehouse1.png"
-        ),
-        lastUpdated = Date()
-    ),
-    Product(
-        id = UUID.randomUUID().toString(),
+                idAddress = "A104",
+                street = "678 Vo Van Tan Street",
+                district = "District 5",
+                city = "Ho Chi Minh City",
+                postalCode = "700008",
+                phone = "0987654321"
+            ),
+            stability = 4.8f
+        )
+    val supplier5 = Supplier(
+            idSupplier = "S005",
+            name = "Sports Gear Hub",
+            email = "contact@sportsgearhub.com",
+            address = Address(
+                idAddress = "A105",
+                street = "12 Tran Quoc Toan Street",
+                district = "District 10",
+                city = "Ho Chi Minh City",
+                postalCode = "700009",
+                phone = "0978123456"
+            ),
+            stability = 4.4f
+        )
+//List suppliers
+    val listSuppliers= listOf<Supplier>(supplier1, supplier2, supplier3, supplier4, supplier5)
+//StorageLocation
+    val location1 = StorageLocation(
+        id = "L001",
+        storageLocationName = "Main Warehouse",
+        storageLocationImage = "https://example.com/images/main_warehouse.jpg"
+    )
+    val location2 = StorageLocation(
+        id = "L002",
+        storageLocationName = "Secondary Storage",
+        storageLocationImage = "https://example.com/images/secondary_storage.jpg"
+    )
+    val location3 = StorageLocation(
+        id = "L003",
+        storageLocationName = "Cold Storage",
+        storageLocationImage = "https://example.com/images/cold_storage.jpg"
+    )
+    val location4 = StorageLocation(
+        id = "L004",
+        storageLocationName = "Outdoor Storage",
+        storageLocationImage = "https://example.com/images/outdoor_storage.jpg"
+    )
+    val location5 = StorageLocation(
+        id = "L005",
+        storageLocationName = "Overflow Storage",
+        storageLocationImage = "https://example.com/images/overflow_storage.jpg"
+    )
+//Product
+    val product1 = Product(
+        idProduct = "P001",
         productName = "Smartphone XYZ",
-        genre = Genre(
-            idGenre = "2",
-            genreName = "Mobile Devices"
-        ),
-        quantity = 100,
-        description = "Latest model smartphone with advanced features.",
-        supplier = Supplier(
-            idSupplier = "102",
-            name = "Mobile World Ltd.",
-            address = Address(
-                street = "456 Mobile Ave",
-                district = "Mobile District",
-                city = "Mobile City",
-                postalCode = "67890",
-                phone = "0987-654321"
-            )
-        ),
+        genreId = "G001", // Electronics
+        stockQuantity = 50,
+        description = "A high-performance smartphone with 128GB storage.",
+        importPrice = 300.00,
+        sellingPrice = 500.00,
+        supplierId = "S001", // Tech Supplies Ltd.
         isInStock = true,
-        barcode = "XYZ987654",
-        area = Area(
-            idArea = "A2",
-            areaName = "Electronics Section",
-            areaImage = "http://example.com/images/electronics.png"
-        ),
-        lastUpdated = Date()
-    ),
-    Product(
-        id = UUID.randomUUID().toString(),
-        productName = "Laptop ABC",
-        genre = Genre(
-            idGenre = "1",
-            genreName = "Electronics"
-        ),
-        quantity = 50,
-        description = "High-performance laptop for gaming and work.",
-        supplier = Supplier(
-            idSupplier = "101",
-            name = "Tech Supplies Co.",
-            address = Address(
-                street = "123 Tech Street",
-                district = "Tech District",
-                city = "Tech City",
-                postalCode = "12345",
-                phone = "0123-456789"
-            )
-        ),
-        isInStock = true,
-        barcode = "ABC123456",
-        area = Area(
-            idArea = "A1",
-            areaName = "Main Warehouse",
-            areaImage = "http://example.com/images/warehouse1.png"
-        ),
-        lastUpdated = Date()
-    ),
-    Product(
-        id = UUID.randomUUID().toString(),
-        productName = "Smartphone XYZ",
-        genre = Genre(
-            idGenre = "2",
-            genreName = "Mobile Devices"
-        ),
-        quantity = 100,
-        description = "Latest model smartphone with advanced features.",
-        supplier = Supplier(
-            idSupplier = "102",
-            name = "Mobile World Ltd.",
-            address = Address(
-                street = "456 Mobile Ave",
-                district = "Mobile District",
-                city = "Mobile City",
-                postalCode = "67890",
-                phone = "0987-654321"
-            )
-        ),
-        isInStock = true,
-        barcode = "XYZ987654",
-        area = Area(
-            idArea = "A2",
-            areaName = "Electronics Section",
-            areaImage = "http://example.com/images/electronics.png"
-        ),
-        lastUpdated = Date()
-    ),
-    Product(
-        id = UUID.randomUUID().toString(),
-        productName = "Wireless Headphones",
-        genre = Genre(
-            idGenre = "3",
-            genreName = "Audio"
-        ),
-        quantity = 75,
-        description = "Noise-cancelling wireless headphones for immersive sound.",
-        supplier = Supplier(
-            idSupplier = "103",
-            name = "Audio Experts",
-            address = Address(
-                street = "789 Sound Blvd",
-                district = "Audio District",
-                city = "Sound City",
-                postalCode = "11223",
-                phone = "0456-789012"
-            )
-        ),
-        isInStock = true,
-        barcode = "HEADPHONES123",
-        area = Area(
-            idArea = "A3",
-            areaName = "Audio Section",
-            areaImage = "http://example.com/images/audio.png"
-        ),
-        lastUpdated = Date()
-    ),
-    Product(
-        id = UUID.randomUUID().toString(),
-        productName = "4K Monitor",
-        genre = Genre(
-            idGenre = "4",
-            genreName = "Displays"
-        ),
-        quantity = 30,
-        description = "Ultra HD 4K monitor for professional use.",
-        supplier = Supplier(
-            idSupplier = "104",
-            name = "Display Solutions",
-            address = Address(
-                street = "321 Vision Rd",
-                district = "Display District",
-                city = "Vision City",
-                postalCode = "33445",
-                phone = "0678-901234"
-            )
-        ),
-        isInStock = false,
-        barcode = "MONITOR456",
-        area = Area(
-            idArea = "A4",
-            areaName = "Display Section",
-            areaImage = "http://example.com/images/display.png"
-        ),
-        lastUpdated = Date()
-    ),
-    Product(
-        id = UUID.randomUUID().toString(),
-        productName = "Gaming Mouse",
-        genre = Genre(
-            idGenre = "5",
-            genreName = "Gaming Accessories"
-        ),
-        quantity = 150,
-        description = "High-precision gaming mouse with customizable buttons.",
-        supplier = Supplier(
-            idSupplier = "105",
-            name = "Gaming Gear",
-            address = Address(
-                street = "654 Game St",
-                district = "Gaming District",
-                city = "Game City",
-                postalCode = "55667",
-                phone = "0123-456789"
-            )
-        ),
-        isInStock = true,
-        barcode = "MOUSE789",
-        area = Area(
-            idArea = "A5",
-            areaName = "Gaming Section",
-            areaImage = "http://example.com/images/gaming.png"
-        ),
-        lastUpdated = Date()
+        barcode = "1234567890123",
+        storageLocationId = "L001", // Main Warehouse
+        lastUpdated = Date(), // Current date
+        image = "https://example.com/images/smartphone_xyz.jpg"
     )
-)
-val reports = listOf(
-    Report(
-        id = "REP001",
-        timestamp = Date(),
-        title = "Monthly Sales Report",
-        reportType = "FINANCIAL",
-        description = "Detailed breakdown of sales for the current month",
-        status = "COMPLETED"
-    ),
-    Report(
-        id = "REP002",
-        timestamp = Date(System.currentTimeMillis() - 86400000), // Yesterday
-        title = "Customer Satisfaction Survey Results",
-        reportType = "CUSTOMER",
-        description = null,
-        status = "IN_PROGRESS"
-    ),
-    Report(
-        id = "REP003",
-        timestamp = Date(System.currentTimeMillis() + 86400000), // Tomorrow
-        title = "Inventory Status",
-        reportType = "LOGISTICS",
-        description = "Current stock levels and reorder recommendations",
-        status = "SCHEDULED"
-    ),
-    Report(
-        id = "REP004",
-        timestamp = Date(),
-        title = "Employee Performance Review",
-        reportType = "HR",
-        description = "Annual performance evaluations for all departments",
-        status = "DRAFT"
-    ),
-    Report(
-        id = "REP005",
-        timestamp = Date(System.currentTimeMillis() - 172800000), // 2 days ago
-        title = "Website Traffic Analysis",
-        reportType = "MARKETING",
-        description = "Detailed analysis of website visitors and user behavior",
-        status = "COMPLETED"
+
+    val product2 = Product(
+        idProduct = "P002",
+        productName = "Wireless Headphones ABC",
+        genreId = "G001", // Electronics
+        stockQuantity = 30,
+        description = "Noise-cancelling wireless headphones with Bluetooth 5.0.",
+        importPrice = 100.00,
+        sellingPrice = 150.00,
+        supplierId = "S001", // Tech Supplies Ltd.
+        isInStock = true,
+        barcode = "9876543210987",
+        storageLocationId = "L002", // Secondary Storage
+        lastUpdated = Date(),
+        image = "https://example.com/images/headphones_abc.jpg"
     )
+
+    val product3 = Product(
+        idProduct = "P003",
+        productName = "Novel: The Great Adventure",
+        genreId = "G002", // Books
+        stockQuantity = 100,
+        description = "A thrilling novel about adventure and mystery.",
+        importPrice = 5.00,
+        sellingPrice = 10.00,
+        supplierId = "S002", // Book World Co.
+        isInStock = true,
+        barcode = "5432109876543",
+        storageLocationId = "L003", // Cold Storage
+        lastUpdated = Date(),
+        image = "https://example.com/images/novel_great_adventure.jpg"
+    )
+    val product4 = Product(
+        idProduct = "P004",
+        productName = "Running Shoes DEF",
+        genreId = "G003", // Clothing
+        stockQuantity = 25,
+        description = "Comfortable running shoes designed for maximum support.",
+        importPrice = 50.00,
+        sellingPrice = 75.00,
+        supplierId = "S003", // Clothiers International
+        isInStock = true,
+        barcode = "3216549870321",
+        storageLocationId = "L004", // Outdoor Storage
+        lastUpdated = Date(),
+        image = "https://example.com/images/running_shoes_def.jpg"
+    )
+
+    val product5 = Product(
+        idProduct = "P005",
+        productName = "Blender GHI",
+        genreId = "G004", // Home Appliances
+        stockQuantity = 15,
+        description = "High-performance blender with multiple speed settings.",
+        importPrice = 40.00,
+        sellingPrice = 65.00,
+        supplierId = "S004", // Appliance Masters
+        isInStock = true,
+        barcode = "4567891234567",
+        storageLocationId = "L001", // Main Warehouse
+        lastUpdated = Date(),
+        image = "https://example.com/images/blender_ghi.jpg"
+    )
+
+    val product6 = Product(
+        idProduct = "P006",
+        productName = "Yoga Mat JKL",
+        genreId = "G005", // Sports Equipment
+        stockQuantity = 40,
+        description = "Eco-friendly yoga mat for comfortable practice.",
+        importPrice = 20.00,
+        sellingPrice = 35.00,
+        supplierId = "S005", // Sports Gear Hub
+        isInStock = true,
+        barcode = "6543217890123",
+        storageLocationId = "L002", // Secondary Storage
+        lastUpdated = Date(),
+        image = "https://example.com/images/yoga_mat_jkl.jpg"
+    )
+
+    val product7 = Product(
+        idProduct = "P007",
+        productName = "Wireless Mouse MNO",
+        genreId = "G001", // Electronics
+        stockQuantity = 60,
+        description = "Ergonomic wireless mouse with customizable buttons.",
+        importPrice = 25.00,
+        sellingPrice = 40.00,
+        supplierId = "S001", // Tech Supplies Ltd.
+        isInStock = true,
+        barcode = "7890123456789",
+        storageLocationId = "L003", // Cold Storage
+        lastUpdated = Date(),
+        image = "https://example.com/images/wireless_mouse_mno.jpg"
+    )
+
+    val product8 = Product(
+        idProduct = "P008",
+        productName = "Table Lamp PQR",
+        genreId = "G004", // Home Appliances
+        stockQuantity = 20,
+        description = "Stylish table lamp with adjustable brightness.",
+        importPrice = 30.00,
+        sellingPrice = 50.00,
+        supplierId = "S004", // Appliance Masters
+        isInStock = true,
+        barcode = "8901234567890",
+        storageLocationId = "L005", // Overflow Storage
+        lastUpdated = Date(),
+        image = "https://example.com/images/table_lamp_pqr.jpg"
+    )
+//List Products
+val listProduct= listOf<Product>(product1, product2, product3, product4, product5, product6, product7, product8)
+// Export Packages
+val exportPackage1 = ExportPackages(
+    idExportPackages = "EP001",
+    packageName = "Order #001",
+    idProduct = "P001", // Smartphone XYZ
+    quantity = 10,
+    totalAmount = 5000.00, // Selling price * quantity
+    exportDate = Date(),
+    idCustomer = "C001", // John Doe
+    shipTo = "123 Le Loi Street, District 1, Ho Chi Minh City",
+    status = StatusPackage.PENDING,
+    deliveryMethod = "Standard Shipping",
+    note = "Deliver by next week."
 )
 
+val exportPackage2 = ExportPackages(
+    idExportPackages = "EP002",
+    packageName = "Order #002",
+    idProduct = "P004", // Running Shoes DEF
+    quantity = 5,
+    totalAmount = 375.00, // Selling price * quantity
+    exportDate = Date(),
+    idCustomer = "C002", // Jane Smith
+    shipTo = "456 Hai Ba Trung Street, District 3, Ho Chi Minh City",
+    status = StatusPackage.CANCELED,
+    deliveryMethod = "Express Shipping",
+    note = null // No additional notes
+)
 
-val notifications = listOf(
-    Notification(
-        id = "NOTIF001",
-        title = "New Message",
-        senderId = "USER123",
-        receiverId = "USER456",
-        description = "You have received a new message from John Doe",
-        type = NotificationType.UPDATE,
-        timestamp = Date()
-    ),
-    Notification(
-        id = "NOTIF002",
-        title = "System Maintenance",
-        senderId = "SYSTEM",
-        receiverId = "ALL_USERS",
-        description = "Scheduled maintenance will occur tonight from 2 AM to 4 AM",
-        type = NotificationType.WARNING,
-        timestamp = Date(System.currentTimeMillis() + 3600000) // 1 hour from now
-    ),
-    Notification(
-        id = "NOTIF003",
-        title = "Friend Request",
-        senderId = "USER789",
-        receiverId = "USER456",
-        description = null,
-        type = NotificationType.UPDATE,
-        timestamp = Date(System.currentTimeMillis() - 86400000) // Yesterday
-    ),
-    Notification(
-        id = "NOTIF004",
-        title = "Account Security Alert",
-        senderId = "SECURITY_TEAM",
-        receiverId = "USER123",
-        description = "Unusual login attempt detected. Please verify your recent activity.",
-        type = NotificationType.WARNING,
-        timestamp = Date(System.currentTimeMillis() - 1800000) // 30 minutes ago
-    ),
-    Notification(
-        id = "NOTIF005",
-        title = "New Feature Available",
-        senderId = "PRODUCT_TEAM",
-        receiverId = "ALL_USERS",
-        description = "Check out our new chat feature! Communicate with your team in real-time.",
-        type = NotificationType.CLASSIFY,
-        timestamp = Date()
-    )
+val exportPackage3 = ExportPackages(
+    idExportPackages = "EP003",
+    packageName = "Order #003",
+    idProduct = "P003", // Novel: The Great Adventure
+    quantity = 15,
+    totalAmount = 150.00, // Selling price * quantity
+    exportDate = Date(),
+    idCustomer = "C003", // Michael Brown
+    shipTo = "789 Nguyen Trai Street, District 5, Ho Chi Minh City",
+    status = StatusPackage.DELIVERED,
+    deliveryMethod = "Standard Shipping",
+    note = "Customer requested a delivery confirmation."
 )
-val users = listOf(
-    User(
-        id = "USER001",
-        username = "johndoe",
-        passwordHash = "5f4dcc3b5aa765d61d8327deb882cf99", // hash for "password"
-        role = Role(
-            roleId = "ROLE001",
-            roleName = "User"
-        ),
-        information = Information(
-            firstName = "John",
-            lastName = "Doe",
-            email = "john.doe@example.com",
-        )
-    ),
-    User(
-        id = "USER002",
-        username = "janesmit",
-        passwordHash = "098f6bcd4621d373cade4e832627b4f6", // hash for "test"
-        role = Role(
-            roleId = "ROLE002",
-            roleName = "Admin"
-        ),
-        information = Information(
-            firstName = "Jane",
-            lastName = "Smith",
-            email = "jane.smith@example.com"
-        )
-    ),
-    User(
-        id = "USER003",
-        username = "bobwilson",
-        passwordHash = "62c8ad0a15d9d1ca38d5dee762a16e01", // hash for "123456"
-        role = Role(
-            roleId = "ROLE001",
-            roleName = "User"
-        ),
-        information = Information(
-            firstName = "Bob",
-            lastName = "Wilson",
-            email = "bob.wilson@example.com",
+val exportPackage4 = ExportPackages(
+    idExportPackages = "EP004",
+    packageName = "Order #004",
+    idProduct = "P005", // Blender GHI
+    quantity = 7,
+    totalAmount = 455.00, // Selling price * quantity
+    exportDate = Date(),
+    idCustomer = "C004", // Emily Davis
+    shipTo = "101 Tran Hung Dao Street, District 1, Ho Chi Minh City",
+    status = StatusPackage.PENDING,
+    deliveryMethod = "Standard Shipping",
+    note = "Urgent delivery requested."
+)
+//Import package
+val importPackage1 = ImportPackages(
+    idImportPackages = "IP001",
+    packageName = "Import Order #001",
+    importDate = Date(),
+    idProduct = "P001", // Smartphone XYZ
+    quantity = 20,
+    idSupplier = "S001", // Tech Supplies Ltd.
+    idReceivedBy = "John Doe",
+    status = StatusPackage.PENDING,
+    totalAmount = 6000.00, // Import price * quantity
+    note = "First shipment."
+)
 
-        )
-    ),
-    User(
-        id = "USER004",
-        username = "alicejohn",
-        passwordHash = "e10adc3949ba59abbe56e057f20f883e", // hash for "123456"
-        role = Role(
-            roleId = "ROLE003",
-            roleName = "User"
-        ),
-        information = Information(
-            firstName = "Alice",
-            lastName = "Johnson",
-            email = "alice.johnson@example.com"
-        )
-    ),
-    User(
-        id = "USER005",
-        username = "charliebrw",
-        passwordHash = "fcea920f7412b5da7be0cf42b8c93759", // hash for "1234567"
-        role = Role(
-            roleId = "ROLE001",
-            roleName = "User"
-        ),
-        information = Information(
-            firstName = "Charlie",
-            lastName = "Brown",
-            email = "charlie.brown@example.com",
-        )
+val importPackage2 = ImportPackages(
+    idImportPackages = "IP002",
+    packageName = "Import Order #002",
+    importDate = Date(),
+    idProduct = "P005", // Blender GHI
+    quantity = 15,
+    idSupplier = "S004", // Appliance Masters
+    idReceivedBy = "Emily Davis",
+    status = StatusPackage.CANCELED,
+    totalAmount = 750.00, // Import price * quantity
+    note = null // No additional notes
+)
+
+val importPackage3 = ImportPackages(
+    idImportPackages = "IP003",
+    packageName = "Import Order #003",
+    importDate = Date(),
+    idProduct = "P003", // Novel: The Great Adventure
+    quantity = 100,
+    idSupplier = "S002", // Book World Co.
+    idReceivedBy = "Michael Brown",
+    status = StatusPackage.DELIVERED,
+    totalAmount = 300.00, // Import price * quantity
+    note = "Bulk order."
+)
+
+val importPackage4 = ImportPackages(
+    idImportPackages = "IP004",
+    packageName = "Import Order #004",
+    importDate = Date(),
+    idProduct = "P007", // Wireless Mouse MNO
+    quantity = 50,
+    idSupplier = "S001", // Tech Supplies Ltd.
+    idReceivedBy = "David Johnson",
+    status = StatusPackage.PENDING,
+    totalAmount = 1250.00, // Import price * quantity
+    note = "Urgent delivery."
+)
+//User
+val user1 = User(
+    idUser = "U001",
+    username = "john_doe",
+    passwordHash = "hashed_password_1", // Replace with actual hashed password
+    information = Information(
+        idInformation = "I001",
+        firstName = "John",
+        lastName = "Doe",
+        email = "john.doe@example.com",
+        role = Role.USER,
+        picture = "https://example.com/images/john_doe.jpg"
     )
 )
-val importPackages = listOf(
-    ImportPackages(
-        id = "IMP001",
-        packageName = "Electronics Shipment",
-        importDate = Date(),
-        supplier = Supplier("SUP001", "TechWorld Electronics", address = Address(
-            street = "123 Main St",
-            district = "Downtown",
-            city = "Mobile City",
-            postalCode = "12345",
-            phone = "555-1234"
-        )),
-        idReceivedBy = "EMP123",
-        status = Status.PENDING,
-        note = "Handle with care, contains fragile items"
-    ),
-    ImportPackages(
-        id = "IMP002",
-        packageName = "Office Supplies",
-        importDate = Date(System.currentTimeMillis() - 86400000), // Yesterday
-        supplier = Supplier("SUP002", "Office Depot", address = Address(
-            street = "123 Main St",
-            district = "Downtown",
-            city = "Mobile City",
-            postalCode = "12345",
-            phone = "555-1234"
-        )),
-        idReceivedBy = "EMP456",
-        status = Status.DONE
-    ),
-    ImportPackages(
-        id = "IMP003",
-        packageName = "Food Products",
-        importDate = Date(System.currentTimeMillis() + 86400000), // Tomorrow
-        supplier = Supplier("SUP003", "Fresh Foods Inc.", address = Address(
-            street = "123 Main St",
-            district = "Downtown",
-            city = "Mobile City",
-            postalCode = "12345",
-            phone = "555-1234"
-        )),
-        idReceivedBy = "EMP789",
-        status = Status.PENDING,
-        note = "Refrigerate immediately upon arrival"
-    ),
-    ImportPackages(
-        id = "IMP004",
-        packageName = "Furniture Shipment",
-        importDate = Date(),
-        supplier = Supplier("SUP004", "Modern Furnishings", address = Address(
-            street = "123 Main St",
-            district = "Downtown",
-            city = "Mobile City",
-            postalCode = "12345",
-            phone = "555-1234"
-        )),
-        idReceivedBy = "EMP234",
-        status = Status.DONE,
-        note = "Large items, requires forklift"
-    ),
-    ImportPackages(
-        id = "IMP005",
-        packageName = "Clothing Batch",
-        importDate = Date(System.currentTimeMillis() - 172800000), // 2 days ago
-        supplier = Supplier("SUP005", "Fashion Forward", address = Address(
-            street = "123 Main St",
-            district = "Downtown",
-            city = "Mobile City",
-            postalCode = "12345",
-            phone = "555-1234"
-        )),
-        idReceivedBy = "EMP567",
-        status = Status.PENDING
+val user2 = User(
+    idUser = "U002",
+    username = "jane_smith",
+    passwordHash = "hashed_password_2", // Replace with actual hashed password
+    information = Information(
+        idInformation = "I002",
+        firstName = "Jane",
+        lastName = "Smith",
+        email = "jane.smith@example.com",
+        role = Role.ADMIN,
+        picture = null // No picture provided
     )
 )
-val exportPackages = listOf(
-    ExportPackages(
-        id = "EXP001",
-        packageName = "Electronics Order",
-        exportDate = Date(),
-        customer = Customer(
-            id = "CUST001",
-            customerName = "John Doe",
-            address = Address(
-                street = "123 Main St",
-                district = "Downtown",
-                city = "Mobile City",
-                postalCode = "12345",
-                phone = "555-1234"
-            )
-        ),
-        shipTo = "456 Elm St, Uptown, 67890",
-        status = Status.PENDING,
-        deliveryMethod = "Express Shipping",
-        note = "Fragile items, handle with care"
-    ),
-    ExportPackages(
-        id = "EXP002",
-        packageName = "Office Supplies",
-        exportDate = Date(System.currentTimeMillis() - 86400000), // Yesterday
-        customer = Customer(
-            id = "CUST002",
-            customerName = "Jane Smith",
-            address = Address(
-                street = "789 Oak Ave",
-                district = "Midtown",
-                city = "Mobile City",
-                postalCode = "54321",
-                phone = "555-5678"
-            )
-        ),
-        shipTo = "101 Pine Rd, Suburb, 10101",
-        status = Status.DONE,
-        deliveryMethod = "Standard Shipping"
-    ),
-    ExportPackages(
-        id = "EXP003",
-        packageName = "Furniture Set",
-        exportDate = Date(System.currentTimeMillis() + 86400000), // Tomorrow
-        customer = Customer(
-            id = "CUST003",
-            customerName = "Bob Johnson",
-            address = Address(
-                street = "321 Maple Ln",
-                district = "Westside",
-                city = "Mobile City",
-                postalCode = "98765",
-                phone = "555-9876"
-            )
-        ),
-        shipTo = "654 Cedar Blvd, Eastside, 45678",
-        status = Status.PENDING,
-        deliveryMethod = "Freight",
-        note = "Large items, special handling required"
-    ),
-    ExportPackages(
-        id = "EXP004",
-        packageName = "Clothing Order",
-        exportDate = Date(),
-        customer = Customer(
-            id = "CUST004",
-            customerName = "Alice Brown",
-            address = Address(
-                street = "246 Birch St",
-                district = "Northend",
-                city = "Mobile City",
-                postalCode = "13579",
-                phone = "555-2468"
-            )
-        ),
-        shipTo = "135 Willow Ave, Southend, 24680",
-        status = Status.PENDING,
-        deliveryMethod = "Priority Mail"
-    ),
-    ExportPackages(
-        id = "EXP005",
-        packageName = "Book Collection",
-        exportDate = Date(System.currentTimeMillis() - 172800000), // 2 days ago
-        customer = Customer(
-            id = "CUST005",
-            customerName = "Charlie Wilson",
-            address = Address(
-                street = "579 Spruce Rd",
-                district = "Easttown",
-                city = "Mobile City",
-                postalCode = "97531",
-                phone = "555-3690"
-            )
-        ),
-        shipTo = "864 Fir Lane, Westtown, 86420",
-        status = Status.DONE,
-        deliveryMethod = "Ground Shipping",
-        note = "Educational materials"
-    )
+//Notification
+val notification1 = Notification(
+    idNotification = "N001",
+    title = "System Update Available",
+    description = "A new system update is ready for installation.",
+    type = NotificationType.UPDATE,
+    timestamp = Date()
+)
+val notification2 = Notification(
+    idNotification = "N002",
+    title = "Security Warning",
+    description = "A potential security threat has been detected.",
+    type = NotificationType.WARNING,
+    timestamp = Date()
+)
+val notification3 = Notification(
+    idNotification = "N003",
+    title = "Classification Required",
+    description = "Please classify the newly added items.",
+    type = NotificationType.CLASSIFY,
+    timestamp = Date()
+)
+val notification4 = Notification(
+    idNotification = "N004",
+    title = "Server Maintenance",
+    type = NotificationType.WARNING,
+    timestamp = Date() // No description for this notification
+)
+//Report
+val report1 = Report(
+    idReport = "R001",
+    timestamp = Date(),
+    title = "Issue with Product A",
+    idSender = "U001", // Assuming this corresponds to a user ID
+    reportType = "Product Issue",
+    description = "Customer reported a malfunction with Product A.",
+    status = "Pending"
+)
+val report2 = Report(
+    idReport = "R002",
+    timestamp = Date(),
+    title = "Service Outage Notification",
+    idSender = "U002",
+    reportType = "Service Outage",
+    description = "Notification of a service outage affecting multiple users.",
+    status = "Resolved"
+)
+val report3 = Report(
+    idReport = "R003",
+    timestamp = Date(),
+    title = "Feedback on New Feature",
+    idSender = "U003",
+    reportType = "Feedback",
+    description = "User provided feedback on the newly implemented feature.",
+    status = "Under Review"
+)
+val report4 = Report(
+    idReport = "R004",
+    timestamp = Date(),
+    title = "Bug Report for Version 2.1",
+    idSender = "U001",
+    reportType = "Bug",
+    description = null, // No description provided
+    status = "Pending"
 )
