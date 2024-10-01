@@ -15,6 +15,7 @@ import com.example.warehousemanagement.domain.model.StatusPackage
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.model.User
+import com.example.warehousemanagement.domain.model.packageDetail
 import java.util.Date
 import java.util.UUID
 
@@ -124,7 +125,7 @@ import java.util.UUID
             postalCode = "700005",
             phone = "0908123456"
         ),
-        stability = 4.5f
+        ratings = 4.5f
     )
 
     val supplier2 = Supplier(
@@ -139,7 +140,7 @@ import java.util.UUID
             postalCode = "700006",
             phone = "0909345678"
         ),
-        stability = 4.2f
+        ratings = 4.2f
     )
 
     val supplier3 = Supplier(
@@ -154,7 +155,7 @@ import java.util.UUID
             postalCode = "700007",
             phone = "0912345678"
         ),
-        stability = 4.7f
+        ratings = 4.7f
     )
 
     val supplier4 = Supplier(
@@ -169,7 +170,7 @@ import java.util.UUID
                 postalCode = "700008",
                 phone = "0987654321"
             ),
-            stability = 4.8f
+            ratings = 4.8f
         )
     val supplier5 = Supplier(
             idSupplier = "S005",
@@ -183,7 +184,7 @@ import java.util.UUID
                 postalCode = "700009",
                 phone = "0978123456"
             ),
-            stability = 4.4f
+            ratings = 4.4f
         )
 //List suppliers
     val listSuppliers= listOf<Supplier>(supplier1, supplier2, supplier3, supplier4, supplier5)
@@ -346,8 +347,6 @@ val listProduct= listOf<Product>(product1, product2, product3, product4, product
 val exportPackage1 = ExportPackages(
     idExportPackages = "EP001",
     packageName = "Order #001",
-    idProduct = "P001", // Smartphone XYZ
-    quantity = 10,
     totalAmount = 5000.00, // Selling price * quantity
     exportDate = Date(),
     idCustomer = "C001", // John Doe
@@ -360,8 +359,6 @@ val exportPackage1 = ExportPackages(
 val exportPackage2 = ExportPackages(
     idExportPackages = "EP002",
     packageName = "Order #002",
-    idProduct = "P004", // Running Shoes DEF
-    quantity = 5,
     totalAmount = 375.00, // Selling price * quantity
     exportDate = Date(),
     idCustomer = "C002", // Jane Smith
@@ -374,8 +371,6 @@ val exportPackage2 = ExportPackages(
 val exportPackage3 = ExportPackages(
     idExportPackages = "EP003",
     packageName = "Order #003",
-    idProduct = "P003", // Novel: The Great Adventure
-    quantity = 15,
     totalAmount = 150.00, // Selling price * quantity
     exportDate = Date(),
     idCustomer = "C003", // Michael Brown
@@ -387,8 +382,6 @@ val exportPackage3 = ExportPackages(
 val exportPackage4 = ExportPackages(
     idExportPackages = "EP004",
     packageName = "Order #004",
-    idProduct = "P005", // Blender GHI
-    quantity = 7,
     totalAmount = 455.00, // Selling price * quantity
     exportDate = Date(),
     idCustomer = "C004", // Emily Davis
@@ -402,8 +395,6 @@ val importPackage1 = ImportPackages(
     idImportPackages = "IP001",
     packageName = "Import Order #001",
     importDate = Date(),
-    idProduct = "P001", // Smartphone XYZ
-    quantity = 20,
     idSupplier = "S001", // Tech Supplies Ltd.
     idReceivedBy = "John Doe",
     status = StatusPackage.PENDING,
@@ -415,8 +406,6 @@ val importPackage2 = ImportPackages(
     idImportPackages = "IP002",
     packageName = "Import Order #002",
     importDate = Date(),
-    idProduct = "P005", // Blender GHI
-    quantity = 15,
     idSupplier = "S004", // Appliance Masters
     idReceivedBy = "Emily Davis",
     status = StatusPackage.CANCELED,
@@ -428,8 +417,6 @@ val importPackage3 = ImportPackages(
     idImportPackages = "IP003",
     packageName = "Import Order #003",
     importDate = Date(),
-    idProduct = "P003", // Novel: The Great Adventure
-    quantity = 100,
     idSupplier = "S002", // Book World Co.
     idReceivedBy = "Michael Brown",
     status = StatusPackage.DELIVERED,
@@ -441,13 +428,35 @@ val importPackage4 = ImportPackages(
     idImportPackages = "IP004",
     packageName = "Import Order #004",
     importDate = Date(),
-    idProduct = "P007", // Wireless Mouse MNO
-    quantity = 50,
     idSupplier = "S001", // Tech Supplies Ltd.
     idReceivedBy = "David Johnson",
     status = StatusPackage.PENDING,
     totalAmount = 1250.00, // Import price * quantity
     note = "Urgent delivery."
+)
+//PackageDetail
+val packageDetail1 = packageDetail(
+    idPackageDetail = "PD001",
+    idPackage = "IP004", // Liên kết với gói hàng "IP004"
+    idProduct = "P001",  // Mã sản phẩm 1
+    quality = 10,        // Số lượng 10
+    unitPrice = 50.00    // Giá mỗi đơn vị là 50.00
+)
+
+val packageDetail2 = packageDetail(
+    idPackageDetail = "PD002",
+    idPackage = "IP004", // Liên kết với gói hàng "IP004"
+    idProduct = "P002",  // Mã sản phẩm 2
+    quality = 5,         // Số lượng 5
+    unitPrice = 200.00   // Giá mỗi đơn vị là 200.00
+)
+
+val packageDetail3 = packageDetail(
+    idPackageDetail = "PD003",
+    idPackage = "IP004", // Liên kết với gói hàng "IP004"
+    idProduct = "P003",  // Mã sản phẩm 3
+    quality = 2,         // Số lượng 2
+    unitPrice = 375.00   // Giá mỗi đơn vị là 375.00
 )
 //User
 val user1 = User(
