@@ -5,7 +5,7 @@ import java.util.Date
 data class ExportPackages(
     val idExportPackages: String,
     val packageName: String,
-
+    val listProduct: List<Product>,
     val totalAmount: Double,
     val exportDate: Date,
     val idCustomer: String,
