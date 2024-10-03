@@ -1,3 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WarehouseManagement</string>
+    <!-- Main Title-->
+    <string name="screen_home_admin_main_title">ADMIN</string>
+    <string name="screen_home_employee_main_title">EMPLOYEE</string>
+    <string name="screen_notification_main_title">NOTIFICATION</string>
+    <string name="screen_product_main_title">PRODUCT</string>
+    <string name="screen_report_main_title">REPORT</string>
+    <string name="screen_storage_location_main_title">STORAGE LOCATION</string>
+    <string name="screen_import_main_title">IMPORT PACKAGES</string>
+    <string name="screen_export_main_title">EXPORT PACKAGES</string>
+    <string name="screen_supplier_main_title">SUPPLIER</string>
+    <string name="screen_customer_main_title">CUSTOMER</string>
+    <string name="screen_setting_main_title">SETTING</string>
+    <string name="screen_genre_main_title">GENRE</string>
+    <!--________________________________________________-->
+
+    <!-- Subtitle -->
+    <string name="admin_subtitle_all_function">All features</string>
+    <string name="employee_subtitle_shortcut_function">Shortcut feature</string>
+    <!--________________________________________________-->
+
+    <!-- Navigation -->
+    <string name="navigation_analyze_admin_text">Analyze</string>
+    <string name="navigation_report_employee_text">Report</string>
+    <string name="navigation_home_text">Home</string>
+    <string name="navigation_setting_text">Setting</string>
+    <!--________________________________________________-->
+
+    <!-- Button -->
+    <string name="func_sort_by_text">Sort by</string>
+    <string name="button_cancel_text">Cancel</string>
+    <string name="button_confirm_text">Confirm</string>
+    <string name="func_add_one_item">Add item</string>
+    <string name="func_add_items_by_excel">All items by excel</string>
+    <string name="place_holder_search_bar_product">Search by name or id</string>
+    <!--________________________________________________-->
 </resources>
