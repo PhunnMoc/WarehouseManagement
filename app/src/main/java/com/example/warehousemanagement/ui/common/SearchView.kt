@@ -4,22 +4,18 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,7 +31,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
@@ -50,7 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomSearchBar(
     query: String,
@@ -101,8 +95,7 @@ fun CustomSearchBar(
                             color = colorResource(id = R.color.line_light_gray),
                             shape = RoundedCornerShape(size = 30.dp)
                         )
-                        .padding(start = 20.dp, end = 30.dp) // inner padding
-
+                        .padding(start = 20.dp, end = 30.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -114,7 +107,6 @@ fun CustomSearchBar(
                                 .align(Alignment.CenterStart)
                         ) {
                             leadingIcon?.let { it() }
-                            // Spacer(modifier = Modifier.width(8.dp))
                             Box {
                                 if (query.isEmpty()) {
                                     Text(
@@ -127,7 +119,6 @@ fun CustomSearchBar(
                             }
                         }
                         Row(
-                            // contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .align(Alignment.CenterEnd)
                         ) {
@@ -147,13 +138,13 @@ fun CustomSearchBar(
 
 
 @Composable
-fun ItemSuggestion(query:String, content: String) {
-    val (highlight, normal)= content.split(" ").partition {
+fun ItemSuggestion(query: String, content: String) {
+    val (highlight, normal) = content.split(" ").partition {
         query.split(" ").contains(it)
     }
-    val queryWork= query.split(" ")
-    val contentWord= content.split(" ")
-     Row(
+    val queryWork = query.split(" ")
+    val contentWord = content.split(" ")
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
@@ -162,12 +153,11 @@ fun ItemSuggestion(query:String, content: String) {
         Text(
             buildAnnotatedString {
                 contentWord.map {
-                    if(queryWork.contains(it)){
+                    if (queryWork.contains(it)) {
                         withStyle(style = SpanStyle(color = Color.Green)) {
                             append("$it ")
                         }
-                    }
-                    else{
+                    } else {
                         withStyle(style = SpanStyle(color = Color.Black)) {
                             append("$it ")
                         }
@@ -185,16 +175,16 @@ fun SuggestionView(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .offset(0.5.dp,)
+            .offset(0.5.dp)
     ) {
         items(listSuggestions) {
-            ItemSuggestion("Trinh Iris",it)
+            ItemSuggestion("Trinh Iris", it)
         }
     }
 }
 
 @Composable
-fun SearchBarWithSuggestion(listSuggestions: List<String>){ //API
+fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
     var text by remember {  // text will be a flow saveHandle
         mutableStateOf("")
     }
@@ -232,7 +222,7 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>){ //API
                 )
             }
         )
-        if(text.isNotEmpty()){
+        if (text.isNotEmpty()) {
             SuggestionView(listSuggestions)
         }
     }
