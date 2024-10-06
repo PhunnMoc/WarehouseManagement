@@ -139,9 +139,6 @@ fun CustomSearchBar(
 
 @Composable
 fun ItemSuggestion(query: String, content: String) {
-    val (highlight, normal) = content.split(" ").partition {
-        query.split(" ").contains(it)
-    }
     val queryWork = query.split(" ")
     val contentWord = content.split(" ")
     Row(
