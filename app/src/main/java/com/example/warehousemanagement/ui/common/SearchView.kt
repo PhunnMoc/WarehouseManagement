@@ -145,17 +145,17 @@ fun ItemSuggestion(query: String, content: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .padding(10.dp)
+            .padding(start = 30.dp, top = 10.dp, bottom = 10.dp)
     ) {
         Text(
             buildAnnotatedString {
                 contentWord.map {
                     if (queryWork.contains(it)) {
-                        withStyle(style = SpanStyle(color = Color.Green)) {
+                        withStyle(style = SpanStyle(color = colorResource(id = R.color.background_theme))) {
                             append("$it ")
                         }
                     } else {
-                        withStyle(style = SpanStyle(color = Color.Black)) {
+                        withStyle(style = SpanStyle(color = colorResource(id = R.color.text_color_dark_gray))) {
                             append("$it ")
                         }
                     }
@@ -219,6 +219,7 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
                 )
             }
         )
+        SuggestionView(listSuggestions)
         if (text.isNotEmpty()) {
             SuggestionView(listSuggestions)
         }
