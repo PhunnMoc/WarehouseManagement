@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.domain.feature.ui.theme
+package com.example.warehousemanagement.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

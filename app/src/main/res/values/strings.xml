@@ -34,5 +34,6 @@
     <string name="func_add_one_item">Add item</string>
     <string name="func_add_items_by_excel">All items by excel</string>
     <string name="place_holder_search_bar_product">Search by name or id</string>
+    <string name="app_name" />
     <!--________________________________________________-->
 </resources>

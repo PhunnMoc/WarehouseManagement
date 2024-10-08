@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.domain.feature.ui.theme
+package com.example.warehousemanagement.ui.theme
 
 import android.app.Activity
 import android.os.Build
