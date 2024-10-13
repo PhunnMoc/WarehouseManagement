@@ -1,5 +1,7 @@
 package com.example.warehousemanagement.domain.feature.ui.common
+
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,79 +18,72 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 
 @Composable
-fun HeaderOfScreen(isMainScreen: Boolean, mainTitleText: Int) {
+fun HeaderOfScreen(
+    mainTitleText: String,
+    startContent: @Composable (() -> Unit)? = null,
+    endContent: @Composable (() -> Unit)? = null
+) {
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
-
     ) {
-
         Text(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .align(Alignment.Center),
-            text = stringResource(id = mainTitleText),
+            text = mainTitleText,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium.copy(fontSize = 25.sp)
         )
-
-        if (!isMainScreen) {
-
+        startContent?.let {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically
-
-            )
-            {
-                Image(painter = painterResource(id = R.drawable.icons8_back),
-                    contentDescription = "Back",
-                    modifier = Modifier.size(25.dp))
+            ) {
+                it()
             }
-
         }
-
-         else {
-
+        endContent?.let {
             Row(
-
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
-
-
-                )
-                    {
-                        Icon(
-                            imageVector = Icons.Filled.Notifications,
-                            contentDescription = "Notifications",
-                            modifier = Modifier.size(25.dp)
-
-
-                        )
-                    }
-
+            ) {
+                it()
             }
-
-
         }
     }
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHeaderOfScreen() {
-    HeaderOfScreen(isMainScreen = true, mainTitleText = R.string.screen_home_admin_main_title)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewHeaderOfScreenMain() {
-    HeaderOfScreen(isMainScreen = false, mainTitleText = R.string.screen_home_admin_main_title)
+    HeaderOfScreen(
+        mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
+        startContent = {
+            Image(
+                painter = painterResource(id = R.drawable.icons8_back),
+                contentDescription = "Back",
+                modifier = Modifier
+                    .size(25.dp)
+                    .clickable {
+                        /*TODO: Implement back navigation*/
+                    }
+            )
+        },
+        endContent = {
+            Icon(
+                imageVector = Icons.Filled.Notifications,
+                contentDescription = "Notifications",
+                modifier = Modifier.size(25.dp)
+            )
+        }
+    )
 }
