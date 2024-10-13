@@ -1,6 +1,8 @@
 package com.example.warehousemanagement.ui.common
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -97,14 +99,14 @@ fun CustomSearchBar(
                         )
                         .padding(start = 20.dp, end = 30.dp)
                 ) {
-                    Box(
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
+
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .align(Alignment.CenterStart)
+                            modifier = Modifier.weight(1f)
                         ) {
                             leadingIcon?.let { it() }
                             Box {
@@ -119,8 +121,7 @@ fun CustomSearchBar(
                             }
                         }
                         Row(
-                            modifier = Modifier
-                                .align(Alignment.CenterEnd)
+                            horizontalArrangement = Arrangement.End
                         ) {
                             trailingIcon?.let { it() }
                         }
@@ -185,13 +186,7 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
     var text by remember {  // text will be a flow saveHandle
         mutableStateOf("")
     }
-    val trailingIcon = remember(text) {
-        if (text.isEmpty()) {
-            R.drawable.icons8_search
-        } else {
-            R.drawable.icons8_delete
-        }
-    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -212,14 +207,21 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
             placeHolder = "Search for me",
             trailingIcon = {
                 Icon(
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp)
+                        .clickable {  },
                     tint = colorResource(id = R.color.text_color_dark_gray),
-                    painter = painterResource(id = trailingIcon),
+                    painter = painterResource(id = R.drawable.icons8_delete),
+                    contentDescription = ""
+                )
+                Icon(
+                    modifier = Modifier.size(20.dp)
+                        .clickable {  },
+                    tint = colorResource(id = R.color.text_color_dark_gray),
+                    painter = painterResource(id = R.drawable.icons8_search),
                     contentDescription = ""
                 )
             }
         )
-        SuggestionView(listSuggestions)
         if (text.isNotEmpty()) {
             SuggestionView(listSuggestions)
         }
