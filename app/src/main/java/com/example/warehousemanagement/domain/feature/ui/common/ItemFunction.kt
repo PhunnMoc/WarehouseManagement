@@ -2,6 +2,7 @@ package com.example.warehousemanagement.domain.feature.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
@@ -32,12 +33,14 @@ fun ItemFunction(
     color: Color = colorResource(id = R.color.icon_tint_white),
     shape: Shape = RoundedCornerShape(8.dp),
     textSize: TextUnit = 10.sp,
-    contentDescription: String? = null
+    contentDescription: String? = null,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
+            .clickable(onClick = onClick)
             .width(size)
-            .height(size + 20.dp) // Height of the item
+            .height(size + 20.dp),
     ) {
         Image(
             alignment = Alignment.Center,
@@ -56,9 +59,15 @@ fun ItemFunction(
         )
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewItemFunction() {
-    ItemFunction("Function", R.drawable.icons8_square_function, 100.dp, textSize = 12.sp, contentDescription = "Function")
+    ItemFunction(
+        functionName = "Function",
+        iconResource = R.drawable.icons8_square_function,
+        size = 100.dp,
+        textSize = 12.sp,
+        contentDescription = "Function",
+        onClick = { /* Handle click event here */ }
+    )
 }

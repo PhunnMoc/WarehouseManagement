@@ -45,7 +45,8 @@ fun FunctionRow(functionItems: List<FunctionItem>) {
                 color = item.color,
                 shape = item.shape,
                 textSize = item.textSize,
-                contentDescription = item.contentDescription
+                contentDescription = item.contentDescription,
+                onClick = { /*TODO: Handle button click*/ }
             )
         }
     }
