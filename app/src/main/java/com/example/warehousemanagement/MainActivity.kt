@@ -1,5 +1,6 @@
 package com.example.warehousemanagement
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.warehousemanagement.domain.feature.ui.theme.WarehouseManagementTheme
+import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +23,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
                 }
             }
         }
@@ -42,5 +42,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     WarehouseManagementTheme {
         Greeting("Android")
+
     }
 }
+
+
