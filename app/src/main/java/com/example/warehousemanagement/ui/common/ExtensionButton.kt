@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,8 +29,8 @@ import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 @Composable
 fun FilterAndSortButtons(
-    //onFilterClick: () -> Unit,
-    //onSortClick: () -> Unit
+    onFilterClick: () -> Unit, // Action for Filter Button
+    onSortClick: () -> Unit // Action for Sort Button
 ) {
     Row(
         modifier = Modifier
@@ -39,46 +40,63 @@ fun FilterAndSortButtons(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Filter Button
-        Button(
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
-            modifier = Modifier
-                .clip(CircleShape)
-                .height(40.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.icons8_filter),
-                contentDescription = "Sort Icon",
-                tint= colorResource(id = R.color.text_color_black),
-                modifier = Modifier.size(24.dp)
-            )
+        CustomIconButton(
+            text = "Filter", // No text for Filter button, only icon
+            icon = painterResource(id = R.drawable.icons8_filter),
+            onClick = onFilterClick // Action when Filter button is clicked
+        )
 
-            Spacer(modifier = Modifier.width(8.dp))
-        }
+        Spacer(modifier = Modifier.width(16.dp)) // Space between buttons
 
         // Sort Button
-        Button(
-            onClick ={ } ,
-            colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
-            modifier = Modifier
-                .clip(CircleShape)
-                .height(40.dp)
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.icons8_sort),
-                contentDescription = "Sort Icon",
-                tint= colorResource(id = R.color.text_color_black),
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "Sort by",color = colorResource(id = R.color.text_color_black))
-        }
+        CustomIconButton(
+            text = "Sort by", // Text for Sort button
+            icon = painterResource(id = R.drawable.icons8_sort),
+            onClick = onSortClick // Action when Sort button is clicked
+        )
     }
 }
+
+@Composable
+fun CustomIconButton(
+    text: String,
+    icon: Painter,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick, // Action when button is clicked
+        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+        modifier = Modifier
+            .clip(CircleShape)
+            .height(40.dp)
+    ) {
+        Icon(
+            painter = icon,
+            contentDescription = null, // Icon description for accessibility
+            tint = colorResource(id = R.color.text_color_black),
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            color = colorResource(id = R.color.text_color_black)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ExtensionButtonPreview() {
     WarehouseManagementTheme {
-        FilterAndSortButtons( )
+        FilterAndSortButtons(
+            onFilterClick = {
+                // Handle Filter button click
+                println("Filter button clicked")
+            },
+            onSortClick = {
+                // Handle Sort button click
+                println("Sort button clicked")
+            }
+        )
     }
 }

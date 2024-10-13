@@ -16,19 +16,22 @@ import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 @Composable
-fun BigButton(name: String) {
+fun BigButton(
+    labelname: String,
+    onClick: () -> Unit // Thêm tham số 'onClick' vào constructor
+) {
     Button(
-        onClick = { /* TODO: Handle click */ },
-        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.background_theme)), // Yellow color
-        shape = RoundedCornerShape(15.dp), // Rounded corners
+        onClick = onClick, // Gọi hàm 'onClick' khi nhấn nút
+        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.background_theme)), // Màu nền
+        shape = RoundedCornerShape(50.dp), // Bo tròn các góc
         modifier = Modifier
-            .width(200.dp)  // Width of the button
-            .height(50.dp)  // Height of the button
+            .width(200.dp)  // Độ rộng của nút
+            .height(50.dp)  // Chiều cao của nút
     ) {
         Text(
-            text = name,
-            fontSize = 10.sp, // Font size
-            color = colorResource(id = R.color.text_color_black) // Text color
+            text = labelname,
+            fontSize = 10.sp, // Kích thước font chữ
+            color = colorResource(id = R.color.text_color_black) // Màu chữ
         )
     }
 }
@@ -38,6 +41,12 @@ fun BigButton(name: String) {
 @Composable
 fun BigButtonPreview() {
     WarehouseManagementTheme {
-        BigButton(name = "ADD PRODUCT")
+        BigButton(
+            labelname = "Nhấn vào đây",
+            onClick = {
+                // Xử lý hành động khi nhấn vào nút
+                println("Nút đã được nhấn!")
+            }
+        )
     }
 }
