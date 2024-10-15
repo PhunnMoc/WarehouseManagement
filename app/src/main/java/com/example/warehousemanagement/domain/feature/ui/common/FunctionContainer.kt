@@ -57,7 +57,7 @@ fun AdminView() {
     val functionItems = List(3) {
         FunctionItem(
             "Function",
-            R.drawable.icons8_square_function,
+            R.drawable.ic_function,
             100.dp,
             colorResource(id = R.color.icon_tint_white),
             RoundedCornerShape(8.dp),
@@ -86,7 +86,7 @@ fun NonAdminView() {
     val functionItems = List(3) {
         FunctionItem(
             "Function",
-            R.drawable.icons8_square_function,
+            R.drawable.ic_function,
             80.dp,
             colorResource(id = R.color.icon_tint_white),
             RoundedCornerShape(8.dp),
@@ -94,7 +94,7 @@ fun NonAdminView() {
         )
     } + FunctionItem(
         "More",
-        R.drawable.icons8_squared_menu_80,
+        R.drawable.ic_menu,
         80.dp,
         colorResource(id = R.color.icon_tint_white),
         RoundedCornerShape(8.dp),

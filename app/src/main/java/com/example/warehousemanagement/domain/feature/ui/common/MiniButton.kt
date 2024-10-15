@@ -36,7 +36,7 @@ fun MiniButton(
 fun PreviewMiniButton() {
     MiniButton(
         onClick = { /* Handle button click */ },
-        icon = painterResource(id = R.drawable.icons8_add_button_80),
+        icon = painterResource(id = R.drawable.ic_add_mini_button),
         contentDescription = "Add Icon"
     )
 }

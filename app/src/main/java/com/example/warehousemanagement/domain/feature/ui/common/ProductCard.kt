@@ -1,141 +1,243 @@
-package com.example.warehousemanagement.domain.feature.ui.common
-
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.warehousemanagement.R
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.warehousemanagement.domain.model.Product
-import java.util.Date
+import com.example.warehousemanagement.test.product1
+import com.example.warehousemanagement.R
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @Composable
-fun ProductCard(product: Product) {
-    Box(
+fun ProductCard(
+    product: Product, // Add this parameter
+    qrCodeIconRes: Int,
+    onCardClick: () -> Unit// Image resource id for the QR code icon
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    Card(
+        shape = RoundedCornerShape(25.dp),
         modifier = Modifier
+            .fillMaxWidth()
             .padding(8.dp)
-            .border(
-                width = 1.dp,
-                color = colorResource(id = R.color.line_light_gray),
-                shape = RoundedCornerShape(10.dp)
+            .animateContentSize()
+            .clickable {
+                isExpanded = !isExpanded
+                onCardClick()
+            },
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.icons8_package),
+                contentDescription = "Product Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(RoundedCornerShape(8.dp))
             )
-            .background(colorResource(id = R.color.icon_tint_white)),
 
-        ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            Spacer(modifier = Modifier.width(16.dp))
 
-        ) {
-            Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .border(
-                        width = 1.dp,
-                        color = colorResource(id = R.color.line_light_gray),
-                        shape = RoundedCornerShape(10.dp)
-
-                    ).background(colorResource(id = R.color.background_gray)),
-
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.icons8_package), // Replace with your icon drawable resource
-                    contentDescription = "Product Icon"
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = product.productName,
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = product.idProduct,
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                    fontSize = 16.sp)
-                Spacer(modifier = Modifier.width(4.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.icons8_qr_32), // Replace with your QR code drawable resource
-                    contentDescription = "QR Code",
-
-
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
-                Text(text = product.genreId,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 12.sp)
 
+                if (isExpanded) {
+                    Row {
+                        Column {
+                            Column {
+                                Text(
+                                    text = "Product name:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = product.productName,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "Quantity:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = product.quantity.toString(),
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "Import Price:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = "$${product.importPrice}",
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "Supplier ID:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = product.supplierId,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "In Stock:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = if (product.isInStock) "Yes" else "No",
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column {
+                            Column {
+                                Text(
+                                    text = "Product ID:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(text = product.idProduct, fontSize = 14.sp, color = Color.Gray)
+                            }
+                            Column {
+                                Text(
+                                    text = "Genre ID:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(text = product.genreId, fontSize = 14.sp, color = Color.Gray)
+                            }
+                            Column {
+                                Text(
+                                    text = "Selling Price:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = "$${product.sellingPrice}",
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "Location ID:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = product.storageLocationId,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "Last Updated:",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = "${product.lastUpdated}",
+                                    fontSize = 14.sp,
+                                    color = Color.Gray
+                                )
+                            }
 
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Quantity: ${product.quantity}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 12.sp)
+                        }
 
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Location: ${product.storageLocationId}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 12.sp)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = if (product.isInStock) "Yes" else "No",
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 12.sp,)
+                    }
+                    Column {
+                        Text(
+                            text = "Description:",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            color = Color.Gray
+                        )
+                        Text(text = product.description, fontSize = 14.sp, color = Color.Gray)
+                    }
+                } else {
+                    Text(
+                        text = product.productName,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "Id: ${product.idProduct}",
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                    Text(
+                        text = "Quantity: ${product.quantity}",
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                }
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = product.description,
-                style = MaterialTheme.typography.bodyMedium,
-                fontSize = 12.sp)
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Image(
+                painter = painterResource(id = qrCodeIconRes),
+                contentDescription = "QR Code Icon",
+                modifier = Modifier.size(50.dp)
+            )
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewProductCard() {
     ProductCard(
-        product = Product(
-            idProduct = "QUAT_001",
-            productName = "Quat Senko",
-            genreId = "Digital Devices",
-            quantity = 100,
-            description = "This is an example product",
-            importPrice = 50.0,
-            sellingPrice = 100.0,
-            supplierId = "Supplier",
-            isInStock = true,
-            barcode = "1234567890",
-            storageLocationId = "A2",
-            lastUpdated = Date(),
-            image = null
-        )
+        product1,
+        qrCodeIconRes = R.drawable.ic_qr_code,
+        onCardClick = { /* Handle card click here */ }
     )
 }
