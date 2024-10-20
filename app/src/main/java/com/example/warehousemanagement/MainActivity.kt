@@ -1,5 +1,6 @@
 package com.example.warehousemanagement
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,7 +23,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
                 }
             }
         }
@@ -42,5 +42,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     WarehouseManagementTheme {
         Greeting("Android")
+
     }
 }
+
+
