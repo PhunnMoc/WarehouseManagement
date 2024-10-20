@@ -1,3 +1,5 @@
+package com.example.warehousemanagement.ui.common
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height

@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.domain.feature.ui.common
+package com.example.warehousemanagement.ui.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.domain.feature.ui.common
+package com.example.warehousemanagement.ui.common
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button

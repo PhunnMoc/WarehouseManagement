@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Warehouse Management</string>
     <!-- Main Title-->
     <string name="screen_home_admin_main_title">ADMIN</string>
     <string name="screen_home_employee_main_title">EMPLOYEE</string>
