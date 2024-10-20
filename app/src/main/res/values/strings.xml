@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Warehouse Management</string>
     <!-- Main Title-->
     <string name="screen_home_admin_main_title">ADMIN</string>
     <string name="screen_home_employee_main_title">EMPLOYEE</string>
@@ -34,6 +35,6 @@
     <string name="func_add_one_item">Add item</string>
     <string name="func_add_items_by_excel">All items by excel</string>
     <string name="place_holder_search_bar_product">Search by name or id</string>
-    <string name="app_name" />
+    <string name="app_name">Warehouse Management</string>
     <!--________________________________________________-->
 </resources>
