@@ -1,7 +1,9 @@
 package com.example.warehousemanagement.ui.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -13,9 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
-import kotlinx.serialization.Serializable
+import com.example.warehousemanagement.ui.theme.size_icon_30
 
 @Composable
 fun BottomBar(
@@ -44,7 +45,7 @@ fun BottomBar(
 
     NavigationBar(
         modifier = modifier,
-        containerColor = Color.LightGray,
+        containerColor = colorResource(id = R.color.icon_tint_white),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -56,11 +57,12 @@ fun BottomBar(
                 },
                 icon = {
                     Icon(
+                        modifier = modifier.size(size_icon_30),
                         imageVector = ImageVector.vectorResource(id = screen.icon),
                         contentDescription = ""
                     )
                 },
-                selected = currentRoute == screen.route.toString(),
+                selected = currentRoute == "com.example.warehousemanagement.ui.navigation.Routes.${screen}",
                 onClick = {
                     navController.navigate(screen.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
@@ -71,11 +73,11 @@ fun BottomBar(
                     }
                 },
                 colors = NavigationBarItemDefaults.colors(
-                    unselectedTextColor = Color.Gray,
-                    selectedTextColor = Color.Black,
-                    selectedIconColor = Color.Black,
-                    unselectedIconColor = Color.Black,
-                    indicatorColor = Color.White
+                    selectedTextColor = colorResource(id = R.color.text_color_dark_gray),
+                    unselectedTextColor = colorResource(id = R.color.text_color_light_gray),
+                    selectedIconColor = colorResource(id = R.color.background_theme),
+                    unselectedIconColor = colorResource(id = R.color.text_color_dark_gray),
+                    indicatorColor = colorResource(id = R.color.line_light_gray),
                 ),
             )
         }
@@ -85,13 +87,18 @@ fun BottomBar(
 @Composable
 fun AppNavigation() {
     val navigationController = rememberNavController()
-    Scaffold(bottomBar = {
-        BottomBar(
-            navController = navigationController,
-        )
-    }) {innerPadding->
-        Box(modifier = Modifier.padding(innerPadding)){
-            NavHost(navController = navigationController, startDestination = TopLevelDestinations.HomeAdmin.route){
+    Scaffold(
+        containerColor = colorResource(id = R.color.icon_tint_white),
+        bottomBar = {
+            BottomBar(
+                navController = navigationController,
+            )
+        }) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            NavHost(
+                navController = navigationController,
+                startDestination = TopLevelDestinations.HomeAdmin.route
+            ) {
                 composable<Routes.HomeAdmin> {
                     Text(text = "Home")
                 }
@@ -101,10 +108,10 @@ fun AppNavigation() {
                 composable<Routes.Products> {
                     Text(text = "Products")
                 }
-                composable<Routes.Setting> { Text(text = "Setting")}
-                composable<Routes.Analyze> { Text(text = "Analyze")}
+                composable<Routes.Setting> { Text(text = "Setting") }
+                composable<Routes.Analyze> { Text(text = "Analyze") }
                 composable<Routes.Product> { backStackEntry ->
-                    val product:  Routes.Product = backStackEntry.toRoute()
+                    val product: Routes.Product = backStackEntry.toRoute()
                     Text(text = "Product")
                 }
             }
