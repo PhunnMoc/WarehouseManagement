@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.warehousemanagement.ui.navigation.AppNavigation
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,11 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             WarehouseManagementTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                }
+                AppNavigation()
             }
         }
     }
