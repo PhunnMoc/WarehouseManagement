@@ -2,8 +2,7 @@ package com.example.warehousemanagement.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,13 +16,13 @@ import com.example.warehousemanagement.R
 fun MiniButton(
     onClick: () -> Unit,
     icon: Painter,
-    contentDescription: String? = null
+    contentDescription: String? = null,
+    modifier: Modifier = Modifier
 ) {
     IconButton(
         onClick = onClick,
-        modifier = Modifier
-            .width(80.dp)
-            .height(80.dp),
+        modifier = modifier
+            .size(80.dp) // Đặt kích thước cho nút
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -32,6 +31,8 @@ fun MiniButton(
         )
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
