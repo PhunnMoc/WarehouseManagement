@@ -3,7 +3,6 @@ package com.example.warehousemanagement.ui.common
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
@@ -17,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,34 +25,31 @@ import com.example.warehousemanagement.R
 
 @Composable
 fun HeaderOfScreen(
+    modifier: Modifier=Modifier,
     mainTitleText: String,
     startContent: @Composable (() -> Unit)? = null,
     endContent: @Composable (() -> Unit)? = null
 ) {
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            text = mainTitleText,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 25.sp)
-        )
         startContent?.let {
             Row(
-                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
             ) {
                 it()
             }
         }
+        Text(
+            text = mainTitleText,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 25.sp, fontWeight = FontWeight.W500)
+        )
+
         endContent?.let {
             Row(
-                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -65,18 +62,15 @@ fun HeaderOfScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewHeaderOfScreenMain() {
-    HeaderOfScreen(
-        mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
+    HeaderOfScreen(mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
         startContent = {
-            Image(
-                painter = painterResource(id = R.drawable.icons8_back),
+            Image(painter = painterResource(id = R.drawable.icons8_back),
                 contentDescription = "Back",
                 modifier = Modifier
                     .size(25.dp)
                     .clickable {
                         /*TODO: Implement back navigation*/
-                    }
-            )
+                    })
         },
         endContent = {
             Icon(
@@ -84,6 +78,5 @@ fun PreviewHeaderOfScreenMain() {
                 contentDescription = "Notifications",
                 modifier = Modifier.size(25.dp)
             )
-        }
-    )
+        })
 }

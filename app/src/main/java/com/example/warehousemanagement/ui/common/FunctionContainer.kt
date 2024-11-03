@@ -2,10 +2,14 @@ package com.example.warehousemanagement.ui.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,13 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.theme.Dimens
 
 data class FunctionItem(
     val functionName: String,
@@ -31,6 +38,7 @@ data class FunctionItem(
     val textSize: TextUnit,
     val contentDescription: String? = null
 )
+
 @Composable
 fun FunctionRow(functionItems: List<FunctionItem>) {
     Row(
@@ -54,7 +62,7 @@ fun FunctionRow(functionItems: List<FunctionItem>) {
 
 @Composable
 fun AdminView() {
-    val functionItems = List(3) {
+    val functionItems = List(6) {
         FunctionItem(
             "Function",
             R.drawable.ic_function,
@@ -64,8 +72,30 @@ fun AdminView() {
             10.sp
         )
     }
-    FunctionRow(functionItems)
-    FunctionRow(functionItems)
+    Text(
+        text = stringResource(id = R.string.admin_subtitle_all_function),
+        modifier = Modifier.padding(vertical =  Dimens.PADDING_16_DP),
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold
+
+    )
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(Dimens.PADDING_95_DP),
+        contentPadding = PaddingValues(Dimens.PADDING_10_DP),
+    ) {
+        items(functionItems) { item ->
+            ItemFunction(
+                functionName = item.functionName,
+                iconResource = item.iconResource,
+                size = item.size,
+                color = item.color,
+                shape = item.shape,
+                textSize = item.textSize,
+                contentDescription = item.contentDescription,
+                onClick = { /*TODO: Handle button click*/ }
+            )
+        }
+    }
 }
 
 @Composable
@@ -75,7 +105,7 @@ fun NonAdminView() {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            "Shortcut",
+          text= stringResource(id = R.string.employee_subtitle_shortcut_function),
             modifier = Modifier.padding(start = 16.dp),
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold
@@ -117,5 +147,5 @@ fun FunctionContainer(isAdmin: Boolean) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFunctionContainer() {
-    FunctionContainer(isAdmin = false)
+    FunctionContainer(isAdmin = true)
 }

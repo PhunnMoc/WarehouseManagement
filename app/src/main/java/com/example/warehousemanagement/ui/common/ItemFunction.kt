@@ -30,6 +30,7 @@ fun ItemFunction(
     functionName: String,
     iconResource: Int,
     size: Dp,
+    modifier: Modifier = Modifier,
     color: Color = colorResource(id = R.color.icon_tint_white),
     shape: Shape = RoundedCornerShape(8.dp),
     textSize: TextUnit = 10.sp,
@@ -37,10 +38,11 @@ fun ItemFunction(
     onClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clickable(onClick = onClick)
             .width(size)
             .height(size + 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
             alignment = Alignment.Center,
@@ -59,6 +61,7 @@ fun ItemFunction(
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewItemFunction() {

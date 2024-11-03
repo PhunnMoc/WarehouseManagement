@@ -8,6 +8,7 @@
     <!-- Icon Tints -->
     <color name="icon_tint_black">#000000</color> <!-- Black icon tint -->
     <color name="icon_tint_white">#FFFFFF</color> <!-- White icon tint -->
+    <color name="icon_tint_gray">#363636</color> <!-- White icon tint -->
 
     <!-- Background Colors -->
     <color name="background_gray">#F4F4F4</color> <!-- Gray background color -->
