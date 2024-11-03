@@ -64,7 +64,7 @@ fun ItemFunction(
 fun PreviewItemFunction() {
     ItemFunction(
         functionName = "Function",
-        iconResource = R.drawable.ic_function,
+        iconResource = R.drawable.ic_opened_package,
         size = 100.dp,
         textSize = 12.sp,
         contentDescription = "Function",
