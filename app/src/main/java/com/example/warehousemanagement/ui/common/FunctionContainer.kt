@@ -74,7 +74,7 @@ fun AdminView() {
     }
     Text(
         text = stringResource(id = R.string.admin_subtitle_all_function),
-        modifier = Modifier.padding(vertical =  Dimens.PADDING_5_DP),
+        modifier = Modifier.padding(vertical = Dimens.PADDING_5_DP),
         fontSize = 14.sp,
         fontWeight = FontWeight.Bold
 
@@ -98,19 +98,8 @@ fun AdminView() {
 }
 
 @Composable
-fun NonAdminView() {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-          text= stringResource(id = R.string.employee_subtitle_shortcut_function),
-            modifier = Modifier.padding(start = 16.dp),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
+fun NonAdminView(modifier: Modifier = Modifier,) {
 
-        )
-    }
     Spacer(modifier = Modifier.padding(5.dp))
     val functionItems = List(3) {
         FunctionItem(
@@ -129,16 +118,32 @@ fun NonAdminView() {
         RoundedCornerShape(8.dp),
         10.sp
     )
-    FunctionRow(functionItems)
+    Column(
+        modifier = modifier.fillMaxWidth(),
+       // verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(id = R.string.employee_subtitle_shortcut_function),
+            modifier = Modifier.padding(start = 16.dp),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold
+
+        )
+        FunctionRow(functionItems)
+    }
+
 }
 
 @Composable
-fun FunctionContainer(isAdmin: Boolean) {
+fun FunctionContainer(
+    modifier: Modifier = Modifier,
+    isAdmin: Boolean
+) {
     Column {
         if (isAdmin) {
             AdminView()
         } else {
-            NonAdminView()
+            NonAdminView(modifier = modifier)
         }
     }
 }

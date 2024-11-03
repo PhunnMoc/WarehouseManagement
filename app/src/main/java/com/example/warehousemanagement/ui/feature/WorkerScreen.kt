@@ -35,7 +35,7 @@ fun ImportExportPackages(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = Dimens.PADDING_16_DP, vertical = Dimens.PADDING_50_DP),
+            .padding(horizontal = Dimens.PADDING_16_DP),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         // Import Package Box
@@ -135,10 +135,12 @@ fun WorkerScreen(modifier: Modifier = Modifier) {
                 SearchBarWithSuggestion(listSuggestions)
             }
 
-
+            Spacer(modifier = Modifier.weight(1f))
             ImportExportPackages()
             Spacer(modifier = Modifier.weight(1f))
-            FunctionContainer(isAdmin = false)
+            FunctionContainer(
+                modifier=Modifier.padding(bottom = Dimens.PADDING_20_DP),
+                isAdmin = false)
         }
     }
 }
