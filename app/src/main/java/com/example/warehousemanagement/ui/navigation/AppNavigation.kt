@@ -27,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.feature.WorkerScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.theme.size_icon_30
 
@@ -100,7 +101,8 @@ fun AppNavigation() {
                 startDestination = TopLevelDestinations.HomeAdmin.route
             ) {
                 composable<Routes.HomeAdmin> {
-                    AdminScreen()
+                   // AdminScreen()
+                    WorkerScreen()
                 }
                 composable<Routes.HomeWorker> {
                     Text(text = "Home")

@@ -47,9 +47,9 @@ fun FunctionRow(functionItems: List<FunctionItem>) {
     ) {
         functionItems.forEach { item ->
             ItemFunction(
+                modifier = Modifier.weight(1f),
                 functionName = item.functionName,
                 iconResource = item.iconResource,
-                size = item.size,
                 color = item.color,
                 shape = item.shape,
                 textSize = item.textSize,
@@ -87,7 +87,6 @@ fun AdminView() {
             ItemFunction(
                 functionName = item.functionName,
                 iconResource = item.iconResource,
-                size = item.size,
                 color = item.color,
                 shape = item.shape,
                 textSize = item.textSize,

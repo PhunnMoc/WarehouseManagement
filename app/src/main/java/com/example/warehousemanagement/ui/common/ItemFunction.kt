@@ -33,7 +33,6 @@ import com.example.warehousemanagement.ui.theme.Dimens
 fun ItemFunction(
     functionName: String,
     iconResource: Int =R.drawable.package_image,
-    size: Dp,
     modifier: Modifier = Modifier,
     color: Color = colorResource(id = R.color.icon_tint_white),
     shape: Shape = RoundedCornerShape(8.dp),
@@ -57,7 +56,6 @@ fun ItemFunction(
             alignment = Alignment.Center,
             modifier = Modifier
                 .padding(10.dp)
-                .size(size)
             ,
             painter = painterResource(id =iconResource), // Use the passed resource id
             contentDescription = contentDescription ?: functionName
@@ -77,8 +75,7 @@ fun ItemFunction(
 fun PreviewItemFunction() {
     ItemFunction(
         functionName = "Function",
-        iconResource = R.drawable.ic_opened_package,
-        size = 100.dp,
+        iconResource = R.drawable.package_image,
         textSize = 12.sp,
         contentDescription = "Function",
         onClick = { /* Handle click event here */ }

@@ -36,34 +36,35 @@ fun HalfIcon(
 fun AdminScreen(modifier: Modifier = Modifier) {
     Scaffold(
         containerColor = colorResource(id = R.color.background_white),
-        modifier = modifier, 
+        modifier = modifier,
         topBar = {
-        HeaderOfScreen(modifier = modifier.padding(
-            top = Dimens.PADDING_20_DP,
-            start = Dimens.PADDING_20_DP,
-            end = Dimens.PADDING_20_DP
-        ),
-            mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
-            endContent = {
-                WrapIcon(
-                    tint = colorResource(id = R.color.icon_tint_gray),
-                    modifier = Modifier.size(Dimens.SIZE_ICON_30_DP),
-                    idIcon = R.drawable.icons8_bell,
-                    isNewNotification = false,
-                )
-            })
-    }) { innerpadding ->
-        Box(modifier = modifier.fillMaxSize()) {
+            HeaderOfScreen(modifier = modifier.padding(
+                top = Dimens.PADDING_20_DP,
+                start = Dimens.PADDING_20_DP,
+                end = Dimens.PADDING_20_DP
+            ),
+                mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
+                endContent = {
+                    WrapIcon(
+                        tint = colorResource(id = R.color.icon_tint_gray),
+                        modifier = Modifier.size(Dimens.SIZE_ICON_30_DP),
+                        idIcon = R.drawable.icons8_bell,
+                        isNewNotification = false,
+                    )
+                })
+        }) { innerpadding ->
+        Box(modifier = modifier
+            .fillMaxSize()
+            .padding(innerpadding)) {
             Column(
                 modifier = modifier
-                    .padding(innerpadding)
                     // .fillMaxSize()
-                    .padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(Dimens.PADDING_16_DP), verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
 
                 val listSuggestions = listOf("Phuong Trinh", "Bun cha Iris Trinh Area", "Product")
                 Row(
-                    modifier=Modifier.padding(vertical = Dimens.PADDING_10_DP),
+                    modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     WrapIcon(
@@ -80,7 +81,8 @@ fun AdminScreen(modifier: Modifier = Modifier) {
             }
             HalfIcon(
                 modifier = Modifier.align(
-                    BiasAlignment(horizontalBias = -5f, verticalBias = 1.25f))
+                    BiasAlignment(horizontalBias = -5f, verticalBias = 1.25f)
+                )
             )
         }
     }
