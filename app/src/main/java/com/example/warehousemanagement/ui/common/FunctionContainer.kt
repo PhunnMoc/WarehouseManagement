@@ -66,7 +66,7 @@ fun AdminView() {
         FunctionItem(
             "Function",
             R.drawable.ic_function,
-            100.dp,
+            90.dp,
             colorResource(id = R.color.icon_tint_white),
             RoundedCornerShape(8.dp),
             10.sp
@@ -74,8 +74,8 @@ fun AdminView() {
     }
     Text(
         text = stringResource(id = R.string.admin_subtitle_all_function),
-        modifier = Modifier.padding(vertical =  Dimens.PADDING_16_DP),
-        fontSize = 12.sp,
+        modifier = Modifier.padding(vertical =  Dimens.PADDING_5_DP),
+        fontSize = 14.sp,
         fontWeight = FontWeight.Bold
 
     )

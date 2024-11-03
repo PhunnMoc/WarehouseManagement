@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.ui.feature
+package com.example.warehousemanagement.ui.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -25,7 +25,7 @@ fun HalfIcon(
     modifier: Modifier = Modifier,
 ) {
     Image(
-        alpha = 0.75f,
+        alpha = 0.3f,
         painter = painterResource(id = R.drawable.package_image),
         contentDescription = "Half Opened Package",
         modifier = modifier,
@@ -34,7 +34,10 @@ fun HalfIcon(
 
 @Composable
 fun AdminScreen(modifier: Modifier = Modifier) {
-    Scaffold(modifier = modifier, topBar = {
+    Scaffold(
+        containerColor = colorResource(id = R.color.background_white),
+        modifier = modifier, 
+        topBar = {
         HeaderOfScreen(modifier = modifier.padding(
             top = Dimens.PADDING_20_DP,
             start = Dimens.PADDING_20_DP,
@@ -43,6 +46,7 @@ fun AdminScreen(modifier: Modifier = Modifier) {
             mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
             endContent = {
                 WrapIcon(
+                    tint = colorResource(id = R.color.icon_tint_gray),
                     modifier = Modifier.size(Dimens.SIZE_ICON_30_DP),
                     idIcon = R.drawable.icons8_bell,
                     isNewNotification = false,
@@ -59,13 +63,15 @@ fun AdminScreen(modifier: Modifier = Modifier) {
 
                 val listSuggestions = listOf("Phuong Trinh", "Bun cha Iris Trinh Area", "Product")
                 Row(
+                    modifier=Modifier.padding(vertical = Dimens.PADDING_10_DP),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     WrapIcon(
                         idIcon = R.drawable.scan_icon,
                         tint = colorResource(id = R.color.icon_tint_gray),
-                        modifier = Modifier.size(Dimens.SIZE_ICON_35_DP)
-                                .padding(end = Dimens.PADDING_5_DP),
+                        modifier = Modifier
+                            .size(Dimens.SIZE_ICON_35_DP)
+                            .padding(end = Dimens.PADDING_5_DP),
                     )
                     SearchBarWithSuggestion(listSuggestions)
                 }
@@ -73,7 +79,8 @@ fun AdminScreen(modifier: Modifier = Modifier) {
                 FunctionContainer(isAdmin = true)
             }
             HalfIcon(
-                modifier = Modifier.align(BiasAlignment(horizontalBias = -5f, verticalBias = 0.75f))
+                modifier = Modifier.align(
+                    BiasAlignment(horizontalBias = -5f, verticalBias = 1.25f))
             )
         }
     }

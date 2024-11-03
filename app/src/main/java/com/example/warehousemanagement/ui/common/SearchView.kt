@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.ui.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -92,11 +94,12 @@ fun CustomSearchBar(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .clip( shape = RoundedCornerShape(size = 30.dp))
                         .border(
                             width = 1.dp,
                             color = colorResource(id = R.color.line_light_gray),
-                            shape = RoundedCornerShape(size = 30.dp)
                         )
+                        .background(color = colorResource(id = R.color.line_light_gray))
                         .padding(start = 20.dp, end = 30.dp)
                 ) {
                     Row(
@@ -207,15 +210,17 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
             placeHolder = "Search for me",
             trailingIcon = {
                 Icon(
-                    modifier = Modifier.size(20.dp)
-                        .clickable {  },
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { },
                     tint = colorResource(id = R.color.text_color_dark_gray),
                     painter = painterResource(id = R.drawable.icons8_delete),
                     contentDescription = ""
                 )
                 Icon(
-                    modifier = Modifier.size(20.dp)
-                        .clickable {  },
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { },
                     tint = colorResource(id = R.color.text_color_dark_gray),
                     painter = painterResource(id = R.drawable.icons8_search),
                     contentDescription = ""

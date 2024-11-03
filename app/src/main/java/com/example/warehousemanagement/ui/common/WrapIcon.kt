@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.ui.common
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -21,10 +22,11 @@ import com.example.warehousemanagement.R
 fun WrapIcon(
     idIcon: Int,
     modifier: Modifier = Modifier,
-    tint: Color =  colorResource(id = R.color.icon_tint_black),
+    tint: Color = colorResource(id = R.color.icon_tint_gray),
     isNewNotification: Boolean = false,
+    onClickIcon: () -> Unit = {},
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier.clickable { onClickIcon() }) {
         if (isNewNotification) {
             Box(
                 modifier = Modifier
