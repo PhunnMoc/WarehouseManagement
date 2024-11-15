@@ -40,14 +40,14 @@ fun ImportExportPackages(modifier: Modifier = Modifier) {
     ) {
         // Import Package Box
         PackageBox(
-            label = "Import package",
+            label = "Import \n package",
             painter = painterResource(id = R.drawable.package_image),
             -2.5f,
         )
 
         // Export Package Box
         PackageBox(
-            label = "Export package",
+            label = "Export \n package",
             painter = painterResource(id = R.drawable.package_image),
             2.5f,
 
@@ -63,7 +63,8 @@ fun PackageBox(label: String, painter: Painter, x: Float) {
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .size(150.dp)
+                .defaultMinSize(minWidth = 130.dp)
+                .height(170.dp)
                 .shadow(
                     elevation = 10.dp, shape = RoundedCornerShape(20.dp)
                 )
@@ -73,6 +74,7 @@ fun PackageBox(label: String, painter: Painter, x: Float) {
                 ), contentAlignment = Alignment.Center
         ) {
             Text(
+                //modifier = Modifier.padding(Dimens.PADDING_10_DP),
                 textAlign = TextAlign.Center,
                 text = label,
                 fontSize = 23.sp,

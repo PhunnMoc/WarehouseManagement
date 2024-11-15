@@ -55,6 +55,7 @@ fun ItemFunction(
         Image(
             alignment = Alignment.Center,
             modifier = Modifier
+                .size(70.dp)
                 .padding(10.dp)
             ,
             painter = painterResource(id =iconResource), // Use the passed resource id
