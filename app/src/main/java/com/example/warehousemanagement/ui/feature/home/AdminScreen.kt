@@ -12,6 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.FunctionContainer
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
@@ -28,7 +29,7 @@ fun HalfIcon(
         alpha = 0.3f,
         painter = painterResource(id = R.drawable.package_image),
         contentDescription = "Half Opened Package",
-        modifier = modifier,
+        modifier = modifier.zIndex(-1f),
     )
 }
 
@@ -79,8 +80,7 @@ fun AdminScreen(modifier: Modifier = Modifier) {
                 FunctionContainer(isAdmin = true)
             }
             HalfIcon(
-                modifier = Modifier.align(
-                    BiasAlignment(horizontalBias = -5f, verticalBias = 1.25f))
+                modifier = Modifier.align(Alignment.BottomStart)
             )
         }
     }
