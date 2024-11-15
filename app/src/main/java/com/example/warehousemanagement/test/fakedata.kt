@@ -194,7 +194,7 @@ val listSuppliers = listOf<Supplier>(supplier1, supplier2, supplier3, supplier4,
 //StorageLocation
 val location1 = StorageLocation(
     id = "L001",
-    storageLocationName = "Main Warehouse",
+    storageLocationName = "Khu A",
     storageLocationImage = "https://example.com/images/main_warehouse.jpg"
 )
 val location2 = StorageLocation(
@@ -217,7 +217,7 @@ val location5 = StorageLocation(
     storageLocationName = "Overflow Storage",
     storageLocationImage = "https://example.com/images/overflow_storage.jpg"
 )
-
+val listLocation = listOf<StorageLocation>(location1, location2, location3, location4, location5)
 //Product
 val product1 = Product(
     idProduct = "P001",
