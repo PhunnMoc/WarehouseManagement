@@ -1,7 +1,5 @@
 package com.example.warehousemanagement.ui.navigation
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,12 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -29,7 +25,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.ui.feature.WorkerScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
@@ -105,8 +100,7 @@ fun AppNavigation() {
                 startDestination = TopLevelDestinations.HomeAdmin.route
             ) {
                 composable<Routes.HomeAdmin> {
-                   // AdminScreen()
-                    WorkerScreen()
+                    AdminScreen()
                 }
                 composable<Routes.HomeWorker> {
                     Text(text = "Home")
