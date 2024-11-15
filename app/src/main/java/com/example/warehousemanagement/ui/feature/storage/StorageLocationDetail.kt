@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.ui.screen
+package com.example.warehousemanagement.ui.feature.storage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -56,7 +56,7 @@ fun StorageLocationDetailScreen(
                     qrCodeIconRes = R.drawable.ic_qr_code,
                     onCardClick = { /* Xử lý khi nhấn vào thẻ sản phẩm */ }
                 )
-                Spacer(modifier = androidx.compose.ui.Modifier.height(16.dp))
+                Spacer(modifier = androidx.compose.ui.Modifier.height(5.dp))
             }
 
     }

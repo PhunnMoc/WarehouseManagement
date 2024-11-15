@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.ui.feature
+package com.example.warehousemanagement.ui.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
