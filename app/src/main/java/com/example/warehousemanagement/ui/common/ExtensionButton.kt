@@ -17,13 +17,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 
@@ -35,7 +38,7 @@ fun FilterAndSortButtons(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(Dimens.PADDING_10_DP),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -65,21 +68,23 @@ fun CustomIconButton(
 ) {
     Button(
         onClick = onClick, // Action when button is clicked
-        colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
+        colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.background_white)),
         modifier = Modifier
-            .clip(CircleShape)
+           // .clip(CircleShape)
+            .shadow(elevation = Dimens.PADDING_2_DP, shape = CircleShape)
             .height(40.dp)
     ) {
         Icon(
             painter = icon,
             contentDescription = null, // Icon description for accessibility
-            tint = colorResource(id = R.color.text_color_black),
-            modifier = Modifier.size(24.dp)
+            tint = colorResource(id = R.color.text_color_dark_gray),
+            modifier = Modifier.size(20.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text,
-            color = colorResource(id = R.color.text_color_black)
+            fontSize = 10.sp,
+            color = colorResource(id = R.color.text_color_dark_gray)
         )
     }
 }

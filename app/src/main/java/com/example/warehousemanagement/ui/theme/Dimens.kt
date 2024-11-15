@@ -3,10 +3,13 @@ package com.example.warehousemanagement.ui.theme
 import androidx.compose.ui.unit.dp
 
 object Dimens {
+    val PADDING_2_DP = 2.dp
     val PADDING_5_DP = 5.dp
     val PADDING_10_DP = 10.dp
     val PADDING_16_DP = 16.dp
     val PADDING_20_DP = 20.dp
+    val PADDING_40_DP = 40.dp
+    val PADDING_50_DP = 50.dp
     val PADDING_95_DP = 95.dp
 
     val SIZE_ICON_25_DP = 25.dp

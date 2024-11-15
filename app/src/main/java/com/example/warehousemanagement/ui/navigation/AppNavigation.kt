@@ -15,6 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
@@ -47,6 +49,7 @@ fun BottomBar(
     )
 
     NavigationBar(
+        modifier = Modifier.shadow(elevation = Dimens.PADDING_20_DP, shape = RectangleShape),
         containerColor = colorResource(id = R.color.icon_tint_white),
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
