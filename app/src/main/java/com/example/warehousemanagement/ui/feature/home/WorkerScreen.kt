@@ -139,7 +139,7 @@ fun WorkerScreen(modifier: Modifier = Modifier) {
             ImportExportPackages()
             Spacer(modifier = Modifier.weight(1f))
             FunctionContainer(
-                modifier=Modifier.padding(bottom = Dimens.PADDING_20_DP),
+               // modifier=Modifier.padding(bottom = Dimens.PADDING_20_DP),
                 isAdmin = false)
         }
     }
