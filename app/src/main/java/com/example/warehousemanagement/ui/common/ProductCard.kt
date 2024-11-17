@@ -2,12 +2,17 @@ package com.example.warehousemanagement.ui.common
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
+import androidx.compose.material.TextButton
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,36 +35,67 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
+import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun ProductCard(
-    product: Product, // Add this parameter
+    modifier: Modifier = Modifier, product: Product, // Add this parameter
     qrCodeIconRes: Int, onCardClick: () -> Unit// Image resource id for the QR code icon
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
     Card(
         backgroundColor = Color.White,
         //  shape = RoundedCornerShape(10.dp),
         //elevation = 10.dp,
-        modifier = Modifier
+        modifier = modifier
             .shadow(
                 elevation = 2.dp,
                 shape = RoundedCornerShape(10.dp),
             )
             .animateContentSize()
-            .clickable {
-                isExpanded = !isExpanded
-                onCardClick()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    isExpanded = !isExpanded
+                    onCardClick()
+                }, onLongPress = {
+                    // Xử lý sự kiện nhấn giữ
+                    showDialog = true
+                })
             },
-    ) {
+
+
+        ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(5.dp),
+            modifier = Modifier.fillMaxWidth(),
             // verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(id = R.color.background_gray))
+                    .padding(Dimens.PADDING_10_DP),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+
+                Text(
+                    text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold
+                )
+                Image(
+                    painter = painterResource(id = qrCodeIconRes),
+                    contentDescription = "QR Code Icon",
+                    modifier = Modifier.size(30.dp)
+                )
+
+            }
+            Divider()
+            Row(
+                modifier = Modifier.padding(Dimens.PADDING_5_DP),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_importpackage),
                     contentDescription = "Product Image",
@@ -73,10 +109,6 @@ fun ProductCard(
 
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "ID: ${product.idProduct}",
-                        color = colorResource(id = R.color.background_theme)
-                    )
-                    Text(
                         fontWeight = FontWeight.W600,
                         fontSize = 16.sp,
                         color = colorResource(id = R.color.text_color_light_black),
@@ -87,11 +119,6 @@ fun ProductCard(
                         text = "Quantity: ${product.quantity}", fontSize = 14.sp, color = Color.Gray
                     )
                 }
-                Image(
-                    painter = painterResource(id = qrCodeIconRes),
-                    contentDescription = "QR Code Icon",
-                    modifier = Modifier.size(50.dp)
-                )
             }
 
             if (isExpanded) {
@@ -196,6 +223,17 @@ fun ProductCard(
 
         }
     }
+    if (showDialog) {
+        AlertDialog(onDismissRequest = { showDialog = false },
+            title = { Text(text = "Thông báo") },
+            text = { Text(text = "Bạn vừa nhấn giữ vào thẻ sản phẩm.") },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Đóng")
+                }
+            })
+    }
+
 }
 
 @Composable
@@ -216,7 +254,7 @@ fun RowScope.TableCell(
 @Preview(showBackground = true)
 @Composable
 fun PreviewProductCard() {
-    ProductCard(product1,
+    ProductCard(product = product1,
         qrCodeIconRes = R.drawable.ic_qr_code,
         onCardClick = { /* Handle card click here */ })
 }
