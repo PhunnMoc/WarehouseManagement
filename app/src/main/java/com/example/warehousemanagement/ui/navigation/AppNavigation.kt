@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.ui.navigation
 
+import PreviewWarehouseManagementScreen
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -36,6 +37,7 @@ import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.product.CustomFormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.PreviewProductScreen
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
+import com.example.warehousemanagement.ui.feature.storage.PreviewStorageLocationDetailScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
 
@@ -44,7 +46,7 @@ fun BottomBar(
     navController: NavHostController, modifier: Modifier = Modifier
 ) {
     val screens = listOf(
-        Routes.HomeAdmin,
+        HomeAdmin,
         Routes.Analyze,
         Routes.Setting,
     )
@@ -114,7 +116,12 @@ fun AppNavigation() {
                 }, exitTransition = {
                     scaleOutOfContainer()
                 }) {
-                    CustomFormAddOrEditProductForm(onSubmit = {})
+                    AdminScreen(
+                        onNavigateToProduct = { navigationController.navigate(Routes.Products) },
+                        onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
+                        onNavigateToGenre = { navigationController.navigate(Routes.Products) },
+                        onNavigateToCustomer = { /*TODO*/ },
+                        onNavigateToSupplier = { /*TODO*/ })
 
                 }
                 composable<Routes.HomeWorker>(enterTransition = {
@@ -129,7 +136,7 @@ fun AppNavigation() {
                 }, exitTransition = {
                     scaleOutOfContainer()
                 }) {
-                    Text(text = "Products")
+                    PreviewProductScreen()
                 }
                 composable<Routes.Setting>(enterTransition = {
                     scaleIntoContainer()
@@ -149,6 +156,16 @@ fun AppNavigation() {
                     val product: Routes.Product = backStackEntry.toRoute()
                     Text(text = "Product")
                 }
+
+                composable<Routes.StorageLocation>(enterTransition = {
+                    scaleIntoContainer()
+                }, exitTransition = {
+                    scaleOutOfContainer()
+                }) {
+                     PreviewWarehouseManagementScreen()
+                }
+
+
             }
         }
     }

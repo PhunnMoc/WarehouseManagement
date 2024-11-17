@@ -7,37 +7,28 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.common.enumClass.EnumFunctionItem
+import com.example.warehousemanagement.ui.common.enumClass.functionItemsAdmin
+import com.example.warehousemanagement.ui.common.enumClass.functionItemsWorker
 import com.example.warehousemanagement.ui.theme.Dimens
 
 data class FunctionItem(
-    val functionName: String,
+    val enumFunctionItem: EnumFunctionItem,
     val iconResource: Int,
-    val size: Dp,
-    val color: Color,
-    val shape: Shape,
-    val textSize: TextUnit,
-    val contentDescription: String? = null
 )
 
 @Composable
@@ -48,12 +39,10 @@ fun FunctionRow(functionItems: List<FunctionItem>) {
     ) {
         functionItems.forEach { item ->
             ItemFunction(
-                functionName = item.functionName,
+                functionName = item.enumFunctionItem.functionName,
                 iconResource = item.iconResource,
-                color = item.color,
-                shape = item.shape,
-                textSize = item.textSize,
-                contentDescription = item.contentDescription,
+                shape = RoundedCornerShape(8.dp),
+                textSize = 10.sp,
                 onClick = { /*TODO: Handle button click*/ }
             )
         }
@@ -61,17 +50,15 @@ fun FunctionRow(functionItems: List<FunctionItem>) {
 }
 
 @Composable
-fun AdminView() {
-    val functionItems = List(6) {
-        FunctionItem(
-            "Function",
-            R.drawable.ic_function,
-            90.dp,
-            colorResource(id = R.color.icon_tint_white),
-            RoundedCornerShape(8.dp),
-            10.sp
-        )
-    }
+fun AdminView(
+    onNavigateToProduct: () -> Unit,
+    onNavigateToStorageLocation: () -> Unit,
+    onNavigateToGenre: () -> Unit,
+    onNavigateToCustomer: () -> Unit,
+    onNavigateToSupplier: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+
     Text(
         text = stringResource(id = R.string.admin_subtitle_all_function),
         modifier = Modifier.padding(vertical = Dimens.PADDING_5_DP),
@@ -80,47 +67,36 @@ fun AdminView() {
 
     )
     LazyVerticalGrid(
+        modifier = modifier,
         columns = GridCells.Adaptive(Dimens.PADDING_95_DP),
-        contentPadding = PaddingValues(Dimens.PADDING_10_DP),
+        contentPadding = PaddingValues(vertical = Dimens.PADDING_10_DP),
     ) {
-        items(functionItems) { item ->
+        items(functionItemsAdmin) { item ->
+            val onNavigate = when (item.enumFunctionItem) {
+                EnumFunctionItem.PRODUCT -> onNavigateToProduct
+                EnumFunctionItem.STORAGE_LOCATION -> onNavigateToStorageLocation
+                EnumFunctionItem.GENRE -> onNavigateToGenre
+                EnumFunctionItem.CUSTOMER -> onNavigateToCustomer
+                EnumFunctionItem.SUPPLIER -> onNavigateToSupplier
+
+            }
             ItemFunction(
-                functionName = item.functionName,
+                functionName = item.enumFunctionItem.functionName,
                 iconResource = item.iconResource,
-                color = item.color,
-                shape = item.shape,
-                textSize = item.textSize,
-                contentDescription = item.contentDescription,
-                onClick = { /*TODO: Handle button click*/ }
+                shape = RoundedCornerShape(8.dp),
+                textSize = 10.sp,
+                onClick = { onNavigate() }
             )
         }
     }
 }
 
 @Composable
-fun NonAdminView(modifier: Modifier = Modifier,) {
+fun NonAdminView(modifier: Modifier = Modifier) {
 
     Spacer(modifier = Modifier.padding(5.dp))
-    val functionItems = List(3) {
-        FunctionItem(
-            "Function",
-            R.drawable.ic_function,
-            80.dp,
-            colorResource(id = R.color.icon_tint_white),
-            RoundedCornerShape(8.dp),
-            10.sp
-        )
-    } + FunctionItem(
-        "More",
-        R.drawable.ic_menu,
-        80.dp,
-        colorResource(id = R.color.icon_tint_white),
-        RoundedCornerShape(8.dp),
-        10.sp
-    )
     Column(
         modifier = modifier.fillMaxWidth(),
-       // verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(id = R.string.employee_subtitle_shortcut_function),
@@ -129,19 +105,30 @@ fun NonAdminView(modifier: Modifier = Modifier,) {
             fontWeight = FontWeight.Bold
 
         )
-        FunctionRow(functionItems)
+        FunctionRow(functionItemsWorker)
     }
 
 }
 
 @Composable
 fun FunctionContainer(
+    onNavigateToProduct: () -> Unit,
+    onNavigateToStorageLocation: () -> Unit,
+    onNavigateToGenre: () -> Unit,
+    onNavigateToCustomer: () -> Unit,
+    onNavigateToSupplier: () -> Unit,
     modifier: Modifier = Modifier,
     isAdmin: Boolean
 ) {
     Column {
         if (isAdmin) {
-            AdminView()
+            AdminView(
+                onNavigateToProduct = onNavigateToProduct,
+                onNavigateToStorageLocation = onNavigateToStorageLocation,
+                onNavigateToGenre = onNavigateToGenre,
+                onNavigateToCustomer = onNavigateToCustomer,
+                onNavigateToSupplier = onNavigateToSupplier,
+            )
         } else {
             NonAdminView(modifier = modifier)
         }
@@ -151,5 +138,12 @@ fun FunctionContainer(
 @Preview(showBackground = true)
 @Composable
 fun PreviewFunctionContainer() {
-    FunctionContainer(isAdmin = true)
+    FunctionContainer(
+        onNavigateToProduct = {},
+        onNavigateToStorageLocation = {},
+        onNavigateToGenre = {},
+        onNavigateToCustomer = {},
+        onNavigateToSupplier = {},
+        isAdmin = true
+    )
 }

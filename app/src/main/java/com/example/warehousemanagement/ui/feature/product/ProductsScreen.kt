@@ -166,8 +166,7 @@ fun ProductsScreen(
 
             //Spacer(modifier = Modifier.height(16.dp))
 
-            // Hiển thị danh sách khu vực trong các thẻ
-            LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
+             LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
                 items(products) { product ->
                     ProductCard(
                         product = product,
