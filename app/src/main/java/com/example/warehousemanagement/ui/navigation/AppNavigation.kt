@@ -1,7 +1,5 @@
 package com.example.warehousemanagement.ui.navigation
 
-import PreviewWarehouseManagementScreen
-import StorageLocationScreen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,9 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.ui.feature.home.WorkerScreen
-import com.example.warehousemanagement.ui.feature.storage.PreviewStorageLocationDetailScreen
-import com.example.warehousemanagement.ui.feature.storage.StorageLocationDetailScreen
+import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
 
@@ -104,10 +100,7 @@ fun AppNavigation() {
                 startDestination = TopLevelDestinations.HomeAdmin.route
             ) {
                 composable<Routes.HomeAdmin> {
-                   // AdminScreen()
-                   // WorkerScreen()
-                    //PreviewWarehouseManagementScreen()
-                    PreviewStorageLocationDetailScreen()
+                    AdminScreen()
                 }
                 composable<Routes.HomeWorker> {
                     Text(text = "Home")
