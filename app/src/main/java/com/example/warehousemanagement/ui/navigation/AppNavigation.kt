@@ -19,6 +19,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
@@ -46,7 +49,7 @@ fun BottomBar(
     navController: NavHostController, modifier: Modifier = Modifier
 ) {
     val screens = listOf(
-        HomeAdmin,
+        Routes.HomeAdmin,
         Routes.Analyze,
         Routes.Setting,
     )
@@ -101,68 +104,66 @@ fun BottomBar(
 @Composable
 fun AppNavigation() {
     val navigationController = rememberNavController()
+    var isShowNavigation by remember {
+        mutableStateOf(true)
+    }
     Scaffold(containerColor = colorResource(id = R.color.icon_tint_white), bottomBar = {
-        BottomBar(
-            navController = navigationController,
-        )
+        if (isShowNavigation) {
+            BottomBar(
+                navController = navigationController,
+            )
+        }
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            NavHost(
-                navController = navigationController,
-                startDestination = TopLevelDestinations.HomeAdmin.route
-            ) {
-                composable<Routes.HomeAdmin>(enterTransition = {
+            NavHost(navController = navigationController,
+                startDestination = TopLevelDestinations.HomeAdmin.route,
+                enterTransition = {
                     scaleIntoContainer()
-                }, exitTransition = {
+                },
+                exitTransition = {
                     scaleOutOfContainer()
                 }) {
+
+                composable<Routes.HomeAdmin> {
                     AdminScreen(
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
                         onNavigateToGenre = { navigationController.navigate(Routes.Products) },
                         onNavigateToCustomer = { /*TODO*/ },
                         onNavigateToSupplier = { /*TODO*/ })
+                    isShowNavigation = true
+                }
+                composable<Routes.HomeWorker> {
+                    Text(text = "Home")
+                    isShowNavigation = true
+                }
+
+                composable<Routes.Setting> {
+                    Text(text = "Setting")
+                    isShowNavigation = true
+                }
+
+                composable<Routes.Analyze> {
+                    Text(text = "Analyze")
+                    isShowNavigation = true
 
                 }
-                composable<Routes.HomeWorker>(enterTransition = {
-                    scaleIntoContainer()
-                }, exitTransition = {
-                    scaleOutOfContainer()
-                }) {
-                    Text(text = "Home")
-                }
-                composable<Routes.Products>(enterTransition = {
-                    scaleIntoContainer()
-                }, exitTransition = {
-                    scaleOutOfContainer()
-                }) {
+
+                composable<Routes.Products> {
                     PreviewProductScreen()
+                    isShowNavigation = false
                 }
-                composable<Routes.Setting>(enterTransition = {
-                    scaleIntoContainer()
-                }, exitTransition = {
-                    scaleOutOfContainer()
-                }) { Text(text = "Setting") }
-                composable<Routes.Analyze>(enterTransition = {
-                    scaleIntoContainer()
-                }, exitTransition = {
-                    scaleOutOfContainer()
-                }) { Text(text = "Analyze") }
-                composable<Routes.Product>(enterTransition = {
-                    scaleIntoContainer()
-                }, exitTransition = {
-                    scaleOutOfContainer()
-                }) { backStackEntry ->
+
+                composable<Routes.Product> { backStackEntry ->
                     val product: Routes.Product = backStackEntry.toRoute()
                     Text(text = "Product")
+                    isShowNavigation = false
+
                 }
 
-                composable<Routes.StorageLocation>(enterTransition = {
-                    scaleIntoContainer()
-                }, exitTransition = {
-                    scaleOutOfContainer()
-                }) {
-                     PreviewWarehouseManagementScreen()
+                composable<Routes.StorageLocation> {
+                    PreviewWarehouseManagementScreen()
+                    isShowNavigation = false
                 }
 
 

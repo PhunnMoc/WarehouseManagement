@@ -1,23 +1,35 @@
 package com.example.warehousemanagement.ui.navigation
 
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import kotlinx.serialization.Serializable
 
 @Serializable
-object Analyze
+sealed class Routes {
+    @Serializable
+    object HomeAdmin : Routes()
 
-@Serializable
-object Setting
+    @Serializable
+    object HomeWorker : Routes()
 
+    @Serializable
+    object Analyze : Routes()
 
-@Serializable
-object Genre
+    @Serializable
+    object Setting : Routes()
 
-@Serializable
-object Customer
+    @Serializable
+    object StorageLocation : Routes()
 
-@Serializable
-object Supplier
+    @Serializable
+    object Products : Routes()
+
+    @Serializable
+    data class Product(val idProduct: String) : Routes()
+}
 
 enum class TopLevelDestinations(
     val label: String,
