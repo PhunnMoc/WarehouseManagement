@@ -37,6 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
+import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.CustomFormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.PreviewProductScreen
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
@@ -150,7 +151,8 @@ fun AppNavigation() {
                 }
 
                 composable<Routes.Products> {
-                    PreviewProductScreen()
+                    ProductsScreen()
+                   // AddProductsByExcel()
                     isShowNavigation = false
                 }
 

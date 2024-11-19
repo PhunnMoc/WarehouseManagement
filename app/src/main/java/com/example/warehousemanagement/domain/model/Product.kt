@@ -14,6 +14,6 @@ data class Product(
     val isInStock: Boolean, // Tình trạng hàng hóa
     val barcode: String = "N/A", // Mã vạch
     val storageLocationId: String = "Default", // Khu vực
-    val lastUpdated: Date, // Ngày cập nhật cuối
+     val lastUpdated: Date = Date() , // Ngày cập nhật cuối
     val image: String? = null
 )

@@ -21,7 +21,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
@@ -35,6 +37,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -63,13 +66,11 @@ import com.example.warehousemanagement.ui.theme.Dimens
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomFormAddOrEditProductForm(
     modifier: Modifier = Modifier,
-    onSubmit: (FormData) -> Unit // Callback trả kết quả sau khi nhấn Submit
+    onSubmit: (FormData) -> Unit,
 ) {
-    // State quản lý dữ liệu form
     var name by rememberSaveable { mutableStateOf("") }
     var selectedOption by remember { mutableStateOf("") }
     val options = listOf("Option 1", "Option 2", "Option 3")
@@ -195,23 +196,39 @@ fun CustomFormAddOrEditProductForm(
 //        }
             UploadImageButton {}
             Spacer(modifier = Modifier.weight(1f))
-            BigButton(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(vertical = Dimens.PADDING_10_DP),
-                enabled = name.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
-                labelname = "Submit",
-                onClick = {
-                    onSubmit(
-                        FormData(
-                            name = name,
-                            selectedOption = selectedOption,
-                            number = number,
-                            date = date,
-                            isChecked = isChecked,
-                            fileName = fileName
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(Dimens.PADDING_10_DP),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                BigButton(modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
+                    enabled = name.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
+                    labelname = "Submit",
+                    onClick = {
+                        onSubmit(
+                            FormData(
+                                name = name,
+                                selectedOption = selectedOption,
+                                number = number,
+                                date = date,
+                                isChecked = isChecked,
+                                fileName = fileName
+                            )
                         )
-                    )
-                })
+                    })
+                IconButton(
+                    enabled = name.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
+                    onClick = {}) {
+                    Icon(
+                        modifier=Modifier.size(Dimens.SIZE_ICON_35_DP),
+                        tint = colorResource(id = R.color.background_theme),
+                        painter = painterResource(id = R.drawable.ic_add_mini_button), contentDescription = "")
+                }
+
+            }
         }
     }
 
@@ -270,15 +287,13 @@ fun UploadImageButton(onImageSelected: (Uri?) -> Unit) {
             text = "Upload file",
             color = Color.DarkGray
         )
-        IconButton(modifier =
-        Modifier
+        IconButton(modifier = Modifier
             .clip(
                 shape = RoundedCornerShape(Dimens.PADDING_50_DP)
             )
-            .background(color = colorResource(id = R.color.background_gray)),
-            onClick = {
-                launcher.launch(arrayOf("image/*"))
-            }) {
+            .background(color = colorResource(id = R.color.background_gray)), onClick = {
+            launcher.launch(arrayOf("image/*"))
+        }) {
             Icon(
                 modifier = Modifier
                     .padding(Dimens.PADDING_20_DP)

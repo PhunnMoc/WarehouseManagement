@@ -41,6 +41,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.test.listProduct
@@ -48,13 +51,16 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.ProductCard
 import com.example.warehousemanagement.ui.common.SearchBarPreview
+import com.example.warehousemanagement.ui.feature.product.viewModel.ProductViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 @Composable
 fun ProductsScreen(
-    modifier: Modifier = Modifier, products: List<Product>
+    modifier: Modifier = Modifier,
+    viewModel: ProductViewModel = hiltViewModel()
 ) {
+    val productUiState by viewModel.productUiState.collectAsStateWithLifecycle()
     var isExpanded by remember { mutableStateOf(false) }
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier,
@@ -166,8 +172,8 @@ fun ProductsScreen(
 
             //Spacer(modifier = Modifier.height(16.dp))
 
-             LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
-                items(products) { product ->
+            LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
+                items(productUiState.listProduct) { product ->
                     ProductCard(
                         product = product,
                         qrCodeIconRes = R.drawable.ic_qr_code,
@@ -184,6 +190,6 @@ fun ProductsScreen(
 @Composable
 fun PreviewProductScreen() {
     WarehouseManagementTheme {
-        ProductsScreen(products = listProduct)
+      //  ProductsScreen(products = listProduct)
     }
 }
