@@ -34,26 +34,32 @@ fun HalfIcon(
 }
 
 @Composable
-fun AdminScreen(modifier: Modifier = Modifier) {
-    Scaffold(
-        containerColor = colorResource(id = R.color.background_white),
-        modifier = modifier, 
+fun AdminScreen(
+    onNavigateToProduct: () -> Unit,
+    onNavigateToStorageLocation: () -> Unit,
+    onNavigateToGenre: () -> Unit,
+    onNavigateToCustomer: () -> Unit,
+    onNavigateToSupplier: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Scaffold(containerColor = colorResource(id = R.color.background_white),
+        modifier = modifier,
         topBar = {
-        HeaderOfScreen(modifier = modifier.padding(
-            top = Dimens.PADDING_20_DP,
-            start = Dimens.PADDING_20_DP,
-            end = Dimens.PADDING_20_DP
-        ),
-            mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
-            endContent = {
-                WrapIcon(
-                    tint = colorResource(id = R.color.icon_tint_gray),
-                    modifier = Modifier.size(Dimens.SIZE_ICON_30_DP),
-                    idIcon = R.drawable.icons8_bell,
-                    isNewNotification = false,
-                )
-            })
-    }) { innerpadding ->
+            HeaderOfScreen(modifier = modifier.padding(
+                top = Dimens.PADDING_20_DP,
+                start = Dimens.PADDING_20_DP,
+                end = Dimens.PADDING_20_DP
+            ),
+                mainTitleText = stringResource(id = R.string.screen_home_admin_main_title),
+                endContent = {
+                    WrapIcon(
+                        tint = colorResource(id = R.color.icon_tint_gray),
+                        modifier = Modifier.size(Dimens.SIZE_ICON_30_DP),
+                        idIcon = R.drawable.icons8_bell,
+                        isNewNotification = false,
+                    )
+                })
+        }) { innerpadding ->
         Box(modifier = modifier.fillMaxSize()) {
             Column(
                 modifier = modifier
@@ -64,7 +70,7 @@ fun AdminScreen(modifier: Modifier = Modifier) {
 
                 val listSuggestions = listOf("Phuong Trinh", "Bun cha Iris Trinh Area", "Product")
                 Row(
-                    modifier=Modifier.padding(vertical = Dimens.PADDING_10_DP),
+                    modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     WrapIcon(
@@ -77,7 +83,14 @@ fun AdminScreen(modifier: Modifier = Modifier) {
                     SearchBarWithSuggestion(listSuggestions)
                 }
 
-                FunctionContainer(isAdmin = true)
+                FunctionContainer(
+                    onNavigateToProduct = onNavigateToProduct,
+                    onNavigateToStorageLocation = onNavigateToStorageLocation,
+                    onNavigateToGenre = onNavigateToGenre,
+                    onNavigateToCustomer = onNavigateToCustomer,
+                    onNavigateToSupplier = onNavigateToSupplier,
+                    isAdmin = true
+                )
             }
             HalfIcon(
                 modifier = Modifier.align(Alignment.BottomStart)
@@ -89,5 +102,11 @@ fun AdminScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewAdminActivity() {
-    AdminScreen()
+    AdminScreen(
+        onNavigateToProduct = {},
+        onNavigateToStorageLocation = {},
+        onNavigateToGenre = {},
+        onNavigateToCustomer = {},
+        onNavigateToSupplier = {},
+    )
 }

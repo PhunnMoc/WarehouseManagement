@@ -12,9 +12,10 @@
     <color name="icon_tint_gray">#383838</color> <!-- White icon tint -->
 
     <!-- Background Colors -->
-    <color name="background_gray">#EBEBEB</color> <!-- Gray background color -->
+    <color name="background_gray">#F4F4F4</color> <!-- Gray background color -->
     <color name="background_white">#FFFFFF</color> <!-- Gray background color -->
     <color name="background_theme">#FFBE15</color> <!-- Theme background color -->
+    <color name="background_light_theme">#FFD66C</color> <!-- Theme background color -->
     <color name="background_red">#F57D96</color> <!-- Red background color -->
 
     <!-- Line Color -->

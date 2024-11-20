@@ -1,5 +1,13 @@
 package com.example.warehousemanagement.ui.navigation
 
+import PreviewWarehouseManagementScreen
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +19,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
@@ -26,6 +37,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
+import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
+import com.example.warehousemanagement.ui.feature.product.CustomFormAddOrEditProductForm
+import com.example.warehousemanagement.ui.feature.product.PreviewProductScreen
+import com.example.warehousemanagement.ui.feature.product.ProductsScreen
+import com.example.warehousemanagement.ui.feature.storage.PreviewStorageLocationDetailScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
 
@@ -89,32 +105,95 @@ fun BottomBar(
 @Composable
 fun AppNavigation() {
     val navigationController = rememberNavController()
+    var isShowNavigation by remember {
+        mutableStateOf(true)
+    }
     Scaffold(containerColor = colorResource(id = R.color.icon_tint_white), bottomBar = {
-        BottomBar(
-            navController = navigationController,
-        )
+        if (isShowNavigation) {
+            BottomBar(
+                navController = navigationController,
+            )
+        }
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            NavHost(
-                navController = navigationController,
-                startDestination = TopLevelDestinations.HomeAdmin.route
-            ) {
+            NavHost(navController = navigationController,
+                startDestination = TopLevelDestinations.HomeAdmin.route,
+                enterTransition = {
+                    scaleIntoContainer()
+                },
+                exitTransition = {
+                    scaleOutOfContainer()
+                }) {
+
                 composable<Routes.HomeAdmin> {
-                    AdminScreen()
+                    AdminScreen(
+                        onNavigateToProduct = { navigationController.navigate(Routes.Products) },
+                        onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
+                        onNavigateToGenre = { navigationController.navigate(Routes.Products) },
+                        onNavigateToCustomer = { /*TODO*/ },
+                        onNavigateToSupplier = { /*TODO*/ })
+                    isShowNavigation = true
                 }
                 composable<Routes.HomeWorker> {
                     Text(text = "Home")
+                    isShowNavigation = true
                 }
+
+                composable<Routes.Setting> {
+                    Text(text = "Setting")
+                    isShowNavigation = true
+                }
+
+                composable<Routes.Analyze> {
+                    Text(text = "Analyze")
+                    isShowNavigation = true
+
+                }
+
                 composable<Routes.Products> {
-                    Text(text = "Products")
+                    ProductsScreen()
+                   // AddProductsByExcel()
+                    isShowNavigation = false
                 }
-                composable<Routes.Setting> { Text(text = "Setting") }
-                composable<Routes.Analyze> { Text(text = "Analyze") }
+
                 composable<Routes.Product> { backStackEntry ->
                     val product: Routes.Product = backStackEntry.toRoute()
                     Text(text = "Product")
+                    isShowNavigation = false
+
                 }
+
+                composable<Routes.StorageLocation> {
+                    PreviewWarehouseManagementScreen()
+                    isShowNavigation = false
+                }
+
+
             }
         }
     }
+}
+
+fun scaleIntoContainer(
+    direction: ScaleTransitionDirection = ScaleTransitionDirection.INWARDS,
+    initialScale: Float = if (direction == ScaleTransitionDirection.OUTWARDS) 0.9f else 1.1f
+): EnterTransition {
+    return scaleIn(
+        animationSpec = tween(220, delayMillis = 90), initialScale = initialScale
+    ) + fadeIn(animationSpec = tween(220, delayMillis = 90))
+}
+
+fun scaleOutOfContainer(
+    direction: ScaleTransitionDirection = ScaleTransitionDirection.OUTWARDS,
+    targetScale: Float = if (direction == ScaleTransitionDirection.INWARDS) 0.9f else 1.1f
+): ExitTransition {
+    return scaleOut(
+        animationSpec = tween(
+            durationMillis = 220, delayMillis = 90
+        ), targetScale = targetScale
+    ) + fadeOut(tween(delayMillis = 90))
+}
+
+enum class ScaleTransitionDirection {
+    INWARDS, OUTWARDS
 }

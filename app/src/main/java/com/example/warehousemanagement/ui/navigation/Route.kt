@@ -22,11 +22,15 @@ sealed class Routes {
     object Setting : Routes()
 
     @Serializable
+    object StorageLocation : Routes()
+
+    @Serializable
     object Products : Routes()
 
     @Serializable
     data class Product(val idProduct: String) : Routes()
 }
+
 enum class TopLevelDestinations(
     val label: String,
     val icon: Int,
@@ -34,17 +38,17 @@ enum class TopLevelDestinations(
 ) {
     HomeAdmin(
         label = "Home",
-        icon= R.drawable.icons8_home__1_,
+        icon = R.drawable.icons8_home__1_,
         route = Routes.HomeAdmin,
     ),
     Analyze(
         label = "Analyze",
         icon = R.drawable.icons8_bell,
-        route= Routes.Analyze,
+        route = Routes.Analyze,
     ),
     Setting(
         label = "Setting",
         icon = R.drawable.icons8_setting,
-        route= Routes.Setting,
+        route = Routes.Setting,
     ),
 }
