@@ -49,8 +49,11 @@ import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.test.listProduct
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
+import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
 import com.example.warehousemanagement.ui.common.SearchBarPreview
+import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiState
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
@@ -172,15 +175,22 @@ fun ProductsScreen(
 
             //Spacer(modifier = Modifier.height(16.dp))
 
-            LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
-                items(productUiState.listProduct) { product ->
-                    ProductCard(
-                        product = product,
-                        qrCodeIconRes = R.drawable.ic_qr_code,
-                        onCardClick = {})
-                    Spacer(modifier = Modifier.height(8.dp))
+            when (val product = productUiState) {
+                is ProductUiState.Loading -> IndeterminateCircularIndicator()
+                is ProductUiState.Error -> NothingText()
+                is ProductUiState.Success -> {
+                    LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
+                        items(product.listProduct) { product ->
+                            ProductCard(
+                                product = product,
+                                qrCodeIconRes = R.drawable.ic_qr_code,
+                                onCardClick = {})
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
                 }
             }
+
         }
     }
 
@@ -190,6 +200,6 @@ fun ProductsScreen(
 @Composable
 fun PreviewProductScreen() {
     WarehouseManagementTheme {
-      //  ProductsScreen(products = listProduct)
+        //  ProductsScreen(products = listProduct)
     }
 }

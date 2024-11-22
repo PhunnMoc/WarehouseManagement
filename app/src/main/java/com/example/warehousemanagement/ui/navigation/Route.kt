@@ -29,6 +29,9 @@ sealed class Routes {
 
     @Serializable
     data class Product(val idProduct: String) : Routes()
+
+    @Serializable
+    object AddProducts : Routes()
 }
 
 enum class TopLevelDestinations(

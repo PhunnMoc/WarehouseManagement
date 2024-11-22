@@ -168,7 +168,6 @@ fun AppNavigation() {
                     isShowNavigation = false
                 }
 
-
             }
         }
     }
