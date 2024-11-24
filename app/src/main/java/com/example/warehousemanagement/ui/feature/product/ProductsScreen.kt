@@ -61,6 +61,9 @@ import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 @Composable
 fun ProductsScreen(
     modifier: Modifier = Modifier,
+    onClickAddProduct: () -> Unit,
+    onClickAddProductByExcel: () -> Unit,
+    onBackClick: () -> Unit,
     viewModel: ProductViewModel = hiltViewModel()
 ) {
     val productUiState by viewModel.productUiState.collectAsStateWithLifecycle()
@@ -94,11 +97,11 @@ fun ProductsScreen(
                                     )
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
-                                Text(text = "Add 1 item", color = Color.Black)
+                                Text(text = "Add products", color = Color.Black)
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             FloatingActionButton(
-                                onClick = { /* TODO: Action 1 */ },
+                                onClick = { onClickAddProduct() },
                                 containerColor = colorResource(id = R.color.background_gray)
                             ) {
                                 Icon(Icons.Default.Add, contentDescription = "Action 1")
@@ -119,11 +122,11 @@ fun ProductsScreen(
                                     )
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
-                                Text(text = "Add Items", color = Color.Black)
+                                Text(text = "Add products by excel", color = Color.Black)
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             FloatingActionButton(
-                                onClick = { /* TODO: Action 2 */ },
+                                onClick = { onClickAddProductByExcel() },
                                 containerColor = colorResource(id = R.color.background_gray)
                             ) {
                                 Icon(Icons.Default.Add, contentDescription = "Action 2")
@@ -157,7 +160,7 @@ fun ProductsScreen(
                         modifier = Modifier
                             .size(25.dp)
                             .clickable {
-                                /*TODO: Implement back navigation*/
+                                onBackClick()
                             })
                 },
                 mainTitleText = stringResource(id = R.string.screen_product_main_title),

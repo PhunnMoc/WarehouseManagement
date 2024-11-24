@@ -22,8 +22,12 @@ sealed class Routes {
     object Setting : Routes()
 
     @Serializable
+    object QRCodeScanner : Routes()
+
+    @Serializable
     object StorageLocation : Routes()
 
+    //Product
     @Serializable
     object Products : Routes()
 
@@ -32,6 +36,11 @@ sealed class Routes {
 
     @Serializable
     object AddProducts : Routes()
+
+    @Serializable
+    object AddProductByExcel : Routes()
+
+
 }
 
 enum class TopLevelDestinations(

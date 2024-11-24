@@ -36,12 +36,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
-import com.example.warehousemanagement.ui.feature.product.CustomFormAddOrEditProductForm
-import com.example.warehousemanagement.ui.feature.product.PreviewProductScreen
+import com.example.warehousemanagement.ui.feature.product.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
-import com.example.warehousemanagement.ui.feature.storage.PreviewStorageLocationDetailScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
 
@@ -127,6 +126,7 @@ fun AppNavigation() {
 
                 composable<Routes.HomeAdmin> {
                     AdminScreen(
+                        onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
                         onNavigateToGenre = { navigationController.navigate(Routes.Products) },
@@ -149,18 +149,53 @@ fun AppNavigation() {
                     isShowNavigation = true
 
                 }
+                composable<Routes.QRCodeScanner> {
+                    QRCodeScannerScreen(
+                        onNavigateToProductDetail = { id ->
+                            navigationController.navigate(
+                                Routes.Product(
+                                    id
+                                )
+                            )
+                        }
+                    )
+                    isShowNavigation = false
+
+                }
 
                 composable<Routes.Products> {
-                    ProductsScreen()
-                   // AddProductsByExcel()
+                    ProductsScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickAddProduct = { navigationController.navigate(Routes.AddProducts) },
+                        onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) }
+                    )
+                    // AddProductsByExcel()
                     isShowNavigation = false
                 }
 
                 composable<Routes.Product> { backStackEntry ->
                     val product: Routes.Product = backStackEntry.toRoute()
-                    Text(text = "Product")
+                    Text(text = product.idProduct)
                     isShowNavigation = false
 
+                }
+
+                composable<Routes.AddProducts> {
+                    FormAddOrEditProductForm(
+                        onSubmit = {},
+                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
+                        onBackClick = { navigationController.popBackStack() }
+                    )
+                    isShowNavigation = false
+                }
+
+                composable<Routes.AddProductByExcel> {
+                    AddProductsByExcel(
+//                        onSubmit = {},
+//                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
+//                        onBackClick = { navigationController.popBackStack() }
+                    )
+                    isShowNavigation = false
                 }
 
                 composable<Routes.StorageLocation> {

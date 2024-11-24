@@ -4,13 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,21 +21,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
+import androidx.compose.material.Checkbox
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -67,12 +60,14 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun CustomFormAddOrEditProductForm(
+fun FormAddOrEditProductForm(
     modifier: Modifier = Modifier,
     onSubmit: (FormData) -> Unit,
+    onAdd1MoreProduct: () -> Unit,
+    onBackClick: () -> Unit,
 ) {
     var name by rememberSaveable { mutableStateOf("") }
-    var selectedOption by remember { mutableStateOf("") }
+    var selectedOption by rememberSaveable { mutableStateOf("") }
     val options = listOf("Option 1", "Option 2", "Option 3")
     var number by rememberSaveable { mutableStateOf("") }
     var isChecked by rememberSaveable { mutableStateOf(false) }
@@ -94,7 +89,7 @@ fun CustomFormAddOrEditProductForm(
                     modifier = Modifier
                         .size(25.dp)
                         .clickable {
-                            /*TODO: Implement back navigation*/
+                            onBackClick()
                         })
             },
             mainTitleText = stringResource(id = R.string.screen_product_main_title),
@@ -107,25 +102,26 @@ fun CustomFormAddOrEditProductForm(
                 .padding(horizontal = Dimens.PADDING_10_DP),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Text Input Field
+            //Product name
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text(text = "Name") },
+                label = { Text(text = stringResource(id = R.string.product_name_string)) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(Dimens.PADDING_10_DP)
             )
 
-            var expanded by remember { mutableStateOf(false) }
+            //Genre
+            var expandedGenre by remember { mutableStateOf(false) }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentSize(Alignment.TopStart) // Đảm bảo vị trí hiển thị menu
+                    .wrapContentSize(Alignment.TopStart)
             ) {
                 OutlinedTextField(
                     value = selectedOption,
                     onValueChange = {},
-                    label = { Text("Select an Option") },
+                    label = { Text("Genre") },
                     modifier = Modifier.fillMaxWidth(),
                     readOnly = true,
                     shape = RoundedCornerShape(Dimens.PADDING_10_DP)
@@ -133,38 +129,147 @@ fun CustomFormAddOrEditProductForm(
                 IconButton(modifier = Modifier
                     .zIndex(1f)
                     .align(Alignment.BottomEnd),
-                    onClick = { expanded = true }) {
+                    onClick = { expandedGenre = true }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_add_mini_button),
                         contentDescription = ""
                     )
                 }
                 DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
+                    expanded = expandedGenre,
+                    onDismissRequest = { expandedGenre = false },
                     modifier = Modifier
                         .padding(horizontal = Dimens.PADDING_10_DP)
                         .fillMaxWidth()
 
                 ) {
-                    options.forEach { option ->
+                    options.forEach { option -> //TODO()
                         DropdownMenuItem(onClick = {
                             selectedOption = option
-                            expanded = false
+                            expandedGenre = false
+                        }) {
+                            Text(option)
+                        }
+                    }
+                    Text(text = "Add new Genre")
+                }
+            }
+
+            //Quantity
+            OutlinedTextField(
+                value = number,
+                onValueChange = { if (it.all { char -> char.isDigit() }) number = it },
+                label = { Text(text = stringResource(id = R.string.quantity_title)) },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                shape = RoundedCornerShape(Dimens.PADDING_10_DP),
+            )
+
+            //importPrice
+            OutlinedTextField(
+                value = number,
+                onValueChange = { if (it.all { char -> char.isDigit() }) number = it },
+                label = { Text(text = stringResource(id = R.string.import_price_title)) },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                shape = RoundedCornerShape(Dimens.PADDING_10_DP),
+            )
+
+            //sellingPrice
+            OutlinedTextField(
+                value = number,
+                onValueChange = { if (it.all { char -> char.isDigit() }) number = it },
+                label = { Text(text = stringResource(id = R.string.selling_price_title)) },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                shape = RoundedCornerShape(Dimens.PADDING_10_DP),
+            )
+
+            //supplier
+            var expandedSupplier by remember { mutableStateOf(false) }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.TopStart)
+            ) {
+                OutlinedTextField(
+                    value = selectedOption,
+                    onValueChange = {},
+                    label = { Text("Genre") },
+                    modifier = Modifier.fillMaxWidth(),
+                    readOnly = true,
+                    shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+                )
+                IconButton(modifier = Modifier
+                    .zIndex(1f)
+                    .align(Alignment.BottomEnd),
+                    onClick = { expandedSupplier = true }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add_mini_button),
+                        contentDescription = ""
+                    )
+                }
+                DropdownMenu(
+                    expanded = expandedSupplier,
+                    onDismissRequest = { expandedSupplier = false },
+                    modifier = Modifier
+                        .padding(horizontal = Dimens.PADDING_10_DP)
+                        .fillMaxWidth()
+                ) {
+                    options.forEach { option -> //TODO()
+                        DropdownMenuItem(onClick = {
+                            selectedOption = option
+                            expandedSupplier = false
+                        }) {
+                            Text(option)
+                        }
+                    }
+                    Text(text = "Add new Supplier")
+                }
+            }
+
+            //storageLocationId
+            var expandedStorageLocation by remember { mutableStateOf(false) }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.TopStart)
+            ) {
+                OutlinedTextField(
+                    value = selectedOption,
+                    onValueChange = {},
+                    label = { Text("Genre") },
+                    modifier = Modifier.fillMaxWidth(),
+                    readOnly = true,
+                    shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+                )
+                IconButton(modifier = Modifier
+                    .zIndex(1f)
+                    .align(Alignment.BottomEnd),
+                    onClick = { expandedStorageLocation = true }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add_mini_button),
+                        contentDescription = ""
+                    )
+                }
+                DropdownMenu(
+                    expanded = expandedStorageLocation,
+                    onDismissRequest = { expandedStorageLocation = false },
+                    modifier = Modifier
+                        .padding(horizontal = Dimens.PADDING_10_DP)
+                        .fillMaxWidth()
+                ) {
+                    options.forEach { option -> //TODO()
+                        DropdownMenuItem(onClick = {
+                            selectedOption = option
+                            expandedStorageLocation = false
                         }) {
                             Text(option)
                         }
                     }
                 }
             }
-            OutlinedTextField(
-                value = number,
-                onValueChange = { if (it.all { char -> char.isDigit() }) number = it },
-                label = { Text("Number") },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                shape = RoundedCornerShape(Dimens.PADDING_10_DP),
-            )
+
 
             // DateTime Picker
             OutlinedTextField(
@@ -194,7 +299,17 @@ fun CustomFormAddOrEditProductForm(
 //        Button(onClick = { fileName = "SelectedFile.pdf" }) { // Simulate file selection
 //            Text(if (fileName.isEmpty()) "Upload File" else "File: $fileName")
 //        }
-            UploadImageButton {}
+            //image
+            UploadImageButton(onImageSelected = {})
+
+            //  "inStock": true
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Checkbox(checked = isChecked, onCheckedChange = { isChecked = it })
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("In stock")
+            }
+
+
             Spacer(modifier = Modifier.weight(1f))
             Row(
                 Modifier
@@ -221,11 +336,13 @@ fun CustomFormAddOrEditProductForm(
                     })
                 IconButton(
                     enabled = name.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
-                    onClick = {}) {
+                    onClick = { onAdd1MoreProduct() }) {
                     Icon(
-                        modifier=Modifier.size(Dimens.SIZE_ICON_35_DP),
+                        modifier = Modifier.size(Dimens.SIZE_ICON_35_DP),
                         tint = colorResource(id = R.color.background_theme),
-                        painter = painterResource(id = R.drawable.ic_add_mini_button), contentDescription = "")
+                        painter = painterResource(id = R.drawable.ic_add_mini_button),
+                        contentDescription = ""
+                    )
                 }
 
             }
@@ -310,5 +427,9 @@ fun UploadImageButton(onImageSelected: (Uri?) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFormAddOrEditProduct() {
-    CustomFormAddOrEditProductForm(onSubmit = {})
+    FormAddOrEditProductForm(
+        onSubmit = {},
+        onBackClick = {},
+        onAdd1MoreProduct = {},
+    )
 }

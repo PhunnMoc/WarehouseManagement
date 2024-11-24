@@ -29,7 +29,6 @@ fun AddProductsByExcel(
     var fileName by rememberSaveable { mutableStateOf("") }
 
     Scaffold(topBar = {
-        // Nội dung thanh công cụ (như đã định nghĩa trước)
     }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -38,9 +37,7 @@ fun AddProductsByExcel(
                 .padding(horizontal = Dimens.PADDING_10_DP),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Các phần tử giao diện khác...
 
-            // Nút Upload File Excel
             UploadExcelButton(
                 onFileSelected = { uri ->
                     fileName = uri.toString() // Lưu URI tệp được chọn
@@ -67,7 +64,6 @@ fun UploadExcelButton(
 ) {
     val context = LocalContext.current
 
-    // Tạo launcher để chọn file
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument(),
         onResult = { uri ->

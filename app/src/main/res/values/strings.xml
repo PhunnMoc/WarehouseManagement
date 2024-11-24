@@ -13,6 +13,12 @@
     <string name="screen_customer_main_title">CUSTOMER</string>
     <string name="screen_setting_main_title">SETTING</string>
     <string name="screen_genre_main_title">GENRE</string>
+    <string name="filter_tile_genre">Genre</string>
+    <string name="filter_tile_customer">Customer</string>
+    <string name="filter_tile_supplier">Supplier</string>
+    <string name="filter_tile_sellingPrice">Selling Price</string>
+    <string name="filter_tile_storage_location">Filter by Storage location</string>
+
     <!--________________________________________________-->
 
     <!-- Subtitle -->
@@ -35,5 +41,12 @@
     <string name="func_add_items_by_excel">All items by excel</string>
     <string name="place_holder_search_bar_product">Search by name or id</string>
     <string name="app_name">Warehouse Management</string>
+    <string name="filter_title">Filter</string>
+    <string name="product_name_string">Product name</string>
+    <string name="min_price">Min price</string>
+    <string name="max_price">Max price</string>
+    <string name="quantity_title">Quantity</string>
+    <string name="import_price_title">Import Price</string>
+    <string name="selling_price_title">Selling Price</string>
     <!--________________________________________________-->
 </resources>

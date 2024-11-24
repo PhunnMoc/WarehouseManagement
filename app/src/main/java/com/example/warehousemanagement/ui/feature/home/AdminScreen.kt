@@ -35,6 +35,7 @@ fun HalfIcon(
 
 @Composable
 fun AdminScreen(
+    onNavigateToScranQrScreen: () -> Unit,
     onNavigateToProduct: () -> Unit,
     onNavigateToStorageLocation: () -> Unit,
     onNavigateToGenre: () -> Unit,
@@ -79,6 +80,7 @@ fun AdminScreen(
                         modifier = Modifier
                             .size(Dimens.SIZE_ICON_35_DP)
                             .padding(end = Dimens.PADDING_5_DP),
+                        onClickIcon = onNavigateToScranQrScreen,
                     )
                     SearchBarWithSuggestion(listSuggestions)
                 }
@@ -108,5 +110,6 @@ fun PreviewAdminActivity() {
         onNavigateToGenre = {},
         onNavigateToCustomer = {},
         onNavigateToSupplier = {},
+        onNavigateToScranQrScreen = {},
     )
 }

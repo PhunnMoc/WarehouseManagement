@@ -84,11 +84,7 @@ fun ProductCard(
                 Text(
                     text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold
                 )
-                Image(
-                    painter = painterResource(id = qrCodeIconRes),
-                    contentDescription = "QR Code Icon",
-                    modifier = Modifier.size(30.dp)
-                )
+                QRCodeScreen(id = product.idProduct)
 
             }
             Divider()
