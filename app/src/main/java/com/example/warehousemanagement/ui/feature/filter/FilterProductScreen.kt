@@ -37,12 +37,6 @@ import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.Supplier
-import com.example.warehousemanagement.test.genre1
-import com.example.warehousemanagement.test.genre2
-import com.example.warehousemanagement.test.genre3
-import com.example.warehousemanagement.test.supplier1
-import com.example.warehousemanagement.test.supplier2
-import com.example.warehousemanagement.test.supplier3
 import com.example.warehousemanagement.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,8 +55,8 @@ fun FilterProductScreen(
             Divider(
                 modifier = Modifier.fillMaxWidth()
             )
-            FilterByGenreId(listGenre = listOf(genre1, genre2, genre3, genre2, genre3))
-            FilterBySupplierId(listSupplier = listOf(supplier1, supplier2, supplier3, supplier2))
+            FilterByGenreId(listGenre = listOf())
+            FilterBySupplierId(listSupplier = listOf())
             FilterBySellingPrice()
         }
     }

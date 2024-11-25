@@ -4,16 +4,13 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.TextButton
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.warehousemanagement.domain.model.Product
-import com.example.warehousemanagement.test.product1
 import com.example.warehousemanagement.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -150,8 +146,8 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Supplier ID:", weight = 3f)
-                        TableCell(text = product.supplierId, weight = 7f)
+                        TableCell(text = "Supplier name:", weight = 3f)
+                        TableCell(text = product.supplier.name, weight = 7f)
                     }
                     Row(
                         modifier = Modifier
@@ -159,7 +155,7 @@ fun ProductCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "In Stock:", weight = 3f)
-                        TableCell(text = if (product.isInStock) "Yes" else "No", weight = 7f)
+                        TableCell(text = if (product.inStock) "Yes" else "No", weight = 7f)
                     }
 
                     Row(
@@ -175,8 +171,8 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Genre ID:", weight = 3f)
-                        TableCell(text = product.genreId, weight = 7f)
+                        TableCell(text = "Genre name:", weight = 3f)
+                        TableCell(text = product.genre.genreName, weight = 7f)
                     }
                     Row(
                         modifier = Modifier
@@ -191,8 +187,8 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Location ID:", weight = 3f)
-                        TableCell(text = product.storageLocationId, weight = 7f)
+                        TableCell(text = "Location name:", weight = 3f)
+                        TableCell(text = product.storageLocation.storageLocationName, weight = 7f)
                     }
                     Row(
                         modifier = Modifier
@@ -250,7 +246,7 @@ fun RowScope.TableCell(
 @Preview(showBackground = true)
 @Composable
 fun PreviewProductCard() {
-    ProductCard(product = product1,
-        qrCodeIconRes = R.drawable.ic_qr_code,
-        onCardClick = { /* Handle card click here */ })
+//    ProductCard(product = product1,
+//        qrCodeIconRes = R.drawable.ic_qr_code,
+//        onCardClick = { /* Handle card click here */ })
 }

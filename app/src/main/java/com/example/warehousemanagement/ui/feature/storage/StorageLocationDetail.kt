@@ -20,8 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
-import com.example.warehousemanagement.test.listProduct
-import com.example.warehousemanagement.test.location1
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.ProductCard
@@ -76,5 +74,5 @@ fun StorageLocationDetailScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewStorageLocationDetailScreen() {
-    StorageLocationDetailScreen(location1, listProduct, onBack = {})
+   // StorageLocationDetailScreen(location1, listProduct, onBack = {})
 }

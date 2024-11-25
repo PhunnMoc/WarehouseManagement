@@ -12,11 +12,11 @@ import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
 
 fun ProductResponse.convertToModel(): Product? {
-    if (idProduct == null || description == null || genre == null || image == null || importPrice == null || inStock == null || productName == null || quantity == null || sellingPrice == null || storageLocation == null || supplier == null) {
+    if (id == null || description == null || genre == null || image == null || importPrice == null || inStock == null || productName == null || quantity == null || sellingPrice == null || storageLocation == null || supplier == null) {
         return null
     }
     return Product(
-        idProduct = idProduct,
+        idProduct = id,
         description = description,
         genre = genre.convertToModel() ?: return null,
         image = image,
@@ -34,7 +34,7 @@ fun ProductResponse.convertToModel(): Product? {
 
 fun Product.convertToResponse(): ProductResponse {
     return ProductResponse(
-        idProduct = idProduct,
+        id = idProduct,
         description = description,
         genre = genre.convertToResponse(),
         image = image,
@@ -52,28 +52,28 @@ fun Product.convertToResponse(): ProductResponse {
 
 
 fun GenreResponse.convertToModel(): Genre? {
-    if (idGenre == null || genreName == null) {
+    if (_id == null || genreName == null) {
         return null
     }
     return Genre(
-        idGenre = idGenre,
+        idGenre = _id,
         genreName = genreName,
     )
 }
 
 fun Genre.convertToResponse(): GenreResponse {
     return GenreResponse(
-        idGenre = idGenre,
+        _id = idGenre,
         genreName = genreName,
     )
 }
 
 fun StorageLocationResponse.convertToModel(): StorageLocation? {
-    if (idStorageLocation == null || storageLocationName == null) {
+    if (_id == null || storageLocationName == null) {
         return null
     }
     return StorageLocation(
-        id = idStorageLocation,
+        id = _id,
         storageLocationName = storageLocationName,
         storageLocationImage = storageLocationImage,
     )
@@ -81,7 +81,7 @@ fun StorageLocationResponse.convertToModel(): StorageLocation? {
 
 fun StorageLocation.convertToResponse(): StorageLocationResponse {
     return StorageLocationResponse(
-        idStorageLocation = id,
+        _id = id,
         storageLocationName = storageLocationName,
         storageLocationImage = storageLocationImage,
     )
@@ -89,7 +89,7 @@ fun StorageLocation.convertToResponse(): StorageLocationResponse {
 
 fun SupplierResponse.convertToModel(): Supplier? {
     if (
-        idSupplier == null ||
+        _id == null ||
         name == null ||
         email == null ||
         address == null
@@ -97,7 +97,7 @@ fun SupplierResponse.convertToModel(): Supplier? {
         return null
     }
     return Supplier(
-        idSupplier = idSupplier,
+        idSupplier = _id,
         name = name,
         email = email,
         address = address.convertToModel() ?: return null,
@@ -108,7 +108,7 @@ fun SupplierResponse.convertToModel(): Supplier? {
 fun Supplier.convertToResponse(): SupplierResponse {
 
     return SupplierResponse(
-        idSupplier = idSupplier,
+        _id = idSupplier,
         name = name,
         email = email,
         address = address.convertToResponse(),

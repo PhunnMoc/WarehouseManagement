@@ -21,8 +21,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Checkbox
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
@@ -76,28 +78,31 @@ fun FormAddOrEditProductForm(
     val date by remember {
         mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
     }
-    Scaffold(topBar = {
-        HeaderOfScreen(modifier = modifier.padding(
-            top = Dimens.PADDING_20_DP,
-            start = Dimens.PADDING_20_DP,
-            end = Dimens.PADDING_20_DP,
-            bottom = Dimens.PADDING_10_DP
-        ),
-            startContent = {
-                Image(painter = painterResource(id = R.drawable.icons8_back),
-                    contentDescription = "Back",
-                    modifier = Modifier
-                        .size(25.dp)
-                        .clickable {
-                            onBackClick()
-                        })
-            },
-            mainTitleText = stringResource(id = R.string.screen_product_main_title),
-            endContent = {})
-    }) { innerPadding ->
+    Scaffold(
+        containerColor = Color.White,
+        topBar = {
+            HeaderOfScreen(modifier = modifier.padding(
+                top = Dimens.PADDING_20_DP,
+                start = Dimens.PADDING_20_DP,
+                end = Dimens.PADDING_20_DP,
+                bottom = Dimens.PADDING_10_DP
+            ),
+                startContent = {
+                    Image(painter = painterResource(id = R.drawable.icons8_back),
+                        contentDescription = "Back",
+                        modifier = Modifier
+                            .size(25.dp)
+                            .clickable {
+                                onBackClick()
+                            })
+                },
+                mainTitleText = stringResource(id = R.string.screen_product_main_title),
+                endContent = {})
+        }) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
                 .padding(horizontal = Dimens.PADDING_10_DP),
             verticalArrangement = Arrangement.spacedBy(16.dp)

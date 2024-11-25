@@ -32,10 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Product
-import com.example.warehousemanagement.test.product1
-import com.example.warehousemanagement.test.product2
-import com.example.warehousemanagement.test.product3
-import com.example.warehousemanagement.test.product4
 import com.example.warehousemanagement.ui.theme.Dimens
 
 
@@ -116,7 +112,7 @@ fun ProductItem(product: Product) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewSearchProductScreen() {
-    SearchProductScreen(
-        listOf(product1, product2, product3, product4)
-    )
+//    SearchProductScreen(
+//        listOf(product1, product2, product3, product4)
+//    )
 }

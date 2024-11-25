@@ -24,8 +24,13 @@ sealed class Routes {
     @Serializable
     object QRCodeScanner : Routes()
 
+    /////
+
     @Serializable
     object StorageLocation : Routes()
+
+    @Serializable
+    data class StorageLocationDetail(val idStorageLocation: String) : Routes()
 
     //Product
     @Serializable
@@ -40,6 +45,11 @@ sealed class Routes {
     @Serializable
     object AddProductByExcel : Routes()
 
+    @Serializable
+    object SearchProduct : Routes()
+    ///
+    @Serializable
+    object Genres : Routes()
 
 }
 

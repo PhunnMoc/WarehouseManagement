@@ -48,21 +48,32 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.StorageLocation
-import com.example.warehousemanagement.test.listLocation
 import com.example.warehousemanagement.ui.common.DialogView
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
+import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.common.ProductCard
 import com.example.warehousemanagement.ui.common.SearchBarPreview
+import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiState
+import com.example.warehousemanagement.ui.feature.storage.viewModel.StorageLocationUiState
+import com.example.warehousemanagement.ui.feature.storage.viewModel.StorageLocationViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 @Composable
 fun StorageLocationScreen(
-    modifier: Modifier = Modifier, warehouseAreas: List<StorageLocation>
+    modifier: Modifier = Modifier,
+    onNavigationBack: () -> Unit,
+    onNavigationDetail: (String) -> Unit,
+    viewModel: StorageLocationViewModel = hiltViewModel()
 ) {
+    val warehouseAreas by viewModel.storageLocationUiState.collectAsStateWithLifecycle()
     var isExpanded by remember { mutableStateOf(false) }
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier,
@@ -157,7 +168,7 @@ fun StorageLocationScreen(
                         modifier = Modifier
                             .size(25.dp)
                             .clickable {
-                                /*TODO: Implement back navigation*/
+                                onNavigationBack()
                             })
                 },
                 mainTitleText = stringResource(id = R.string.screen_storage_location_main_title),
@@ -173,15 +184,19 @@ fun StorageLocationScreen(
                 FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
-            //Spacer(modifier = Modifier.height(16.dp))
-
-            // Hiển thị danh sách khu vực trong các thẻ
-            LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
-                items(warehouseAreas) { area ->
-                    WarehouseAreaCard(area, onConfirmDismiss = {})
-                    Spacer(modifier = Modifier.height(8.dp))
+            when (val storageLocation = warehouseAreas) {
+                is StorageLocationUiState.Loading -> IndeterminateCircularIndicator()
+                is StorageLocationUiState.Error -> NothingText()
+                is StorageLocationUiState.Success -> {
+                    LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
+                        items(storageLocation.listStorageLocation) { area ->
+                            WarehouseAreaCard(area, onConfirmDismiss = {})
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
                 }
             }
+
         }
     }
 }
@@ -267,7 +282,7 @@ fun WarehouseAreaCard(
 @Preview(showBackground = true)
 @Composable
 fun PreviewWarehouseManagementScreen() {
-    WarehouseManagementTheme {
-        StorageLocationScreen(warehouseAreas = listLocation)
-    }
+//    WarehouseManagementTheme {
+//        StorageLocationScreen(warehouseAreas = listLocation)
+//    }
 }

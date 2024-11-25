@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.ui.navigation
 
 import PreviewWarehouseManagementScreen
+import StorageLocationScreen
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -37,10 +38,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
+import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
+import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
 
@@ -129,7 +132,7 @@ fun AppNavigation() {
                         onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
-                        onNavigateToGenre = { navigationController.navigate(Routes.Products) },
+                        onNavigateToGenre = { navigationController.navigate(Routes.Genres) },
                         onNavigateToCustomer = { /*TODO*/ },
                         onNavigateToSupplier = { /*TODO*/ })
                     isShowNavigation = true
@@ -167,7 +170,8 @@ fun AppNavigation() {
                     ProductsScreen(
                         onBackClick = { navigationController.popBackStack() },
                         onClickAddProduct = { navigationController.navigate(Routes.AddProducts) },
-                        onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) }
+                        onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
+                     //   onClickSearch = {navigationController.navigate(Routes.SearchProduct)}
                     )
                     // AddProductsByExcel()
                     isShowNavigation = false
@@ -198,8 +202,33 @@ fun AppNavigation() {
                     isShowNavigation = false
                 }
 
+                composable<Routes.SearchProduct> {
+//                    SearchProductScreen(
+//                        onSubmit = {},
+//                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
+//                        onBackClick = { navigationController.popBackStack() }
+//                    )
+                    isShowNavigation = false
+                }
+
                 composable<Routes.StorageLocation> {
-                    PreviewWarehouseManagementScreen()
+                    StorageLocationScreen(
+                        onNavigationBack = { navigationController.popBackStack() },
+                        onNavigationDetail = { idStorage ->
+                            navigationController.navigate(
+                                Routes.StorageLocationDetail(
+                                    idStorageLocation = idStorage
+                                )
+                            )
+                        }
+                    )
+                    isShowNavigation = false
+                }
+
+                composable<Routes.Genres> {
+                    GenreScreen(
+                        onNavigationBack = { navigationController.popBackStack() },
+                    )
                     isShowNavigation = false
                 }
 

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class StorageLocationResponse(
-    @SerialName("_id") val idStorageLocation: String?,
+    @SerialName("_id") val _id: String?,
     @SerialName("storageLocationImage") val storageLocationImage: String?,
     @SerialName("storageLocationName") val storageLocationName: String?,
 )

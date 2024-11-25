@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class ProductResponse(
     @SerialName("description") val description: String?,
     @SerialName("genre") val genre: GenreResponse?,
-    @SerialName("id") val idProduct: String?,
+    @SerialName("id") val id: String?,
     @SerialName("image") val image: String?,
     @SerialName("importPrice") val importPrice: Int?,
     @SerialName("inStock") val inStock: Boolean?,
