@@ -1,11 +1,13 @@
 package com.example.warehousemanagement.data.mapper
 
 import com.example.warehousemanagement.data.network.dto.AddressResponse
+import com.example.warehousemanagement.data.network.dto.CustomerResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.domain.model.Address
+import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
@@ -115,7 +117,32 @@ fun Supplier.convertToResponse(): SupplierResponse {
         ratings = ratings,
     )
 }
+fun CustomerResponse.convertToModel(): Customer? {
+    if (
+        _id == null ||
+        name == null ||
+        email == null ||
+        address == null
+    ) {
+        return null
+    }
+    return Customer(
+        idCustomer = _id,
+        customerName  = name,
+        email = email,
+        address = address.convertToModel() ?: return null,
+    )
+}
 
+fun Customer.convertToResponse(): CustomerResponse {
+
+    return CustomerResponse(
+        _id = idCustomer,
+        name = customerName,
+        email = email,
+        address = address.convertToResponse(),
+    )
+}
 fun AddressResponse.convertToModel(): Address? {
     if (
         idAddress == null ||

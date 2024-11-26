@@ -1,8 +1,10 @@
 package com.example.warehousemanagement.data.repository
 
+import com.example.warehousemanagement.data.network.dto.CustomerResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
+import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 import retrofit2.http.GET
@@ -34,5 +36,14 @@ interface ApiWarehouse {
 
     @GET("/storage-location")
     suspend fun getAllStoLocDetails(): Response<List<StorageLocationResponse>>
+    @GET("/supplier")
+    suspend fun getAllSupplier(): Response<List<SupplierResponse>>
 
+    @GET("/supplier/{id}")
+    suspend fun getSupplierDetails(@Path("id") id: String): Response<SupplierResponse>
+    @GET("/customer")
+    suspend fun getAllCustomer(): Response<List<CustomerResponse>>
+
+    @GET("/customer/{id}")
+    suspend fun getCustomerDetails(@Path("id") id: String): Response<CustomerResponse>
 }
