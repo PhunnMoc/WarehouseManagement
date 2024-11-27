@@ -1,9 +1,11 @@
 package com.example.warehousemanagement.domain.repository
 
+import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
+import com.example.warehousemanagement.domain.model.Supplier
 import kotlinx.coroutines.flow.Flow
 
 interface WareHouseRepository {
@@ -23,4 +25,13 @@ interface WareHouseRepository {
     suspend fun getAllStoLocDetails(): List<StorageLocation>
 
     suspend fun getAllImportPackages(): List<ImportPackages>
+
+    suspend fun getAllSuppliers(): List<Supplier>
+    suspend fun getSupplierById(idSupplier: String): Supplier
+    suspend fun getAllSupplierDetails(): List<Supplier>
+
+    suspend fun getAllCustomers(): List<Customer>
+    suspend fun getCustomerById(idCustomer: String): Customer
+    suspend fun getAllCustomerDetails(): List<Customer>
+
 }

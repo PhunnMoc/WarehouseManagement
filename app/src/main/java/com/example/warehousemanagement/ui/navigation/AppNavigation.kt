@@ -37,6 +37,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
+import com.example.warehousemanagement.ui.feature.customer.CustomersScreen
+import com.example.warehousemanagement.ui.feature.customer.FormAddOrEditCustomerForm
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
@@ -44,7 +46,8 @@ import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.product.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
-import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
+import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
+import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
 
@@ -133,10 +136,10 @@ fun AppNavigation() {
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
                         onNavigateToGenre = { navigationController.navigate(Routes.Genres) },
-                        onNavigateToCustomer = { /*TODO*/ },
-                        onNavigateToSupplier = { /*TODO*/ },
                         onNavigateToImportPackage = { navigationController.navigate(Routes.ImportPackage) },
-                        onNavigateToExportPackage = {})
+                        onNavigateToExportPackage = {},
+                        onNavigateToCustomer = { navigationController.navigate(Routes.Customers) },
+                        onNavigateToSupplier = { navigationController.navigate(Routes.Suppliers) })
                     isShowNavigation = true
                 }
                 composable<Routes.HomeWorker> {
@@ -254,6 +257,36 @@ fun AppNavigation() {
                     isShowNavigation = false
                 }
 
+                composable<Routes.Suppliers> {
+                    SuppliersScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickAddSupplier = { navigationController.navigate(Routes.AddSuppliers) },
+                    )
+
+                    isShowNavigation = false
+                }
+                composable<Routes.AddSuppliers> {
+                    FormAddOrEditSupplierForm(
+                        onSubmit = {},
+                        onBackClick = { navigationController.popBackStack() }
+                    )
+                    isShowNavigation = false
+                }
+                composable<Routes.Customers> {
+                    CustomersScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickAddCustomer = { navigationController.navigate(Routes.AddCustomers) },
+                    )
+
+                    isShowNavigation = false
+                }
+                composable<Routes.AddCustomers> {
+                    FormAddOrEditCustomerForm(
+                        onSubmit = {},
+                        onBackClick = { navigationController.popBackStack() }
+                    )
+                    isShowNavigation = false
+                }
             }
         }
     }
