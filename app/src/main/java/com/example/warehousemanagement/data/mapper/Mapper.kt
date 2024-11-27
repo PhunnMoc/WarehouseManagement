@@ -2,14 +2,18 @@ package com.example.warehousemanagement.data.mapper
 
 import com.example.warehousemanagement.data.network.dto.AddressResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
+import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
 import com.example.warehousemanagement.data.network.dto.ProductResponse
+import com.example.warehousemanagement.data.network.dto.ReceiverResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Genre
+import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
+import com.example.warehousemanagement.domain.model.User
 
 fun ProductResponse.convertToModel(): Product? {
     if (id == null || description == null || genre == null || image == null || importPrice == null || inStock == null || productName == null || quantity == null || sellingPrice == null || storageLocation == null || supplier == null) {
@@ -145,3 +149,45 @@ fun Address.convertToResponse(): AddressResponse {
     )
 }
 
+fun ImportPackageResponseItem.convertToModel(): ImportPackages? {
+    if (
+        id == null || packageName == null || receiver == null
+    ) {
+        return null
+    }
+    return ImportPackages(
+        idImportPackages = id,
+        packageName = packageName,
+        importDate = importDate ?: "",
+        listProducts = listProducts!!.mapNotNull { it.convertToModel() },
+        supplier = supplier?.convertToModel()!!,
+        statusDone = statusDone ?: false,
+        note = note ?: "",
+        receiver = receiver,
+    )
+}
+
+fun ImportPackages.convertToResponse(): ImportPackageResponseItem {
+    return ImportPackageResponseItem(
+        id = idImportPackages,
+        importDate = importDate.toString(),
+        listProducts = listProducts.map { it.convertToResponse() },
+        note = note,
+        packageName = packageName,
+        receiver = receiver,
+        statusDone = statusDone ?: false,
+        supplier = supplier.convertToResponse()
+    )
+}
+
+fun ReceiverResponse.convertToModel(): User? {
+    if (_id == null || information == null) {
+        return null
+    }
+    return User(
+        idUser = _id,
+        username = username ?: "",
+        passwordHash = passwordHash ?: "",
+        information = information,
+    )
+}

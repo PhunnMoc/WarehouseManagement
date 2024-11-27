@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.network.dto.GenreResponse
+import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import kotlinx.coroutines.flow.Flow
@@ -16,11 +17,11 @@ interface ApiWarehouse {
     @GET("/product/{id}")
     suspend fun getProductDetails(@Path("id") id: String): Response<ProductResponse>
 
-    @GET("product/search")
-    fun getSearchedProductsDetails(
+    @GET("/product/search")
+    suspend fun getSearchedProductsDetails(
         @Query("props") props: String,
         @Query("value") value: String
-    ): Flow<List<ProductResponse>>
+    ): Response<List<ProductResponse>>
 
     ///
     @GET("/product/sort")
@@ -34,5 +35,8 @@ interface ApiWarehouse {
 
     @GET("/storage-location")
     suspend fun getAllStoLocDetails(): Response<List<StorageLocationResponse>>
+
+    @GET("/import-packages")
+    suspend fun getAllImportPackages(): Response<List<ImportPackageResponseItem>>
 
 }

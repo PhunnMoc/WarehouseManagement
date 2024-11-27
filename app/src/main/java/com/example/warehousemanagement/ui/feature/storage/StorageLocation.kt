@@ -267,7 +267,7 @@ fun WarehouseAreaCard(
                         )
                     }
                     Image(
-                        painter = rememberAsyncImagePainter(model = "https://statics.oeg.vn/storage/CTV_TienVuong/6953t1.png?w=1000"),
+                        painter = rememberAsyncImagePainter(model = area.storageLocationImage),
                         contentDescription = "",
                         modifier = Modifier
                             .width(50.dp)

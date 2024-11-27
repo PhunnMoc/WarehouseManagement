@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 sealed interface SearchProductUiState {
-    data class Success(val listSuggestionProduct: Flow<List<Product>>) : SearchProductUiState
+    data class Success(val listSuggestionProduct: List<Product>) : SearchProductUiState
     data object Error : SearchProductUiState
     data object Loading : SearchProductUiState
 }

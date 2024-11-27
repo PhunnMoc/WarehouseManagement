@@ -2,6 +2,7 @@ package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.mapper.convertToModel
 import com.example.warehousemanagement.domain.model.Genre
+import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
@@ -20,11 +21,11 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getProductDetails(id = idProduct).body()?.convertToModel()!!  //TODO()
     }
 
-    override fun searchProductsByName(nameString: String): Flow<List<Product>> {
+    override suspend fun searchProductsByName(nameString: String): List<Product> {
         return retrofit.getSearchedProductsDetails(
             props = "productName",
             value = nameString,
-        ).mapNotNull { products -> products.mapNotNull { product -> product.convertToModel() } }
+        ).body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
     override suspend fun sortProducts(sortBy: String, order: String): List<Product> {
@@ -37,6 +38,11 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun getAllStoLocDetails(): List<StorageLocation> {
         return retrofit.getAllStoLocDetails().body()?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
+
+    override suspend fun getAllImportPackages(): List<ImportPackages> {
+        return retrofit.getAllImportPackages().body()?.mapNotNull { it.convertToModel() }
+            ?: listOf()
     }
 
 }

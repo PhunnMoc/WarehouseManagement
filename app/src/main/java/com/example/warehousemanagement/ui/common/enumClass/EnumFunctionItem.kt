@@ -9,6 +9,8 @@ enum class EnumFunctionItem(val functionName: String) {
     GENRE("Genre"),
     CUSTOMER("Customer"),
     SUPPLIER("Supplier"),
+    IMPORT_PACKAGE("Import package"),
+    EXPORT_PACKAGE("Export package"),
 }
 
 val functionItemsAdmin: List<FunctionItem> = listOf(
@@ -30,6 +32,14 @@ val functionItemsAdmin: List<FunctionItem> = listOf(
     ),
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.SUPPLIER,
+        iconResource = R.drawable.storage_location,
+    ),
+    FunctionItem(
+        enumFunctionItem = EnumFunctionItem.IMPORT_PACKAGE,
+        iconResource = R.drawable.storage_location,
+    ),
+    FunctionItem(
+        enumFunctionItem = EnumFunctionItem.EXPORT_PACKAGE,
         iconResource = R.drawable.storage_location,
     )
 )

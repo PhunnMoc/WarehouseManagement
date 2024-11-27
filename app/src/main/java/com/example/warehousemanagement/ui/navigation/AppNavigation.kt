@@ -1,6 +1,5 @@
 package com.example.warehousemanagement.ui.navigation
 
-import PreviewWarehouseManagementScreen
 import StorageLocationScreen
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -40,7 +39,9 @@ import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
+import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
 import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
+import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.product.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
@@ -128,13 +129,14 @@ fun AppNavigation() {
                 }) {
 
                 composable<Routes.HomeAdmin> {
-                    AdminScreen(
-                        onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
+                    AdminScreen(onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
                         onNavigateToGenre = { navigationController.navigate(Routes.Genres) },
                         onNavigateToCustomer = { /*TODO*/ },
-                        onNavigateToSupplier = { /*TODO*/ })
+                        onNavigateToSupplier = { /*TODO*/ },
+                        onNavigateToImportPackage = { navigationController.navigate(Routes.ImportPackage) },
+                        onNavigateToExportPackage = {})
                     isShowNavigation = true
                 }
                 composable<Routes.HomeWorker> {
@@ -153,43 +155,46 @@ fun AppNavigation() {
 
                 }
                 composable<Routes.QRCodeScanner> {
-                    QRCodeScannerScreen(
-                        onNavigateToProductDetail = { id ->
-                            navigationController.navigate(
-                                Routes.Product(
-                                    id
-                                )
+                    QRCodeScannerScreen(onNavigateToProductDetail = { id ->
+                        navigationController.navigate(
+                            Routes.Product(
+                                id = id
                             )
-                        }
-                    )
+                        )
+                    })
                     isShowNavigation = false
 
                 }
 
                 composable<Routes.Products> {
-                    ProductsScreen(
-                        onBackClick = { navigationController.popBackStack() },
+                    ProductsScreen(onBackClick = { navigationController.popBackStack() },
                         onClickAddProduct = { navigationController.navigate(Routes.AddProducts) },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
-                     //   onClickSearch = {navigationController.navigate(Routes.SearchProduct)}
-                    )
+                        onClickSearch = { navigationController.navigate(Routes.SearchProduct) },
+                        onNavigationDetailProduct = { id ->
+                            navigationController.navigate(
+                                Routes.Product(
+                                    id = id
+                                )
+                            )
+                        })
                     // AddProductsByExcel()
                     isShowNavigation = false
                 }
 
                 composable<Routes.Product> { backStackEntry ->
-                    val product: Routes.Product = backStackEntry.toRoute()
-                    Text(text = product.idProduct)
+                    //  val product: Routes.Product = backStackEntry.toRoute()
+                    DetailProduct(
+                        onBackClick = { navigationController.popBackStack() },
+                    )
                     isShowNavigation = false
 
                 }
 
                 composable<Routes.AddProducts> {
-                    FormAddOrEditProductForm(
-                        onSubmit = {},
+                    FormAddOrEditProductForm(onSubmit = {},
                         onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
-                        onBackClick = { navigationController.popBackStack() }
-                    )
+                        onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
 
@@ -203,31 +208,48 @@ fun AppNavigation() {
                 }
 
                 composable<Routes.SearchProduct> {
-//                    SearchProductScreen(
+                    SearchProductScreen(
 //                        onSubmit = {},
 //                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
-//                        onBackClick = { navigationController.popBackStack() }
-//                    )
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickDetailProduct = { id ->
+                            navigationController.navigate(
+                                Routes.Product(
+                                    id = id
+                                )
+                            )
+                        },
+                    )
+
                     isShowNavigation = false
                 }
 
                 composable<Routes.StorageLocation> {
-                    StorageLocationScreen(
-                        onNavigationBack = { navigationController.popBackStack() },
+                    StorageLocationScreen(onNavigationBack = { navigationController.popBackStack() },
                         onNavigationDetail = { idStorage ->
                             navigationController.navigate(
                                 Routes.StorageLocationDetail(
                                     idStorageLocation = idStorage
                                 )
                             )
-                        }
-                    )
+                        })
                     isShowNavigation = false
                 }
 
                 composable<Routes.Genres> {
                     GenreScreen(
                         onNavigationBack = { navigationController.popBackStack() },
+                    )
+                    isShowNavigation = false
+                }
+
+                composable<Routes.ImportPackage> {
+                    ImportPackageScreen(
+                        onClickAddProduct = { /*TODO*/ },
+                        onClickAddProductByExcel = { /*TODO*/ },
+                        onBackClick = { /*TODO*/ },
+                        onClickSearch = { /*TODO*/ },
+                        onNavigationDetailProduct = {}
                     )
                     isShowNavigation = false
                 }

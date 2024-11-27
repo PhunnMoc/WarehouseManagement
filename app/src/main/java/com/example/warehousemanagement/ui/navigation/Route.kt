@@ -1,9 +1,5 @@
 package com.example.warehousemanagement.ui.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import kotlinx.serialization.Serializable
 
@@ -37,7 +33,7 @@ sealed class Routes {
     object Products : Routes()
 
     @Serializable
-    data class Product(val idProduct: String) : Routes()
+    data class Product(val id: String) : Routes()
 
     @Serializable
     object AddProducts : Routes()
@@ -50,6 +46,10 @@ sealed class Routes {
     ///
     @Serializable
     object Genres : Routes()
+
+    ///
+    @Serializable
+    object ImportPackage : Routes()
 
 }
 

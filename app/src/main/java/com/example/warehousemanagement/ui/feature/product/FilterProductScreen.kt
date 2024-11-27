@@ -14,21 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.warehousemanagement.R
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FilterProductScreen(
-    modifier: Modifier = Modifier,
-) {
-    ModalBottomSheet(
-        onDismissRequest = { /*TODO*/ }
-    ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .wrapContentSize(),
-        ) {
-            Text(text = stringResource(id = R.string.filter_title))
-        }
-        Divider(Modifier.fillMaxWidth())
-    }
-}
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun FilterProductScreen(
+//    modifier: Modifier = Modifier,
+//) {
+//    ModalBottomSheet(
+//        onDismissRequest = { /*TODO*/ }
+//    ) {
+//        Row(
+//            modifier = modifier
+//                .fillMaxWidth()
+//                .wrapContentSize(),
+//        ) {
+//            Text(text = stringResource(id = R.string.filter_title))
+//        }
+//        Divider(Modifier.fillMaxWidth())
+//    }
+//}

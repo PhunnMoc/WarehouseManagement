@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.ui.feature.product
+package com.example.warehousemanagement.ui.feature.importPackage
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -41,33 +44,30 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
-import com.example.warehousemanagement.ui.feature.filter.FilterProductScreen
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiState
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 @Composable
-fun ProductsScreen(
+fun ImportPackageScreen(
     modifier: Modifier = Modifier,
     onClickAddProduct: () -> Unit,
     onClickAddProductByExcel: () -> Unit,
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
     onNavigationDetailProduct: (String) -> Unit,
-    viewModel: ProductViewModel = hiltViewModel()
 ) {
-    val productUiState by viewModel.productUiState.collectAsStateWithLifecycle()
     var isExpanded by remember { mutableStateOf(false) }
     var isFilter by remember {
         mutableStateOf(false)
     }
-
 
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier,
@@ -164,7 +164,7 @@ fun ProductsScreen(
                                 onBackClick()
                             })
                 },
-                mainTitleText = stringResource(id = R.string.screen_product_main_title),
+                mainTitleText = stringResource(id = R.string.screen_import_main_title),
                 endContent = {})
         }) { innerpadding ->
         Column(
@@ -178,42 +178,45 @@ fun ProductsScreen(
 //                        onClickSearch()
 //                    }
 //                )
-                Button(onClick = { onClickSearch() }) {
-                    Text(text = "SEARCH")
-                }
-                FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
+                FilterAndSortButtons(onFilterClick = { isFilter=true }, onSortClick = {})
             }
+            TabBarImport()
 
-            //Spacer(modifier = Modifier.height(16.dp))
-
-            when (val product = productUiState) {
-                is ProductUiState.Loading -> IndeterminateCircularIndicator()
-                is ProductUiState.Error -> NothingText()
-                is ProductUiState.Success -> {
-                    LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
-                        items(product.listProduct) { product ->
-                            ProductCard(
-                                product = product,
-                                onCardClick = {},
-                                onLongPress = onNavigationDetailProduct,
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                        }
-                    }
-                }
-            }
-//            if (isFilter) {
-//                FilterProductScreen()
-//            }
         }
     }
 
 }
 
-@Preview(showBackground = true)
 @Composable
-fun PreviewProductScreen() {
-    WarehouseManagementTheme {
-        //  ProductsScreen(products = listProduct)
+fun TabBarImport() {
+    val tabs = listOf("A", "B") // Danh sách các tab
+    var selectedTabIndex by remember { mutableStateOf(0) }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        // TabRow để hiển thị các tab
+        TabRow(
+            selectedTabIndex = selectedTabIndex,
+            modifier = Modifier.fillMaxWidth(),
+            backgroundColor = Color.White,
+            contentColor = Color.Blue
+        ) {
+            tabs.forEachIndexed { index, title ->
+                Tab(
+                    selected = selectedTabIndex == index,
+                    onClick = { selectedTabIndex = index },
+                    text = { Text(text = title) }
+                )
+            }
+        }
+
+        // Hiển thị nội dung của tab tương ứng
+        when (selectedTabIndex) {
+            0 -> {
+                Text(text = "A")
+            }
+            1 -> {
+                Text(text = "B")
+            }
+        }
     }
 }

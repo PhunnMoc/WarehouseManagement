@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "311209315655",
+    "firebase_url": "https://fire-57f0b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "fire-57f0b",
+    "storage_bucket": "fire-57f0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311209315655:android:6fb4aed0fcec80051fd062",
+        "android_client_info": {
+          "package_name": "com.example.cuufire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeeGvCIrZ5RSHLfug_LFTFNq0UJS36yFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311209315655:android:88343aa07b2f2a4b1fd062",
+        "android_client_info": {
+          "package_name": "com.example.warehousemanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeeGvCIrZ5RSHLfug_LFTFNq0UJS36yFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

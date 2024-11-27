@@ -61,8 +61,8 @@ fun StorageLocationDetailScreen(
             items(products) { product ->
                 ProductCard(
                     product = product,
-                    qrCodeIconRes = R.drawable.ic_qr_code,
-                    onCardClick = { /* Xử lý khi nhấn vào thẻ sản phẩm */ }
+                    onLongPress = {},
+                    onCardClick = {},
                 )
                 Spacer(modifier = androidx.compose.ui.Modifier.height(5.dp))
             }
@@ -74,5 +74,5 @@ fun StorageLocationDetailScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewStorageLocationDetailScreen() {
-   // StorageLocationDetailScreen(location1, listProduct, onBack = {})
+    // StorageLocationDetailScreen(location1, listProduct, onBack = {})
 }

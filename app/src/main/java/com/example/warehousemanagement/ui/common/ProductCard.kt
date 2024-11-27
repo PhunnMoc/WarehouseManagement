@@ -37,8 +37,10 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun ProductCard(
-    modifier: Modifier = Modifier, product: Product, // Add this parameter
-    qrCodeIconRes: Int, onCardClick: () -> Unit// Image resource id for the QR code icon
+    modifier: Modifier = Modifier,
+    product: Product, // Add this parameter
+    onCardClick: () -> Unit,// Image resource id for the QR code icon
+    onLongPress: (String) -> Unit,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -57,8 +59,7 @@ fun ProductCard(
                     isExpanded = !isExpanded
                     onCardClick()
                 }, onLongPress = {
-                    // Xử lý sự kiện nhấn giữ
-                    showDialog = true
+                    onLongPress(product.idProduct)
                 })
             },
 

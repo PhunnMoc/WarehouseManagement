@@ -43,6 +43,7 @@
     <string name="app_name">Warehouse Management</string>
     <string name="filter_title">Filter</string>
     <string name="product_name_string">Product name</string>
+    <string name="product_id">Product ID</string>
     <string name="min_price">Min price</string>
     <string name="max_price">Max price</string>
     <string name="quantity_title">Quantity</string>

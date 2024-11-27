@@ -56,6 +56,8 @@ fun AdminView(
     onNavigateToGenre: () -> Unit,
     onNavigateToCustomer: () -> Unit,
     onNavigateToSupplier: () -> Unit,
+    onNavigateToImportPackage: () -> Unit,
+    onNavigateToExportPackage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -78,6 +80,8 @@ fun AdminView(
                 EnumFunctionItem.GENRE -> onNavigateToGenre
                 EnumFunctionItem.CUSTOMER -> onNavigateToCustomer
                 EnumFunctionItem.SUPPLIER -> onNavigateToSupplier
+                EnumFunctionItem.IMPORT_PACKAGE -> onNavigateToImportPackage
+                EnumFunctionItem.EXPORT_PACKAGE -> onNavigateToExportPackage
 
             }
             ItemFunction(
@@ -117,6 +121,8 @@ fun FunctionContainer(
     onNavigateToGenre: () -> Unit,
     onNavigateToCustomer: () -> Unit,
     onNavigateToSupplier: () -> Unit,
+    onNavigateToImportPackage: () -> Unit,
+    onNavigateToExportPackage: () -> Unit,
     modifier: Modifier = Modifier,
     isAdmin: Boolean
 ) {
@@ -128,22 +134,24 @@ fun FunctionContainer(
                 onNavigateToGenre = onNavigateToGenre,
                 onNavigateToCustomer = onNavigateToCustomer,
                 onNavigateToSupplier = onNavigateToSupplier,
+                onNavigateToImportPackage = onNavigateToImportPackage,
+                onNavigateToExportPackage = onNavigateToExportPackage,
             )
         } else {
             NonAdminView(modifier = modifier)
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewFunctionContainer() {
-    FunctionContainer(
-        onNavigateToProduct = {},
-        onNavigateToStorageLocation = {},
-        onNavigateToGenre = {},
-        onNavigateToCustomer = {},
-        onNavigateToSupplier = {},
-        isAdmin = true
-    )
-}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewFunctionContainer() {
+//    FunctionContainer(
+//        onNavigateToProduct = {},
+//        onNavigateToStorageLocation = {},
+//        onNavigateToGenre = {},
+//        onNavigateToCustomer = {},
+//        onNavigateToSupplier = {},
+//        isAdmin = true
+//    )
+//}

@@ -41,6 +41,8 @@ fun AdminScreen(
     onNavigateToGenre: () -> Unit,
     onNavigateToCustomer: () -> Unit,
     onNavigateToSupplier: () -> Unit,
+    onNavigateToImportPackage: () -> Unit,
+    onNavigateToExportPackage: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(containerColor = colorResource(id = R.color.background_white),
@@ -91,6 +93,8 @@ fun AdminScreen(
                     onNavigateToGenre = onNavigateToGenre,
                     onNavigateToCustomer = onNavigateToCustomer,
                     onNavigateToSupplier = onNavigateToSupplier,
+                    onNavigateToImportPackage = onNavigateToImportPackage,
+                    onNavigateToExportPackage =onNavigateToExportPackage ,
                     isAdmin = true
                 )
             }
@@ -101,15 +105,15 @@ fun AdminScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewAdminActivity() {
-    AdminScreen(
-        onNavigateToProduct = {},
-        onNavigateToStorageLocation = {},
-        onNavigateToGenre = {},
-        onNavigateToCustomer = {},
-        onNavigateToSupplier = {},
-        onNavigateToScranQrScreen = {},
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewAdminActivity() {
+//    AdminScreen(
+//        onNavigateToProduct = {},
+//        onNavigateToStorageLocation = {},
+//        onNavigateToGenre = {},
+//        onNavigateToCustomer = {},
+//        onNavigateToSupplier = {},
+//        onNavigateToScranQrScreen = {},
+//    )
+//}
