@@ -1,13 +1,12 @@
 package com.example.warehousemanagement.data.network.dto
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
 data class AddressResponse(
-    val city: String?,
-    val district: String?,
-    val idAddress: String?,
-    val phone: String?,
-    val postalCode: String?,
-    val street: String?,
+    @SerialName("city") val city: String?,
+    @SerialName("district")val district: String?,
+    @SerialName("phone")val phone: String?,
+    @SerialName("postalCode")val postalCode: String?,
+    @SerialName("street")val street: String?,
 )

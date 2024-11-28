@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.mapper.convertToModel
+import com.example.warehousemanagement.data.mapper.convertToResponse
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.ImportPackages
@@ -8,11 +9,9 @@ import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
- class WareHouseRepositoryImpl @Inject constructor(
+class WareHouseRepositoryImpl @Inject constructor(
     private val retrofit: ApiWarehouse
 ) : WareHouseRepository {
     override suspend fun getAllProducts(): List<Product> {
@@ -41,34 +40,43 @@ import javax.inject.Inject
     override suspend fun getAllStoLocDetails(): List<StorageLocation> {
         return retrofit.getAllStoLocDetails().body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
+
     override suspend fun getAllSuppliers(): List<Supplier> {
         return retrofit.getAllSupplier().body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
+
     override suspend fun getSupplierById(idSupplier: String): Supplier {
         return retrofit.getSupplierDetails(id = idSupplier).body()?.convertToModel()!!  //TODO()
     }
 
-     override suspend fun getAllSupplierDetails(): List<Supplier> {
-         TODO("Not yet implemented")
-     }
+    override suspend fun getAllSupplierDetails(): List<Supplier> {
+        TODO("Not yet implemented")
+    }
 
-     override suspend fun getAllCustomers(): List<Customer> {
-         return retrofit.getAllCustomer().body()?.mapNotNull { it.convertToModel() } ?: listOf()
+    override suspend fun getAllCustomers(): List<Customer> {
+        return retrofit.getAllCustomer().body()?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
 
-     }
+    override suspend fun getCustomerById(idCustomer: String): Customer {
+        return retrofit.getCustomerDetails(id = idCustomer).body()?.convertToModel()!!
+    }
 
-     override suspend fun getCustomerById(idCustomer: String): Customer {
-         return retrofit.getCustomerDetails(id = idCustomer).body()?.convertToModel()!!
-     }
+    override suspend fun getAllCustomerDetails(): List<Customer> {
+        TODO("Not yet implemented")
+    }
 
-     override suspend fun getAllCustomerDetails(): List<Customer> {
-         TODO("Not yet implemented")
-     }
-
-
-    override suspend fun getAllImportPackages(): List<ImportPackages> {
-        return retrofit.getAllImportPackages().body()?.mapNotNull { it.convertToModel() }
+    override suspend fun getPendingImportPackages(): List<ImportPackages> {
+        return retrofit.getPendingImportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
+    }
+
+    override suspend fun getDoneImportPackages(): List<ImportPackages> {
+        return retrofit.getDoneImportPackages().body()?.mapNotNull { it.convertToModel() }
+            ?: listOf()
+    }
+
+    override suspend fun addNewSupplier(supplier: Supplier) {
+        return retrofit.addNewSupplier(supplier = supplier.convertToResponse())// ?: "Can't add"
     }
 
 }

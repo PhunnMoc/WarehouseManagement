@@ -4,9 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
@@ -21,11 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.ui.common.FunctionContainer
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.SearchBarWithSuggestion
 import com.example.warehousemanagement.ui.common.WrapIcon
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -94,16 +96,19 @@ fun PackageBox(label: String, painter: Painter, x: Float) {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkerScreen(modifier: Modifier = Modifier) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(containerColor = colorResource(id = R.color.background_white),
-        modifier = modifier,
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            HeaderOfScreen(modifier = modifier.padding(
-                top = Dimens.PADDING_20_DP,
-                start = Dimens.PADDING_20_DP,
-                end = Dimens.PADDING_20_DP
-            ),
+            HeaderOfScreen(
+                modifier = modifier.padding(
+                    top = Dimens.PADDING_20_DP,
+                    start = Dimens.PADDING_20_DP,
+                    end = Dimens.PADDING_20_DP
+                ),
                 mainTitleText = stringResource(id = R.string.screen_customer_main_title),
                 endContent = {
                     WrapIcon(
@@ -112,7 +117,9 @@ fun WorkerScreen(modifier: Modifier = Modifier) {
                         idIcon = R.drawable.icons8_bell,
                         isNewNotification = false,
                     )
-                })
+                },
+                scrollBehavior = scrollBehavior
+            )
         }) { innerpadding ->
         Column(
             modifier = Modifier

@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
+import coil.compose.rememberAsyncImagePainter
 import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
@@ -89,14 +90,25 @@ fun ProductCard(
                 modifier = Modifier.padding(Dimens.PADDING_5_DP),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_importpackage),
-                    contentDescription = "Product Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                )
+                if (product.image.isNotBlank()) {
+                    Image(
+                        painter = rememberAsyncImagePainter(model = product.image),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .width(64.dp)
+                            .height(64.dp)
+                            .padding(top = 8.dp)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_importpackage),
+                        contentDescription = "Product Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                    )
+                }
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -123,7 +135,7 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Product name:", weight = 3f)
+                        TableCell(text = "Product customerName:", weight = 3f)
                         TableCell(text = product.productName, weight = 7f)
                     }
                     Row(
@@ -147,7 +159,7 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Supplier name:", weight = 3f)
+                        TableCell(text = "Supplier customerName:", weight = 3f)
                         TableCell(text = product.supplier.name, weight = 7f)
                     }
                     Row(
@@ -172,7 +184,7 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Genre name:", weight = 3f)
+                        TableCell(text = "Genre customerName:", weight = 3f)
                         TableCell(text = product.genre.genreName, weight = 7f)
                     }
                     Row(
@@ -188,7 +200,7 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Location name:", weight = 3f)
+                        TableCell(text = "Location customerName:", weight = 3f)
                         TableCell(text = product.storageLocation.storageLocationName, weight = 7f)
                     }
                     Row(
@@ -231,11 +243,12 @@ fun ProductCard(
 
 @Composable
 fun RowScope.TableCell(
+    modifier: Modifier = Modifier,
     text: String, weight: Float
 ) {
     Text(
         text = text,
-        Modifier
+        modifier
             .fillMaxHeight()
             .border(0.5.dp, Color.Gray)
             .weight(weight)

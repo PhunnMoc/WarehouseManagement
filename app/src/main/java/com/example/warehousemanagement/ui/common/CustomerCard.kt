@@ -129,7 +129,7 @@ fun CustomerCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Customer name:", weight = 3f)
+                        TableCell(text = "Customer customerName:", weight = 3f)
                         TableCell(text = customer.customerName, weight = 7f)
                     }
                     Row(
@@ -218,7 +218,6 @@ val customer1 = Customer(
     customerName = "Tech Supplies Ltd.",
     email = "contact@techsupplies.com",
     address = Address(
-        idAddress = "A101",
         street = "789 Le Loi Street",
         district = "District 1",
         city = "Ho Chi Minh City",

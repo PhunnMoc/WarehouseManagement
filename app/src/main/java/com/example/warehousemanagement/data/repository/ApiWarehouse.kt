@@ -6,9 +6,11 @@ import com.example.warehousemanagement.data.network.dto.ImportPackageResponseIte
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
-import kotlinx.coroutines.flow.Flow
+import com.example.warehousemanagement.domain.model.Supplier
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -37,17 +39,27 @@ interface ApiWarehouse {
 
     @GET("/storage-location")
     suspend fun getAllStoLocDetails(): Response<List<StorageLocationResponse>>
+
     @GET("/supplier")
     suspend fun getAllSupplier(): Response<List<SupplierResponse>>
 
-    @GET("/import-packages")
-    suspend fun getAllImportPackages(): Response<List<ImportPackageResponseItem>>
+    @GET("/import-packages/pending")
+    suspend fun getPendingImportPackages(): Response<List<ImportPackageResponseItem>>
+
+    @GET("/import-packages/done")
+    suspend fun getDoneImportPackages(): Response<List<ImportPackageResponseItem>>
 
     @GET("/supplier/{id}")
     suspend fun getSupplierDetails(@Path("id") id: String): Response<SupplierResponse>
+
     @GET("/customer")
     suspend fun getAllCustomer(): Response<List<CustomerResponse>>
 
     @GET("/customer/{id}")
     suspend fun getCustomerDetails(@Path("id") id: String): Response<CustomerResponse>
+
+    @POST("/supplier") // Adjust the endpoint based on your backend configuration
+    suspend fun addNewSupplier(
+        @Body supplier: SupplierResponse
+    )
 }

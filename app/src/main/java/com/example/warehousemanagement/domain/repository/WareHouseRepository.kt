@@ -6,7 +6,6 @@ import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
-import kotlinx.coroutines.flow.Flow
 
 interface WareHouseRepository {
     suspend fun getAllProducts(): List<Product>
@@ -24,7 +23,8 @@ interface WareHouseRepository {
 
     suspend fun getAllStoLocDetails(): List<StorageLocation>
 
-    suspend fun getAllImportPackages(): List<ImportPackages>
+    suspend fun getPendingImportPackages(): List<ImportPackages>
+    suspend fun getDoneImportPackages(): List<ImportPackages>
 
     suspend fun getAllSuppliers(): List<Supplier>
     suspend fun getSupplierById(idSupplier: String): Supplier
@@ -33,5 +33,7 @@ interface WareHouseRepository {
     suspend fun getAllCustomers(): List<Customer>
     suspend fun getCustomerById(idCustomer: String): Customer
     suspend fun getAllCustomerDetails(): List<Customer>
+    suspend fun addNewSupplier(supplier: Supplier)//: String
+
 
 }

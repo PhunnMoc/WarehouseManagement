@@ -35,7 +35,7 @@ fun NothingText(
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Nothing here",
+            text = "There are some issue of networking",
             color = MaterialTheme.colorScheme.primary
         )
     }

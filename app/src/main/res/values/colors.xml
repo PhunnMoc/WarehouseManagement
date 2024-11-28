@@ -13,6 +13,8 @@
 
     <!-- Background Colors -->
     <color name="background_gray">#F4F4F4</color> <!-- Gray background color -->
+    <color name="background_pending">#E1D0D0</color> <!-- Gray background color -->
+    <color name="background_done">#D3DAC9</color> <!-- Gray background color -->
     <color name="background_white">#FFFFFF</color> <!-- Gray background color -->
     <color name="background_theme">#FFBE15</color> <!-- Theme background color -->
     <color name="background_light_theme">#FFD66C</color> <!-- Theme background color -->

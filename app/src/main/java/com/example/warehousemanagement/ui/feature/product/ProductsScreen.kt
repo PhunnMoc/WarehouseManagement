@@ -22,9 +22,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,17 +49,15 @@ import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
-import com.example.warehousemanagement.ui.feature.filter.FilterProductScreen
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiState
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductsScreen(
     modifier: Modifier = Modifier,
-    onClickAddProduct: () -> Unit,
-    onClickAddProductByExcel: () -> Unit,
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
     onNavigationDetailProduct: (String) -> Unit,
@@ -67,87 +68,10 @@ fun ProductsScreen(
     var isFilter by remember {
         mutableStateOf(false)
     }
-
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(containerColor = colorResource(id = R.color.background_white),
-        modifier = modifier,
-        floatingActionButton = {
-            Box(
-                contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxSize()
-            ) {
-                if (isExpanded) {
-                    Box(modifier = Modifier
-                        .offset(x = 16.dp, y = 15.dp)
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable { isExpanded = false })
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.End,
-                ) {
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add products", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { onClickAddProduct() },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 1")
-                            }
-                        }
-                    }
-
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            // Thẻ Label cho nút FAB 2
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add products by excel", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { onClickAddProductByExcel() },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 2")
-                            }
-                        }
-                    }
-
-                    FloatingActionButton(
-                        modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
-                        onClick = { isExpanded = !isExpanded },
-                        containerColor = colorResource(id = R.color.background_theme)
-                    ) {
-                        Icon(
-                            imageVector = if (isExpanded) Icons.Default.Menu else Icons.Default.Add,
-                            contentDescription = "Toggle FAB"
-                        )
-                    }
-                }
-            }
-        },
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             HeaderOfScreen(modifier = modifier.padding(
                 top = Dimens.PADDING_20_DP,
@@ -155,6 +79,7 @@ fun ProductsScreen(
                 end = Dimens.PADDING_20_DP,
                 bottom = Dimens.PADDING_10_DP
             ),
+                scrollBehavior = scrollBehavior,
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
                         contentDescription = "Back",

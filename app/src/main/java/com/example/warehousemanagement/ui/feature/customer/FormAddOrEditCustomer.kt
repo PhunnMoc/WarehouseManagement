@@ -1,4 +1,5 @@
 package com.example.warehousemanagement.ui.feature.customer
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +15,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +35,8 @@ import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.theme.Dimens
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormAddOrEditCustomerForm(
     modifier: Modifier = Modifier,
@@ -45,15 +51,19 @@ fun FormAddOrEditCustomerForm(
     var postalCode by rememberSaveable { mutableStateOf("") }
     var phone by rememberSaveable { mutableStateOf("") }
 
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = Color.White,
         topBar = {
-            HeaderOfScreen(modifier = modifier.padding(
-                top = Dimens.PADDING_20_DP,
-                start = Dimens.PADDING_20_DP,
-                end = Dimens.PADDING_20_DP,
-                bottom = Dimens.PADDING_10_DP
-            ),
+            HeaderOfScreen(
+                modifier = modifier.padding(
+                    top = Dimens.PADDING_20_DP,
+                    start = Dimens.PADDING_20_DP,
+                    end = Dimens.PADDING_20_DP,
+                    bottom = Dimens.PADDING_10_DP
+                ),
+                mainTitleText = stringResource(id = R.string.screen_customer_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
                         contentDescription = "Back",
@@ -63,8 +73,8 @@ fun FormAddOrEditCustomerForm(
                                 onBackClick()
                             })
                 },
-                mainTitleText = stringResource(id = R.string.screen_customer_main_title),
-                endContent = {}
+                endContent = {},
+                scrollBehavior = scrollBehavior
             )
         }) { innerPadding ->
         Column(
@@ -75,7 +85,7 @@ fun FormAddOrEditCustomerForm(
                 .padding(horizontal = Dimens.PADDING_10_DP),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Customer name
+            // Customer customerName
             OutlinedTextField(
                 value = customerName,
                 onValueChange = { customerName = it },

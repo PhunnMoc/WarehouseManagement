@@ -46,6 +46,7 @@ import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.product.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
+import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
 import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
 import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -171,8 +172,6 @@ fun AppNavigation() {
 
                 composable<Routes.Products> {
                     ProductsScreen(onBackClick = { navigationController.popBackStack() },
-                        onClickAddProduct = { navigationController.navigate(Routes.AddProducts) },
-                        onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onClickSearch = { navigationController.navigate(Routes.SearchProduct) },
                         onNavigationDetailProduct = { id ->
                             navigationController.navigate(
@@ -196,7 +195,13 @@ fun AppNavigation() {
 
                 composable<Routes.AddProducts> {
                     FormAddOrEditProductForm(onSubmit = {},
-                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
+                        onAdd1MoreProduct = { packageName ->
+                            navigationController.navigate(
+                                Routes.AddProducts(
+                                    packageName = packageName
+                                )
+                            )
+                        },
                         onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
@@ -248,11 +253,17 @@ fun AppNavigation() {
 
                 composable<Routes.ImportPackage> {
                     ImportPackageScreen(
-                        onClickAddProduct = { /*TODO*/ },
-                        onClickAddProductByExcel = { /*TODO*/ },
-                        onBackClick = { /*TODO*/ },
+                        onClickAddProduct = { packageName ->
+                            navigationController.navigate(
+                                Routes.AddProducts(
+                                    packageName
+                                )
+                            )
+                        },
+                        onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
+                        onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { /*TODO*/ },
-                        onNavigationDetailProduct = {}
+                        onNavigationDetailImportPackage = {}
                     )
                     isShowNavigation = false
                 }
@@ -267,7 +278,6 @@ fun AppNavigation() {
                 }
                 composable<Routes.AddSuppliers> {
                     FormAddOrEditSupplierForm(
-                        onSubmit = {},
                         onBackClick = { navigationController.popBackStack() }
                     )
                     isShowNavigation = false

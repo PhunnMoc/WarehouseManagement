@@ -38,30 +38,38 @@ sealed class Routes {
     data class Product(val id: String) : Routes()
 
     @Serializable
-    object AddProducts : Routes()
+    data class AddProducts(val packageName: String) : Routes()
 
     @Serializable
     object AddProductByExcel : Routes()
 
     @Serializable
     object SearchProduct : Routes()
+
     ///
     @Serializable
     object Genres : Routes()
+
     ///
     @Serializable
     object ImportPackage : Routes()
+
     ///
     @Serializable
     object Suppliers : Routes()
+
     @Serializable
     data class Supplier(val idSupplier: String) : Routes()
+
     @Serializable
     object AddSuppliers : Routes()
+
     @Serializable
     object Customers : Routes()
+
     @Serializable
     data class Customer(val idCustomer: String) : Routes()
+
     @Serializable
     object AddCustomers : Routes()
 }

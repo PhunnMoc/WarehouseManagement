@@ -114,25 +114,26 @@ fun SupplierResponse.convertToModel(): Supplier? {
 fun Supplier.convertToResponse(): SupplierResponse {
 
     return SupplierResponse(
-        _id = idSupplier,
+        _id = null,
         name = name,
         email = email,
         address = address.convertToResponse(),
         ratings = ratings,
     )
 }
+
 fun CustomerResponse.convertToModel(): Customer? {
     if (
-        _id == null ||
-        name == null ||
+        id == null ||
+        customerName == null ||
         email == null ||
         address == null
     ) {
         return null
     }
     return Customer(
-        idCustomer = _id,
-        customerName  = name,
+        idCustomer = id,
+        customerName = customerName,
         email = email,
         address = address.convertToModel() ?: return null,
     )
@@ -141,22 +142,21 @@ fun CustomerResponse.convertToModel(): Customer? {
 fun Customer.convertToResponse(): CustomerResponse {
 
     return CustomerResponse(
-        _id = idCustomer,
-        name = customerName,
+        id = idCustomer,
+        customerName = customerName,
         email = email,
         address = address.convertToResponse(),
     )
 }
+
 fun AddressResponse.convertToModel(): Address? {
     if (
-        idAddress == null ||
         postalCode == null ||
         phone == null
     ) {
         return null
     }
     return Address(
-        idAddress = idAddress,
         street = street ?: "",
         district = district ?: "",
         city = city ?: "",
@@ -167,7 +167,6 @@ fun AddressResponse.convertToModel(): Address? {
 
 fun Address.convertToResponse(): AddressResponse {
     return AddressResponse(
-        idAddress = idAddress,
         street = street ?: "",
         district = district ?: "",
         city = city ?: "",

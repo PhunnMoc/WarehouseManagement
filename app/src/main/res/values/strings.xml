@@ -58,5 +58,9 @@
     <string name="phone_string">Phone</string>
     <string name="supplier_ratings_string">Ratings</string>
     <string name="postal_code_string">Postal Code</string>
+    <string name="pending_import_title">Pending IP</string>
+    <string name="done_import_title">Done IP</string>
+    <string name="create_new_ip">Create new Import Package</string>
+    <string name="package_name_title">Name of package</string>
     <!--________________________________________________-->
 </resources>

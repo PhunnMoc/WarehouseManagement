@@ -3,75 +3,66 @@ package com.example.warehousemanagement.ui.feature.product
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Checkbox
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.common.ProductCard
 import com.example.warehousemanagement.ui.feature.product.viewModel.DetailProductUiState
 import com.example.warehousemanagement.ui.feature.product.viewModel.DetailProductViewModel
-import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiState
 import com.example.warehousemanagement.ui.theme.Dimens
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailProduct(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     viewModel: DetailProductViewModel = hiltViewModel(),
 ) {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val detailProductUiState by viewModel.detailProductUiState.collectAsStateWithLifecycle()
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = Color.White,
         topBar = {
-            HeaderOfScreen(modifier = modifier.padding(
-                top = Dimens.PADDING_20_DP,
-                start = Dimens.PADDING_20_DP,
-                end = Dimens.PADDING_20_DP,
-                bottom = Dimens.PADDING_10_DP
-            ),
+            HeaderOfScreen(
+                modifier = modifier.padding(
+                    top = Dimens.PADDING_20_DP,
+                    start = Dimens.PADDING_20_DP,
+                    end = Dimens.PADDING_20_DP,
+                    bottom = Dimens.PADDING_10_DP
+                ),
+                mainTitleText = stringResource(id = R.string.screen_product_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
                         contentDescription = "Back",
@@ -81,8 +72,9 @@ fun DetailProduct(
                                 onBackClick()
                             })
                 },
-                mainTitleText = stringResource(id = R.string.screen_product_main_title),
-                endContent = {})
+                endContent = {},
+                scrollBehavior = scrollBehavior
+            )
         }) { innerPadding ->
         when (val detailproduct = detailProductUiState) {
             is DetailProductUiState.Loading -> IndeterminateCircularIndicator()
@@ -105,7 +97,7 @@ fun DetailProduct(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(Dimens.PADDING_10_DP)
                     )
-                    //Product name
+                    //Product customerName
                     OutlinedTextField(
                         value = detailproduct.product.productName,
                         enabled = false,
@@ -318,12 +310,12 @@ fun DetailProduct(
                     ) {
 
 //                        BigButton(modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
-//                            enabled = name.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
+//                            enabled = customerName.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
 //                            labelname = "Submit",
 //                            onClick = {
 //                                onSubmit(
 //                                    FormData(
-//                                        name = name,
+//                                        customerName = customerName,
 //                                        selectedOption = selectedOption,
 //                                        number = number,
 //                                        date = date,
@@ -333,7 +325,7 @@ fun DetailProduct(
 //                                )
 //                            })
 //                        IconButton(
-//                            enabled = name.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
+//                            enabled = customerName.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
 //                            onClick = { onAdd1MoreProduct() }) {
 //                            Icon(
 //                                modifier = Modifier.size(Dimens.SIZE_ICON_35_DP),

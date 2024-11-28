@@ -32,8 +32,10 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -61,11 +64,12 @@ import com.example.warehousemanagement.ui.theme.Dimens
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FormAddOrEditProductForm(
     modifier: Modifier = Modifier,
     onSubmit: (FormData) -> Unit,
-    onAdd1MoreProduct: () -> Unit,
+    onAdd1MoreProduct: (String) -> Unit,
     onBackClick: () -> Unit,
 ) {
     var name by rememberSaveable { mutableStateOf("") }
@@ -78,15 +82,14 @@ fun FormAddOrEditProductForm(
     val date by remember {
         mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
     }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = Color.White,
         topBar = {
-            HeaderOfScreen(modifier = modifier.padding(
-                top = Dimens.PADDING_20_DP,
-                start = Dimens.PADDING_20_DP,
-                end = Dimens.PADDING_20_DP,
-                bottom = Dimens.PADDING_10_DP
-            ),
+            HeaderOfScreen(
+                mainTitleText = stringResource(id = R.string.screen_product_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
                         contentDescription = "Back",
@@ -96,8 +99,9 @@ fun FormAddOrEditProductForm(
                                 onBackClick()
                             })
                 },
-                mainTitleText = stringResource(id = R.string.screen_product_main_title),
-                endContent = {})
+                endContent = {},
+                scrollBehavior = scrollBehavior
+            )
         }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -107,7 +111,7 @@ fun FormAddOrEditProductForm(
                 .padding(horizontal = Dimens.PADDING_10_DP),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            //Product name
+            //Product customerName
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -341,7 +345,7 @@ fun FormAddOrEditProductForm(
                     })
                 IconButton(
                     enabled = name.isNotEmpty() && selectedOption.isNotEmpty() && number.isNotEmpty() && date.isNotEmpty(),
-                    onClick = { onAdd1MoreProduct() }) {
+                    onClick = { onAdd1MoreProduct(TODO()) }) {
                     Icon(
                         modifier = Modifier.size(Dimens.SIZE_ICON_35_DP),
                         tint = colorResource(id = R.color.background_theme),

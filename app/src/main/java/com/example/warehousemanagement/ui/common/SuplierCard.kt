@@ -1,4 +1,5 @@
 package com.example.warehousemanagement.ui.common
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -49,8 +50,9 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun SuplierCard(
-    modifier: Modifier = Modifier, supplier: Supplier, // Add this parameter
-     onCardClick: () -> Unit// Image resource id for the QR code icon
+    modifier: Modifier = Modifier,
+    supplier: Supplier, // Add this parameter
+    onCardClick: () -> Unit// Image resource id for the QR code icon
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -87,14 +89,16 @@ fun SuplierCard(
                     .padding(Dimens.PADDING_10_DP),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-            ){}
+            ) {
+                Text(text = "Supplier ID: " + supplier.idSupplier)
+            }
             Divider()
             Row(
                 modifier = Modifier.padding(Dimens.PADDING_5_DP),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_importpackage),
+                    painter = painterResource(id = R.drawable.supplier_image),
                     contentDescription = "Product Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -129,7 +133,7 @@ fun SuplierCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Suplier name:", weight = 3f)
+                        TableCell(text = "Suplier customerName:", weight = 3f)
                         TableCell(text = supplier.name, weight = 7f)
                     }
                     Row(
@@ -221,22 +225,9 @@ fun RowScope.TableCell1(
         fontSize = 14.sp,
     )
 }
-val suplier1 = Supplier(
-    idSupplier = "67276a79a0b1c2534dca6e31",
-    name = "Tech Supplies Ltd.",
-    email = "contact@techsupplies.com",
-    address = Address(
-        idAddress = "A101",
-        street = "789 Le Loi Street",
-        district = "District 1",
-        city = "Ho Chi Minh City",
-        postalCode = "700005",
-        phone = "0908123456"
-    ),
-    ratings = 4
-)
-@Preview(showBackground = true)
-@Composable
-fun PreviewSuplierCard() {
-SuplierCard(supplier = suplier1, onCardClick = { /* Handle card click here */ })
-}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewSuplierCard() {
+//    SuplierCard(supplier = suplier1, onCardClick = { /* Handle card click here */ })
+//}
