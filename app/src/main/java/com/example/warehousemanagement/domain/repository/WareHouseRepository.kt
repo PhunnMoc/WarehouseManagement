@@ -21,12 +21,19 @@ interface WareHouseRepository {
 
     suspend fun getAllGenre(): List<Genre>
 
+    suspend fun getSearchedGenresDetails(query: String): List<Genre>
+
     suspend fun getAllStoLocDetails(): List<StorageLocation>
+
+    suspend fun getSearchedStorageLocationByName(query: String): List<StorageLocation>
 
     suspend fun getPendingImportPackages(): List<ImportPackages>
     suspend fun getDoneImportPackages(): List<ImportPackages>
+    suspend fun createImportPackage(importPackage: ImportPackages)//: ImportPackages
 
     suspend fun getAllSuppliers(): List<Supplier>
+
+    suspend fun getSearchedSupplierByName(query: String): List<Supplier>
     suspend fun getSupplierById(idSupplier: String): Supplier
     suspend fun getAllSupplierDetails(): List<Supplier>
 

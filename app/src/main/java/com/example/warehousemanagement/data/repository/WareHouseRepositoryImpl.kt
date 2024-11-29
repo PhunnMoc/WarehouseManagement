@@ -37,12 +37,27 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getAllGenres().body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
+    override suspend fun getSearchedGenresDetails(query: String): List<Genre> {
+        return retrofit.getSearchedGenresDetails(value = query).body()
+            ?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
+
     override suspend fun getAllStoLocDetails(): List<StorageLocation> {
         return retrofit.getAllStoLocDetails().body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
+    override suspend fun getSearchedStorageLocationByName(query: String): List<StorageLocation> {
+        return retrofit.getSearchedStorageLocationByName(value = query).body()
+            ?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
+
     override suspend fun getAllSuppliers(): List<Supplier> {
         return retrofit.getAllSupplier().body()?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
+
+    override suspend fun getSearchedSupplierByName(query: String): List<Supplier> {
+        return retrofit.getSearchedSupplierByName(value = query).body()
+            ?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
     override suspend fun getSupplierById(idSupplier: String): Supplier {
@@ -73,6 +88,10 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun getDoneImportPackages(): List<ImportPackages> {
         return retrofit.getDoneImportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
+    }
+
+    override suspend fun createImportPackage(importPackage: ImportPackages) {
+        return retrofit.createImportPackage(importPackage = importPackage.convertToResponse())
     }
 
     override suspend fun addNewSupplier(supplier: Supplier) {

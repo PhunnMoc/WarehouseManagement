@@ -28,25 +28,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.Product
+import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.ui.common.CustomSearchBar
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.feature.search.viewModel.SearchGenreUiState
-import com.example.warehousemanagement.ui.feature.search.viewModel.SearchGenreViewModel
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductUiState
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductViewModel
+import com.example.warehousemanagement.ui.feature.search.viewModel.SearchStorageLocationUiState
+import com.example.warehousemanagement.ui.feature.search.viewModel.SearchStorageLocationViewModel
+
 
 @Composable
-fun SearchGenreScreen(
-    viewModel: SearchGenreViewModel = hiltViewModel(),
+fun SearchStorageLocation(
+    viewModel: SearchStorageLocationViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onClickDetailGenre: (String) -> Unit,
+    onClickDetailStorageLocation: (String) -> Unit,
 ) {
     var searchValue by rememberSaveable { mutableStateOf("") }
 
-    val searchResults by viewModel.searchGenreUiState.collectAsState()
+    val searchResults by viewModel.searchStorageLocationUiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,19 +84,19 @@ fun SearchGenreScreen(
         //  Spacer(modifier = Modifier.height(16.dp))
         Spacer(modifier = Modifier.height(16.dp))
         when (val searchResult = searchResults) {
-            is SearchGenreUiState.Loading -> IndeterminateCircularIndicator()
-            is SearchGenreUiState.Error -> NothingText()
-            is SearchGenreUiState.Success -> {
-                if (searchResult.listGenre.isEmpty()) {
-                    Text("No products found", color = Color.Gray)
+            is SearchStorageLocationUiState.Loading -> IndeterminateCircularIndicator()
+            is SearchStorageLocationUiState.Error -> NothingText()
+            is SearchStorageLocationUiState.Success -> {
+                if (searchResult.listSearchStorageLocation.isEmpty()) {
+                    Text("No StorageLocations found", color = Color.Gray)
                 } else {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(searchResult.listGenre) { genre ->
-                            GenreItem(
+                        items(searchResult.listSearchStorageLocation) { storageLocation ->
+                            StorageLocationItem(
                                 modifier = Modifier.clickable {
-                                    onClickDetailGenre(genre.idGenre)
+                                    onClickDetailStorageLocation(storageLocation.id)
                                 },
-                                genre = genre
+                                storageLocation = storageLocation
                             )
                         }
                     }
@@ -107,18 +108,17 @@ fun SearchGenreScreen(
 }
 
 @Composable
-fun GenreItem(
+fun StorageLocationItem(
     modifier: Modifier = Modifier,
-    genre: Genre
+    storageLocation: StorageLocation
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "ID: ${genre.idGenre}", fontWeight = FontWeight.Bold)
-            Text(text = "Name: ${genre.genreName}")
-            Divider(Modifier.fillMaxWidth())
+            Text(text = "ID: ${storageLocation.id}", fontWeight = FontWeight.Bold)
+            Text(text = "Name: ${storageLocation.storageLocationName}")
         }
     }
 }

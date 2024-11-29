@@ -38,6 +38,7 @@ import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.feature.importPackage.UploadImageButton
 import com.example.warehousemanagement.ui.feature.product.viewModel.DetailProductUiState
 import com.example.warehousemanagement.ui.feature.product.viewModel.DetailProductViewModel
 import com.example.warehousemanagement.ui.theme.Dimens

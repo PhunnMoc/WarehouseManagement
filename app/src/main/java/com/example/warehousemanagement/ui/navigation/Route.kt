@@ -45,6 +45,11 @@ sealed class Routes {
 
     @Serializable
     object SearchProduct : Routes()
+    @Serializable
+    object SearchGenre : Routes()
+
+    @Serializable
+    object SearchStorageLocation : Routes()
 
     ///
     @Serializable
@@ -72,6 +77,7 @@ sealed class Routes {
 
     @Serializable
     object AddCustomers : Routes()
+
 }
 
 enum class TopLevelDestinations(

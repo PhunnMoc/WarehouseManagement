@@ -70,6 +70,7 @@ import com.example.warehousemanagement.ui.theme.Dimens
 fun GenreScreen(
     modifier: Modifier = Modifier,
     onNavigationBack: () -> Unit,
+    onClickSearch: () -> Unit,
     viewModel: GenreViewModel = hiltViewModel()
 ) {
     val genreUiState by viewModel.genreUiState.collectAsStateWithLifecycle()
@@ -157,12 +158,6 @@ fun GenreScreen(
         },
         topBar = {
             HeaderOfScreen(
-                modifier = modifier.padding(
-                    top = Dimens.PADDING_20_DP,
-                    start = Dimens.PADDING_20_DP,
-                    end = Dimens.PADDING_20_DP,
-                    bottom = Dimens.PADDING_10_DP
-                ),
                 mainTitleText = stringResource(id = R.string.screen_genre_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
@@ -183,7 +178,12 @@ fun GenreScreen(
             Column(
                 modifier = Modifier.padding(horizontal = Dimens.PADDING_16_DP),
             ) {
-                SearchBarPreview()
+                SearchBarPreview(
+                    enabled = false,
+                    modifier = Modifier.clickable {
+                        onClickSearch()
+                    }
+                )
                 FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 

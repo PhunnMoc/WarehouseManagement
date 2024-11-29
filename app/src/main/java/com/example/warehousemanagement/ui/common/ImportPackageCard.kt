@@ -75,7 +75,9 @@ fun ImportPackageCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = if (importPackage.statusDone) colorResource(id = R.color.background_done) else colorResource(id = R.color.background_pending)
+                        color = if (importPackage.statusDone) colorResource(id = R.color.background_done) else colorResource(
+                            id = R.color.background_pending
+                        )
                     )
                     .padding(Dimens.PADDING_10_DP),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -112,7 +114,9 @@ fun ImportPackageCard(
                         text = "Status: ${importPackage.status.name}",
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
-                        color = if (importPackage.statusDone) colorResource(id = R.color.background_done) else colorResource(id = R.color.background_pending)
+                        color = if (importPackage.statusDone) colorResource(id = R.color.background_done) else colorResource(
+                            id = R.color.background_pending
+                        )
                     )
                 }
             }
@@ -122,14 +126,7 @@ fun ImportPackageCard(
                 Column(
                     modifier = Modifier.padding(Dimens.PADDING_10_DP)
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .wrapContentHeight()
-                            .height(intrinsicSize = IntrinsicSize.Max)
-                    ) {
-                        TableCell(text = "Supplier Name:", weight = 3f)
-                        TableCell(text = importPackage.supplier.name, weight = 7f)
-                    }
+
                     Row(
                         modifier = Modifier
                             .wrapContentHeight()
@@ -144,7 +141,7 @@ fun ImportPackageCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "Import Date:", weight = 3f)
-                        TableCell(text = importPackage.importDate, weight = 7f)
+                      //  TableCell(text = importPackage.importDate.toString(), weight = 7f)
                     }
                     Row(
                         modifier = Modifier

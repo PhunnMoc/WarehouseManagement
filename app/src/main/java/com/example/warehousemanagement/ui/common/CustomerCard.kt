@@ -1,4 +1,5 @@
 package com.example.warehousemanagement.ui.common
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -87,7 +88,9 @@ fun CustomerCard(
                     .padding(Dimens.PADDING_10_DP),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-            ){}
+            ) {
+                Text(text = "Customer ID: ${customer.idCustomer}")
+            }
             Divider()
             Row(
                 modifier = Modifier.padding(Dimens.PADDING_5_DP),
@@ -115,7 +118,9 @@ fun CustomerCard(
                         text = "Email: ${customer.email}", fontSize = 14.sp, color = Color.Gray
                     )
                     Text(
-                        text = "Phone: ${customer.address.phone}", fontSize = 14.sp, color = Color.Gray
+                        text = "Phone: ${customer.address.phone}",
+                        fontSize = 14.sp,
+                        color = Color.Gray
                     )
                 }
             }
@@ -213,6 +218,7 @@ fun RowScope.TableCell2(
         fontSize = 14.sp,
     )
 }
+
 val customer1 = Customer(
     idCustomer = "67276a79a0b1c2534dca6e31",
     customerName = "Tech Supplies Ltd.",
@@ -225,6 +231,7 @@ val customer1 = Customer(
         phone = "0908123456"
     ),
 )
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewCustomerCard() {

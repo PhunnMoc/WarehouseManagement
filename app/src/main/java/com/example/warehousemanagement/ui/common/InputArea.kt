@@ -1,0 +1,42 @@
+package com.example.warehousemanagement.ui.common
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+@Composable
+fun InputArea(
+    label: String = "Enter text here",
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        modifier = modifier
+            .fillMaxWidth()
+            .height(200.dp), // Adjust the height for the input area
+        shape = RoundedCornerShape(10.dp), // Rounded corners
+        textStyle = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = Color.Gray
+        ),
+        maxLines = Int.MAX_VALUE, // Allow unlimited lines
+        singleLine = false, // Multiline input
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Default) // Default IME options
+    )
+}

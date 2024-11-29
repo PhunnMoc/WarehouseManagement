@@ -177,16 +177,15 @@ fun Address.convertToResponse(): AddressResponse {
 
 fun ImportPackageResponseItem.convertToModel(): ImportPackages? {
     if (
-        id == null || packageName == null || receiver == null
+        id == null || packageName == null || receiver == null || importDate == null
     ) {
         return null
     }
     return ImportPackages(
         idImportPackages = id,
         packageName = packageName,
-        importDate = importDate ?: "",
+        importDate = importDate,
         listProducts = listProducts!!.mapNotNull { it.convertToModel() },
-        supplier = supplier?.convertToModel()!!,
         statusDone = statusDone ?: false,
         note = note ?: "",
         receiver = receiver,
@@ -196,13 +195,12 @@ fun ImportPackageResponseItem.convertToModel(): ImportPackages? {
 fun ImportPackages.convertToResponse(): ImportPackageResponseItem {
     return ImportPackageResponseItem(
         id = idImportPackages,
-        importDate = importDate.toString(),
+        importDate = importDate,
         listProducts = listProducts.map { it.convertToResponse() },
         note = note,
         packageName = packageName,
         receiver = receiver,
         statusDone = statusDone ?: false,
-        supplier = supplier.convertToResponse()
     )
 }
 

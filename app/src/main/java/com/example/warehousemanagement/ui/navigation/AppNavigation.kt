@@ -34,7 +34,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
 import com.example.warehousemanagement.ui.feature.customer.CustomersScreen
@@ -44,8 +43,9 @@ import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
 import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
-import com.example.warehousemanagement.ui.feature.product.FormAddOrEditProductForm
+import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
+import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
 import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
 import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
@@ -202,6 +202,7 @@ fun AppNavigation() {
                                 )
                             )
                         },
+
                         onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
@@ -215,6 +216,35 @@ fun AppNavigation() {
                     isShowNavigation = false
                 }
 
+                composable<Routes.SearchGenre> {
+                    SearchGenreScreen(
+//                        onSubmit = {},
+//                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickDetailGenre = { id ->
+                            TODO()
+//                            navigationController.navigate(
+//
+//                            )
+                        },
+                    )
+                    isShowNavigation = false
+                }
+                composable<Routes.SearchStorageLocation> {
+                    SearchGenreScreen(
+//                        onSubmit = {},
+//                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickDetailGenre = { id ->
+                            TODO()
+//                            navigationController.navigate(
+//
+//                            )
+                        },
+                    )
+
+                    isShowNavigation = false
+                }
                 composable<Routes.SearchProduct> {
                     SearchProductScreen(
 //                        onSubmit = {},
@@ -233,19 +263,23 @@ fun AppNavigation() {
                 }
 
                 composable<Routes.StorageLocation> {
-                    StorageLocationScreen(onNavigationBack = { navigationController.popBackStack() },
+                    StorageLocationScreen(
+                        onNavigationBack = { navigationController.popBackStack() },
                         onNavigationDetail = { idStorage ->
                             navigationController.navigate(
                                 Routes.StorageLocationDetail(
                                     idStorageLocation = idStorage
                                 )
                             )
-                        })
+                        },
+                        onClickSearch = { navigationController.navigate(Routes.SearchStorageLocation) },
+                    )
                     isShowNavigation = false
                 }
 
                 composable<Routes.Genres> {
                     GenreScreen(
+                        onClickSearch = { navigationController.navigate(Routes.SearchGenre) },
                         onNavigationBack = { navigationController.popBackStack() },
                     )
                     isShowNavigation = false
@@ -256,7 +290,7 @@ fun AppNavigation() {
                         onClickAddProduct = { packageName ->
                             navigationController.navigate(
                                 Routes.AddProducts(
-                                    packageName
+                                    packageName = packageName
                                 )
                             )
                         },

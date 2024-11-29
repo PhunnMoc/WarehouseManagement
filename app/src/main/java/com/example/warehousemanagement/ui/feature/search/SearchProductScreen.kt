@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Product
+import com.example.warehousemanagement.ui.common.CustomSearchBar
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
@@ -58,29 +60,31 @@ fun SearchProductScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        OutlinedTextField(
-            value = searchValue,
-            onValueChange = {
+
+
+        CustomSearchBar(
+            modifier = Modifier,
+            query = searchValue,
+            onQueryChange = {
+                viewModel.onChangeSearchQuery(it)
                 searchValue = it
-                viewModel.onChangeSearchQuery(searchValue)
-
             },
-            label = { Text("Value") },
-            modifier = Modifier.fillMaxWidth(),
+            enabled = true,
+            onSearch = {},
+            active = true,
+            onActiveChange = {},
+            placeHolder = "Search for me",
             trailingIcon = {
-                IconButton(
-                    onClick = {
-
-                        //  onSearch(searchKey, searchValue)
-                    },
-                    modifier = Modifier.align(Alignment.End),
-                ) {
-                    Icon(
-                        modifier = Modifier.size(Dimens.SIZE_ICON_25_DP),
-                        painter = painterResource(id = R.drawable.icons8_search),
-                        contentDescription = ""
-                    )
-                }
+                androidx.compose.material3.Icon(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable {
+                            searchValue = ""
+                        },
+                    tint = colorResource(id = R.color.text_color_dark_gray),
+                    painter = painterResource(id = R.drawable.icons8_delete),
+                    contentDescription = ""
+                )
             }
         )
 

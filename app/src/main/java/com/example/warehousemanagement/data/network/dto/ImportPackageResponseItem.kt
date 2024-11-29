@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.data.network.dto
 
 import kotlinx.serialization.Serializable
+import java.util.Date
 
 
 data class ImportPackageResponseItem(
@@ -11,5 +12,4 @@ data class ImportPackageResponseItem(
     val packageName: String?,
     val `receiver`: ReceiverResponse?,
     val statusDone: Boolean?,
-    val supplier: SupplierResponse?,
 )

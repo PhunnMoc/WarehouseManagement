@@ -236,6 +236,7 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
 @Preview(showBackground = true)
 @Composable
 fun SearchBarPreview(
+    enabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     var text by remember {
@@ -254,8 +255,9 @@ fun SearchBarPreview(
         onQueryChange = {
             text = it
         },
+        enabled = enabled,
         onSearch = {},
-        active = true,
+        active = enabled,
         onActiveChange = {},
         placeHolder = "Search for me",
         trailingIcon = {

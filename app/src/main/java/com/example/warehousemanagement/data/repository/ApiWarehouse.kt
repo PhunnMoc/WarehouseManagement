@@ -37,17 +37,38 @@ interface ApiWarehouse {
     @GET("/genre")
     suspend fun getAllGenres(): Response<List<GenreResponse>>
 
+    @GET("/genre/search")
+    suspend fun getSearchedGenresDetails(
+        @Query("value") value: String
+    ): Response<List<GenreResponse>>
+
     @GET("/storage-location")
     suspend fun getAllStoLocDetails(): Response<List<StorageLocationResponse>>
 
+    @GET("/storage-location/search")
+    suspend fun getSearchedStorageLocationByName(
+        @Query("value") value: String
+    ): Response<List<StorageLocationResponse>>
+
+
     @GET("/supplier")
     suspend fun getAllSupplier(): Response<List<SupplierResponse>>
+
+    @GET("/supplier/search")
+    suspend fun getSearchedSupplierByName(
+        @Query("value") value: String
+    ): Response<List<SupplierResponse>>
 
     @GET("/import-packages/pending")
     suspend fun getPendingImportPackages(): Response<List<ImportPackageResponseItem>>
 
     @GET("/import-packages/done")
     suspend fun getDoneImportPackages(): Response<List<ImportPackageResponseItem>>
+
+    @POST("/import-packages") // Adjust the endpoint path to match your API
+    suspend fun createImportPackage(
+        @Body importPackage: ImportPackageResponseItem
+    )//: Response<ImportPackageResponseItem>
 
     @GET("/supplier/{id}")
     suspend fun getSupplierDetails(@Path("id") id: String): Response<SupplierResponse>

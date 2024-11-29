@@ -193,7 +193,7 @@ fun FormAddOrEditSupplierForm(
                                 ratings = ratings,
                             )
                         )
-                        onBackClick()
+                        onBackClick( )
                         // Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
                     })
             }

@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 val SEARCH_PRODUCT_QUERY = "id"
+val SEARCH_PRODUCT_QUERY_NAME = "name_product"
 
 @HiltViewModel
 class SearchProductViewModel @Inject constructor(
@@ -39,7 +40,7 @@ class SearchProductViewModel @Inject constructor(
 
     @OptIn(FlowPreview::class)
     private fun searchProductResult(): Flow<SearchProductUiState> =
-        saveStateHandle.getStateFlow(SEARCH_PRODUCT_QUERY, "").debounce(500)
+        saveStateHandle.getStateFlow(SEARCH_PRODUCT_QUERY_NAME, "").debounce(500)
             .map { wareHouseRepository.searchProductsByName(it) }.asResult()
             .map { listSuggestionProduct ->
                 when (listSuggestionProduct) {
