@@ -114,7 +114,7 @@ fun SupplierResponse.convertToModel(): Supplier? {
 fun Supplier.convertToResponse(): SupplierResponse {
 
     return SupplierResponse(
-        _id = null,
+        _id = idSupplier,
         name = name,
         email = email,
         address = address.convertToResponse(),

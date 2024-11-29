@@ -41,7 +41,7 @@ class FormImportPackageViewModel @Inject constructor(
     val products: StateFlow<List<Product>> = _products
 
 
-    fun addPackage(supplier: Supplier?, date: String) {
+    fun addPackage(date: String) {
         viewModelScope.launch {
             wareHouseRepository.createImportPackage(
                 importPackage = ImportPackages(
@@ -49,7 +49,7 @@ class FormImportPackageViewModel @Inject constructor(
                     importDate = date,
                     listProducts = products.value,
                     note = "",
-                    packageName = "hdhđ",
+                    packageName = savedStateHandle.get<String>("packageName") ?: "",
                     receiver = ReceiverResponse("", null, "sss", "Khanh null"),
                     statusDone = false,
                     status = StatusPackage.PENDING,

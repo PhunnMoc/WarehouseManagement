@@ -98,17 +98,17 @@ fun FormAddOrEditProductForm(
     //onNavigateAddNewGenre: () -> Unit,
     viewModel: FormImportPackageViewModel = hiltViewModel()
 ) {
-    var name by rememberSaveable { mutableStateOf(product?.productName ?: "") }
-    var genreName by rememberSaveable { mutableStateOf("") }
-    var genre by rememberSaveable { mutableStateOf<Genre?>(null) }
-    var storageLocationName by rememberSaveable { mutableStateOf("") }
-    var storageLocation by rememberSaveable { mutableStateOf<StorageLocation?>(null) }
-    var supplierName by rememberSaveable { mutableStateOf("") }
-    var supplier by rememberSaveable { mutableStateOf<Supplier?>(null) }
-    var quantity by rememberSaveable { mutableStateOf(product?.quantity?.toString() ?: "") }
-    var importPrice by rememberSaveable { mutableStateOf(product?.importPrice?.toString() ?: "") }
-    var exportPrice by rememberSaveable { mutableStateOf(product?.sellingPrice?.toString() ?: "") }
-    var isCheckedInStock by rememberSaveable { mutableStateOf(product?.inStock ?: false) }
+    var name by remember { mutableStateOf(product?.productName ?: "") }
+    var genreName by remember { mutableStateOf("") }
+    var genre by remember { mutableStateOf<Genre?>(null) }
+    var storageLocationName by remember { mutableStateOf("") }
+    var storageLocation by remember { mutableStateOf<StorageLocation?>(null) }
+    var supplierName by remember { mutableStateOf("") }
+    var supplier by remember { mutableStateOf<Supplier?>(null) }
+    var quantity by remember { mutableStateOf(product?.quantity?.toString() ?: "") }
+    var importPrice by remember { mutableStateOf(product?.importPrice?.toString() ?: "") }
+    var exportPrice by remember { mutableStateOf(product?.sellingPrice?.toString() ?: "") }
+    var isCheckedInStock by remember { mutableStateOf(product?.inStock ?: false) }
     var imageUri by remember { mutableStateOf<Uri?>(product?.image?.toUri()) }
     var description by remember { mutableStateOf(product?.description ?: "") }
     val date by remember {
@@ -269,7 +269,7 @@ fun FormAddOrEditProductForm(
             //supplier
             var expandedSupplierLocation by remember { mutableStateOf(false) }
             OutlinedTextField(
-                value = supplier?.name ?: "",
+                value = supplierName,
                 onValueChange = {
                     supplierName = it
                     viewModel.onChangeSearchSupplierQuery(it)
@@ -499,7 +499,8 @@ fun FormAddOrEditProductForm(
                                 image = imageUri.toString(),
                                 importPrice = importPrice.toInt(),
                                 inStock = isCheckedInStock,
-                                lastUpdated = LocalDate.now().atStartOfDay().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                                lastUpdated = LocalDate.now().atStartOfDay()
+                                    .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                                 productName = name,
                                 quantity = quantity.toInt(),
                                 sellingPrice = exportPrice.toInt(),
@@ -508,8 +509,8 @@ fun FormAddOrEditProductForm(
                             )
                         )
                         viewModel.addPackage(
-                            date = LocalDate.now().atStartOfDay().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                            supplier = supplier,
+                            date = LocalDate.now().atStartOfDay()
+                                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                         )
                     })
                 IconButton(enabled = name.isNotEmpty() && genre != null && storageLocation != null
