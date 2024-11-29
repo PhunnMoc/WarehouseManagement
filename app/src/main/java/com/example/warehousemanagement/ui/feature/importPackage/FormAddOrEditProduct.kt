@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -47,6 +48,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -68,6 +70,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.data.util.uploadImageToFirebase
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
@@ -109,7 +112,7 @@ fun FormAddOrEditProductForm(
     var importPrice by remember { mutableStateOf(product?.importPrice?.toString() ?: "") }
     var exportPrice by remember { mutableStateOf(product?.sellingPrice?.toString() ?: "") }
     var isCheckedInStock by remember { mutableStateOf(product?.inStock ?: false) }
-    var imageUri by remember { mutableStateOf<Uri?>(product?.image?.toUri()) }
+    var imageUrl by remember { mutableStateOf("") }
     var description by remember { mutableStateOf(product?.description ?: "") }
     val date by remember {
         mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
@@ -442,10 +445,10 @@ fun FormAddOrEditProductForm(
             )
 
             //image
-            UploadImageButton(onImageSelected = { imageUri = it })
-            imageUri?.let { uri ->
+            UploadImageButton(onImageSelected = { imageUrl = it ?: "" })
+            imageUrl.let { url ->
                 Image(
-                    painter = rememberAsyncImagePainter(uri),
+                    painter = rememberAsyncImagePainter(url),
                     contentDescription = "Uploaded Image",
                     modifier = Modifier
                         .size(200.dp)
@@ -496,7 +499,7 @@ fun FormAddOrEditProductForm(
                                 idProduct = "",
                                 description = description,
                                 genre = genre!!,
-                                image = imageUri.toString(),
+                                image = imageUrl,
                                 importPrice = importPrice.toInt(),
                                 inStock = isCheckedInStock,
                                 lastUpdated = LocalDate.now().atStartOfDay()
@@ -524,7 +527,7 @@ fun FormAddOrEditProductForm(
                                 idProduct = "",
                                 description = description,
                                 genre = genre!!,
-                                image = imageUri.toString(),
+                                image = imageUrl,
                                 importPrice = importPrice.toInt(),
                                 inStock = isCheckedInStock,
                                 lastUpdated = date,
@@ -546,7 +549,7 @@ fun FormAddOrEditProductForm(
                         importPrice = ""
                         exportPrice = ""
                         isCheckedInStock = false
-                        imageUri = null
+                        imageUrl = ""
                         description = ""
                     }) {
                     Icon(
@@ -572,7 +575,7 @@ data class FormData(
 )
 
 @Composable
-fun UploadImageButton(onImageSelected: (Uri?) -> Unit) {
+fun UploadImageButton(onImageSelected: (String?) -> Unit) {
     val context = LocalContext.current
     var imageName by remember { mutableStateOf("") }
 
@@ -584,7 +587,7 @@ fun UploadImageButton(onImageSelected: (Uri?) -> Unit) {
             context as Activity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1
         )
     }
-
+    val coroutineScope = rememberCoroutineScope()
     // Khởi tạo ActivityResultLauncher
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.OpenDocument()
@@ -596,7 +599,17 @@ fun UploadImageButton(onImageSelected: (Uri?) -> Unit) {
                 cursor.moveToFirst()
                 imageName = cursor.getString(nameIndex) ?: "Unknown Image"
             }
-            onImageSelected(uri)
+            uploadImageToFirebase(
+                coroutineScope = coroutineScope,
+                uri = uri,
+                onSuccess = {
+                    print("Iris ok $it ")
+                    onImageSelected(it)
+                },
+                onFailure = {
+                    print("Iris máaa ${it.stackTrace}")
+                }
+            )
             println("Iris $imageName")
             // Gửi URI của ảnh và tên ảnh qua callback
         }

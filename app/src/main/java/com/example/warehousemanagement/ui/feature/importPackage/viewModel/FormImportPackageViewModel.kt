@@ -50,7 +50,12 @@ class FormImportPackageViewModel @Inject constructor(
                     listProducts = products.value,
                     note = "",
                     packageName = savedStateHandle.get<String>("packageName") ?: "",
-                    receiver = ReceiverResponse("", null, "sss", "Khanh null"),
+                    receiver = ReceiverResponse(
+                        "67276a79a0b1c2534dca6e61",
+                        null,
+                        "sss",
+                        "Khanh null"
+                    ),
                     statusDone = false,
                     status = StatusPackage.PENDING,
                 )
