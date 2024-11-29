@@ -3,9 +3,11 @@ package com.example.warehousemanagement.domain.repository
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.ImportPackages
+import com.example.warehousemanagement.domain.model.Information
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
+import com.example.warehousemanagement.domain.model.User
 
 interface WareHouseRepository {
     suspend fun getAllProducts(): List<Product>
@@ -42,5 +44,8 @@ interface WareHouseRepository {
     suspend fun getAllCustomerDetails(): List<Customer>
     suspend fun addNewSupplier(supplier: Supplier)//: String
 
+    /// Login
+    suspend fun login(username: String, password: String): Map<String, String>
+    suspend fun getUserDetails(id: String): User
 
 }

@@ -18,14 +18,18 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -35,6 +39,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
 import com.example.warehousemanagement.ui.feature.customer.CustomersScreen
 import com.example.warehousemanagement.ui.feature.customer.FormAddOrEditCustomerForm
@@ -44,13 +49,20 @@ import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScr
 import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
+import com.example.warehousemanagement.ui.feature.login.LoginScreen
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
 import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
+import com.example.warehousemanagement.ui.feature.setting.SettingScreen
 import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
 import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.size_icon_30
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.launch
 
 @Composable
 fun BottomBar(
@@ -108,13 +120,30 @@ fun BottomBar(
         }
     }
 }
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface AppEntryPoint {
+    fun preferencesRepository(): PreferencesRepository
+}
 
 @Composable
-fun AppNavigation() {
+fun hiltEntryPoint(): AppEntryPoint {
+    val context = LocalContext.current
+    return EntryPointAccessors.fromApplication(context, AppEntryPoint::class.java)
+}
+
+@Composable
+fun AppNavigation(
+    preferencesRepository: PreferencesRepository = hiltEntryPoint().preferencesRepository()
+) {
     val navigationController = rememberNavController()
     var isShowNavigation by remember {
         mutableStateOf(true)
     }
+    val token by preferencesRepository.getAccessToken().collectAsState(initial = null)
+    val startDestination =
+        if (!token.isNullOrEmpty()) TopLevelDestinations.HomeAdmin.route else Routes.Login
+
     Scaffold(containerColor = colorResource(id = R.color.icon_tint_white), bottomBar = {
         if (isShowNavigation) {
             BottomBar(
@@ -124,13 +153,20 @@ fun AppNavigation() {
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController = navigationController,
-                startDestination = TopLevelDestinations.HomeAdmin.route,
+                startDestination = startDestination,
                 enterTransition = {
                     scaleIntoContainer()
                 },
                 exitTransition = {
                     scaleOutOfContainer()
                 }) {
+
+                composable<Routes.Login> {
+                    LoginScreen(
+                        onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) }
+                    )
+                    isShowNavigation = false
+                }
 
                 composable<Routes.HomeAdmin> {
                     AdminScreen(onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
@@ -143,13 +179,15 @@ fun AppNavigation() {
                         onNavigateToSupplier = { navigationController.navigate(Routes.Suppliers) })
                     isShowNavigation = true
                 }
+
                 composable<Routes.HomeWorker> {
                     Text(text = "Home")
                     isShowNavigation = true
                 }
 
+
                 composable<Routes.Setting> {
-                    Text(text = "Setting")
+                    SettingScreen()
                     isShowNavigation = true
                 }
 

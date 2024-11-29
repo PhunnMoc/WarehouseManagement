@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Routes {
-
+    @Serializable
+    object Login : Routes()
 
     @Serializable
     object HomeAdmin : Routes()
@@ -45,6 +46,7 @@ sealed class Routes {
 
     @Serializable
     object SearchProduct : Routes()
+
     @Serializable
     object SearchGenre : Routes()
 

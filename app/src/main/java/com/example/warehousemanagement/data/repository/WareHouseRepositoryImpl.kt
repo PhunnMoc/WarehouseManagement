@@ -8,6 +8,7 @@ import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
+import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import javax.inject.Inject
 
@@ -96,6 +97,14 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun addNewSupplier(supplier: Supplier) {
         return retrofit.addNewSupplier(supplier = supplier.convertToResponse())// ?: "Can't add"
+    }
+
+    override suspend fun login(username: String, password: String): Map<String, String> {
+        return retrofit.login(username = username, password = password).body() ?: mapOf()
+    }
+
+    override suspend fun getUserDetails(id: String): User {
+        return retrofit.getUserDetails(id = id).body()?.convertToModel()!!
     }
 
 }

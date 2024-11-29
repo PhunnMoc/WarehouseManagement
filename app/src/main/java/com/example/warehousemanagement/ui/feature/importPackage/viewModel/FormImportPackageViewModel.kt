@@ -9,8 +9,7 @@ import com.example.warehousemanagement.data.util.asResult
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StatusPackage
-import com.example.warehousemanagement.domain.model.Supplier
-import com.example.warehousemanagement.domain.model.User
+import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_GENRE_QUERY_NAME
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_STORAGE_LOCATION_QUERY_NAME
@@ -24,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -36,6 +36,7 @@ import javax.inject.Inject
 class FormImportPackageViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
     private val savedStateHandle: SavedStateHandle,
+    private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
@@ -43,23 +44,28 @@ class FormImportPackageViewModel @Inject constructor(
 
     fun addPackage(date: String) {
         viewModelScope.launch {
-            wareHouseRepository.createImportPackage(
-                importPackage = ImportPackages(
-                    idImportPackages = "",
-                    importDate = date,
-                    listProducts = products.value,
-                    note = "",
-                    packageName = savedStateHandle.get<String>("packageName") ?: "",
-                    receiver = ReceiverResponse(
-                        "67276a79a0b1c2534dca6e61",
-                        null,
-                        "sss",
-                        "Khanh null"
-                    ),
-                    statusDone = false,
-                    status = StatusPackage.PENDING,
+            try {
+                preferencesRepository
+                wareHouseRepository.createImportPackage(
+                    importPackage = ImportPackages(
+                        idImportPackages = "",
+                        importDate = date,
+                        listProducts = products.value,
+                        note = "",
+                        packageName = savedStateHandle.get<String>("packageName") ?: "",
+                        receiver = ReceiverResponse(
+                            _id = preferencesRepository.getUserId().stateIn(this).value,
+                            null,
+                            null,
+                            null
+                        ),
+                        statusDone = false,
+                        status = StatusPackage.PENDING,
+                    )
                 )
-            )
+            } catch (e: Exception) {
+
+            }
         }
     }
 

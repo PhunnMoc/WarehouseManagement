@@ -106,7 +106,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
 
     implementation("com.google.firebase:firebase-analytics")
-
+    implementation ("androidx.datastore:datastore-preferences:1.1.1")
 
 }
 kapt {

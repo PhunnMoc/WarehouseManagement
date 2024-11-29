@@ -8,6 +8,7 @@ import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.ReceiverResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
+import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.Genre
@@ -206,6 +207,18 @@ fun ImportPackages.convertToResponse(): ImportPackageResponseItem {
 
 fun ReceiverResponse.convertToModel(): User? {
     if (_id == null || information == null) {
+        return null
+    }
+    return User(
+        idUser = _id,
+        username = username ?: "",
+        passwordHash = passwordHash ?: "",
+        information = information,
+    )
+}
+
+fun UserResponse.convertToModel(): User? {
+    if (_id == null || username == null || passwordHash == null || information == null) {
         return null
     }
     return User(

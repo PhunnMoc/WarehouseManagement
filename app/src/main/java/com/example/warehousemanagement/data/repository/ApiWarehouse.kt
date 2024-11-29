@@ -6,9 +6,13 @@ import com.example.warehousemanagement.data.network.dto.ImportPackageResponseIte
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
+import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.domain.model.Supplier
+import com.example.warehousemanagement.domain.model.User
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -83,4 +87,16 @@ interface ApiWarehouse {
     suspend fun addNewSupplier(
         @Body supplier: SupplierResponse
     )
+
+    @FormUrlEncoded
+    @POST("/auth/login")
+    suspend fun login(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Response<Map<String, String>>
+
+    @GET("/user/{id}")
+    suspend fun getUserDetails(
+        @Path("id") id: String
+    ): Response<UserResponse>
 }
