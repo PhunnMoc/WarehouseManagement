@@ -18,12 +18,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -56,7 +54,6 @@ import com.example.warehousemanagement.ui.feature.notification.NotificationScree
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
 import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchCustomerScreen
-import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
 import com.example.warehousemanagement.ui.feature.setting.SettingScreen
 import com.example.warehousemanagement.ui.feature.search.SearchSupplierScreen
@@ -68,23 +65,32 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.launch
 
 @Composable
 fun BottomBar(
-    navController: NavHostController, modifier: Modifier = Modifier
+    navController: NavHostController, modifier: Modifier = Modifier,
+    homeRoute: Routes,
 ) {
-    val screens = listOf(
-        Routes.HomeAdmin,
-        Routes.Analyze,
-        Routes.Setting,
-    )
+
 
     val iconNav = listOf(
         R.drawable.icons8_home__1_,
         R.drawable.icons8_setting,
         R.drawable.icons8_search,
     )
+    val topLevelDestinations = if (homeRoute == Routes.HomeAdmin) {
+        listOf(
+            TopLevelDestinations.HomeAdmin,
+            TopLevelDestinations.Analyze,
+            TopLevelDestinations.Setting
+        )
+    } else {
+        listOf(
+            TopLevelDestinations.HomeWorker,
+            TopLevelDestinations.Analyze,
+            TopLevelDestinations.Setting
+        )
+    }
 
     NavigationBar(
         modifier = Modifier.shadow(elevation = Dimens.PADDING_20_DP, shape = RectangleShape),
@@ -93,7 +99,7 @@ fun BottomBar(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
-        TopLevelDestinations.entries.map { screen ->
+        topLevelDestinations.map { screen ->
             NavigationBarItem(
                 label = {
                     Text(text = screen.label)
@@ -147,20 +153,29 @@ fun AppNavigation(
     var isShowNavigation by remember {
         mutableStateOf(true)
     }
+
     val token by preferencesRepository.getAccessToken().collectAsState(initial = null)
+    val role by preferencesRepository.getUserRole().collectAsState(initial = null)
     val startDestination =
-        if (!token.isNullOrEmpty()) TopLevelDestinations.HomeAdmin.route else Routes.Login
+        if (!token.isNullOrEmpty()) {
+            if (role == "ADMIN") {
+                TopLevelDestinations.HomeAdmin.route
+            } else {
+                TopLevelDestinations.HomeWorker.route
+            }
+        } else Routes.Login
 
     Scaffold(containerColor = colorResource(id = R.color.icon_tint_white), bottomBar = {
         if (isShowNavigation) {
             BottomBar(
+                homeRoute = startDestination,
                 navController = navigationController,
             )
         }
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController = navigationController,
-                startDestination = TopLevelDestinations.HomeAdmin.route,
+                startDestination = startDestination,
                 enterTransition = {
                     scaleIntoContainer()
                 },
@@ -334,7 +349,7 @@ fun AppNavigation(
                         onClickSearch = { navigationController.navigate(Routes.SearchGenre) },
                         onNavigationBack = { navigationController.popBackStack() },
                         onClickAddGenre = { navigationController.navigate(Routes.AddGenres) },
-                        )
+                    )
                     isShowNavigation = false
                 }
                 composable<Routes.AddGenres> {
@@ -447,7 +462,6 @@ fun AppNavigation(
         }
     }
 }
-
 
 
 fun scaleIntoContainer(
