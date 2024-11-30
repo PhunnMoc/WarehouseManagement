@@ -108,6 +108,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("androidx.datastore:datastore-preferences:1.1.1")
 
+    implementation ("io.ktor:ktor-client-android:1.6.4")
+    implementation ("io.ktor:ktor-client-websockets:1.6.4")
+
+
 }
 kapt {
     correctErrorTypes = true

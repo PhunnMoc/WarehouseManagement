@@ -3,6 +3,7 @@ package com.example.warehousemanagement.ui.feature.login.viewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.warehousemanagement.data.util.WebSocketManager
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,10 @@ class LoginViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
     private val savedStateHandle: SavedStateHandle,
     private val preferencesRepository: PreferencesRepository,
+    private val webSocketManager: WebSocketManager,
 ) : ViewModel() {
+
+    val notifications: StateFlow<String> = webSocketManager.notifications
 
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val loginUiState: StateFlow<LoginUiState> = _loginUiState
@@ -33,6 +37,7 @@ class LoginViewModel @Inject constructor(
                 if (!result["token"].isNullOrBlank()) {
                     _loginUiState.value = LoginUiState.Success(token = result["token"])
                     preferencesRepository.setCurrentUser(result)
+                    webSocketManager.connect()
                 } else {
                     _loginUiState.value = LoginUiState.Error
                 }

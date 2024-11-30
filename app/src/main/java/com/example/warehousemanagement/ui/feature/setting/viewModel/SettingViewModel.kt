@@ -3,6 +3,7 @@ package com.example.warehousemanagement.ui.feature.setting.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.util.Result
+import com.example.warehousemanagement.data.util.WebSocketManager
 import com.example.warehousemanagement.data.util.asResult
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
@@ -20,8 +21,14 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
-    private val preferencesRepository: PreferencesRepository
+    private val preferencesRepository: PreferencesRepository,
+    private val webSocketManager: WebSocketManager,
 ) : ViewModel() {
+
+    override fun onCleared() {
+        super.onCleared()
+        webSocketManager.disconnect()
+    }
 
     val informationUiState: StateFlow<InformationUiState> = getInformation().stateIn(
         scope = viewModelScope,
