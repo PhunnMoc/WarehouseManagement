@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 sealed class Routes {
 
 
+
     @Serializable
     object HomeAdmin : Routes()
 
@@ -49,7 +50,13 @@ sealed class Routes {
     ///
     @Serializable
     object Genres : Routes()
+    @Serializable
+    data class Genre(val idGenre: String) : Routes()
 
+    @Serializable
+    object AddGenres : Routes()
+    @Serializable
+    object SearchGenre: Routes()
     ///
     @Serializable
     object ImportPackage : Routes()
@@ -60,7 +67,8 @@ sealed class Routes {
 
     @Serializable
     data class Supplier(val idSupplier: String) : Routes()
-
+    @Serializable
+    object SearchSupplier: Routes()
     @Serializable
     object AddSuppliers : Routes()
 
@@ -69,6 +77,9 @@ sealed class Routes {
 
     @Serializable
     data class Customer(val idCustomer: String) : Routes()
+    @Serializable
+    object SearchCustomer: Routes()
+
 
     @Serializable
     object AddCustomers : Routes()

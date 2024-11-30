@@ -6,7 +6,6 @@ import com.example.warehousemanagement.data.network.dto.ImportPackageResponseIte
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
-import com.example.warehousemanagement.domain.model.Supplier
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -36,7 +35,11 @@ interface ApiWarehouse {
 
     @GET("/genre")
     suspend fun getAllGenres(): Response<List<GenreResponse>>
-
+    @GET("/genre/search")
+    suspend fun getSearchesGenresDetails(
+        @Query("props") props: String,
+        @Query("value") value: String
+    ): Response<List<GenreResponse>>
     @GET("/storage-location")
     suspend fun getAllStoLocDetails(): Response<List<StorageLocationResponse>>
 
@@ -51,15 +54,33 @@ interface ApiWarehouse {
 
     @GET("/supplier/{id}")
     suspend fun getSupplierDetails(@Path("id") id: String): Response<SupplierResponse>
-
+    @GET("/supplier/search")
+    suspend fun getSearchedSuppliersDetails(
+        @Query("props") props: String,
+        @Query("value") value: String
+    ): Response<List<SupplierResponse>>
     @GET("/customer")
     suspend fun getAllCustomer(): Response<List<CustomerResponse>>
 
     @GET("/customer/{id}")
     suspend fun getCustomerDetails(@Path("id") id: String): Response<CustomerResponse>
-
+    @GET("/customer/search")
+    suspend fun getSearchedCustomerDetails(
+        @Query("props") props: String,
+        @Query("value") value: String
+    ): Response<List<CustomerResponse>>
     @POST("/supplier") // Adjust the endpoint based on your backend configuration
     suspend fun addNewSupplier(
         @Body supplier: SupplierResponse
     )
+    @POST("/customer") // Adjust the endpoint based on your backend configuration
+    suspend fun addNewCustomer(
+        @Body customer: CustomerResponse
+    )
+    @POST("/genre") // Adjust the endpoint based on your backend configuration
+    suspend fun addNewGenre(
+        @Body genre: GenreResponse
+    )
+
+
 }

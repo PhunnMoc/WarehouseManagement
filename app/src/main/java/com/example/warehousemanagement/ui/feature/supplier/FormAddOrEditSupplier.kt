@@ -41,7 +41,6 @@ import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
-import com.example.warehousemanagement.ui.common.ShowText
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.AddSupplierViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 
@@ -193,6 +192,7 @@ fun FormAddOrEditSupplierForm(
                                 ratings = ratings,
                             )
                         )
+                        Toast.makeText(context, " added successfully!", Toast.LENGTH_SHORT).show()
                         onBackClick()
                         // Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
                     })

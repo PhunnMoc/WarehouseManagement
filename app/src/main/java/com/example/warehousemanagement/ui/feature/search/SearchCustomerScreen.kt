@@ -35,26 +35,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.domain.model.Product
+import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductUiState
-import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductViewModel
+import com.example.warehousemanagement.ui.feature.search.viewModel.SearchCustomerUiState
+import com.example.warehousemanagement.ui.feature.search.viewModel.SearchCustomerViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchProductScreen(
-    viewModel: SearchProductViewModel = hiltViewModel(),
+fun SearchCustomerScreen(
+    viewModel: SearchCustomerViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onClickDetailProduct: (String) -> Unit,
+    onClickDetailCustomer: (String) -> Unit,
 ) {
     var searchValue by rememberSaveable { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val searchResults by viewModel.searchCustomerUiState.collectAsState()
 
-    val searchResults by viewModel.searchProductUiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,20 +73,19 @@ fun SearchProductScreen(
             endContent = {},
             scrollBehavior = scrollBehavior
         )
+
         OutlinedTextField(
             value = searchValue,
             onValueChange = {
                 searchValue = it
                 viewModel.onChangeSearchQuery(searchValue)
-
             },
-            label = { Text("Value") },
+            label = { Text("Search Customers") },
             modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
                 IconButton(
                     onClick = {
-
-                        //  onSearch(searchKey, searchValue)
+                        // Perform search when clicking the icon if needed
                     },
                     modifier = Modifier.align(Alignment.End),
                 ) {
@@ -100,57 +98,56 @@ fun SearchProductScreen(
             }
         )
 
-        //  Spacer(modifier = Modifier.height(16.dp))
         Spacer(modifier = Modifier.height(16.dp))
+
         when (val searchResult = searchResults) {
-            is SearchProductUiState.Loading -> IndeterminateCircularIndicator()
-            is SearchProductUiState.Error -> NothingText()
-            is SearchProductUiState.Success -> {
-                if (searchResult.listSuggestionProduct.isEmpty()) {
-                    Text("No products found", color = Color.Gray)
+            is SearchCustomerUiState.Loading -> IndeterminateCircularIndicator()
+            is SearchCustomerUiState.Error -> NothingText()
+            is SearchCustomerUiState.Success -> {
+                if (searchResult.listSuggestionCustomer.isEmpty()) {
+                    Text("No customers found", color = Color.Gray)
                 } else {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(searchResult.listSuggestionProduct) { product ->
-                            ProductItem(
+                        items(searchResult.listSuggestionCustomer) { customer ->
+                            CustomerItem(
                                 modifier = Modifier.clickable {
-                                    onClickDetailProduct(product.idProduct)
+                                    onClickDetailCustomer(customer.idCustomer)
                                 },
-                                product = product
+                                customer = customer
                             )
                         }
                     }
                 }
             }
         }
-
     }
 }
 
 @Composable
-fun ProductItem(
+fun CustomerItem(
     modifier: Modifier = Modifier,
-    product: Product
+    customer: Customer
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold)
-            Text(text = "Name: ${product.productName}")
-            Text(text = "Genre: ${product.genre.genreName}")
-            Text(text = "Price: ${product.sellingPrice}")
-            Text(text = "Quantity: ${product.quantity}")
+            Text(text = "ID: ${customer.idCustomer}", fontWeight = FontWeight.Bold)
+            Text(text = "Name: ${customer.customerName}")
+            Text(text = "Email: ${customer.email}")
+            Text(text = "Address: ${customer.address.street}, ${customer.address.city}, ${customer.address.postalCode}, ${customer.address.district}")
+            Text(text = "Phone: ${customer.address.phone}")
             Divider(Modifier.fillMaxWidth())
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun PreviewSearchProductScreen() {
-//    SearchProductScreen(
-//        listOf(product1, product2, product3, product4)
-//    )
+fun PreviewSearchCustomerScreen() {
+    SearchCustomerScreen(
+        onBackClick = {},
+        onClickDetailCustomer = {}
+    )
 }

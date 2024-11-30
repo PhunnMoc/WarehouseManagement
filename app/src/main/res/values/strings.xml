@@ -13,6 +13,7 @@
     <string name="screen_customer_main_title">CUSTOMER</string>
     <string name="screen_setting_main_title">SETTING</string>
     <string name="screen_genre_main_title">GENRE</string>
+    <string name="screen_search_main_title">SEARCH</string>
     <string name="filter_tile_genre">Genre</string>
     <string name="filter_tile_customer">Customer</string>
     <string name="filter_tile_supplier">Supplier</string>

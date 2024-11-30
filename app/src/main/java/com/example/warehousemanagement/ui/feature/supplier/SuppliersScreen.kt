@@ -21,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -47,7 +48,6 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.common.SuplierCard
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.SupplierUIState
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.SupplierViewModel
@@ -59,6 +59,7 @@ import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 fun SuppliersScreen(
     modifier: Modifier = Modifier,
     onClickAddSupplier: () -> Unit,
+    onClickSearch: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: SupplierViewModel = hiltViewModel()
 ) {
@@ -142,7 +143,13 @@ fun SuppliersScreen(
             Column(
                 modifier = Modifier.padding(horizontal = Dimens.PADDING_16_DP),
             ) {
-                SearchBarPreview()
+//                SearchBarPreview(modifier = Modifier.clickable
+//                {
+//                    onClickSearch()
+//                })
+                Button(onClick = { onClickSearch() }) {
+                    Text(text = "SEARCH")
+                }
                 FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 

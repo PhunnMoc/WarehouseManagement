@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.ui.feature.customer
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,13 +28,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.domain.model.Address
+import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.feature.customer.viewModel.AddCustomerViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +48,9 @@ fun FormAddOrEditCustomerForm(
     modifier: Modifier = Modifier,
     onSubmit: (CustomerData) -> Unit,
     onBackClick: () -> Unit,
+    viewModel: AddCustomerViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     var customerName by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var street by rememberSaveable { mutableStateOf("") }
@@ -159,17 +167,22 @@ fun FormAddOrEditCustomerForm(
                             city.isNotEmpty() && postalCode.isNotEmpty() && phone.isNotEmpty(),
                     labelname = "Submit",
                     onClick = {
-                        onSubmit(
-                            CustomerData(
+                        viewModel.addNewCustomer(
+                            Customer(
+                                idCustomer = "",
                                 customerName = customerName,
                                 email = email,
-                                street = street,
-                                district = district,
-                                city = city,
-                                postalCode = postalCode,
-                                phone = phone
+                                address = Address(
+                                    street = street,
+                                    district = district,
+                                    city = city,
+                                    postalCode = postalCode,
+                                    phone = phone,
+                                ),
                             )
                         )
+                        Toast.makeText(context, "added successfully!", Toast.LENGTH_SHORT).show()
+                        onBackClick()
                     })
             }
         }
