@@ -3,8 +3,11 @@ package com.example.warehousemanagement.data.repository
 import com.example.warehousemanagement.data.mapper.convertToModel
 import com.example.warehousemanagement.data.mapper.convertToResponse
 import com.example.warehousemanagement.domain.model.Customer
+import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.ImportPackages
+import com.example.warehousemanagement.domain.model.Information
+import com.example.warehousemanagement.domain.model.Notification
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
@@ -89,8 +92,18 @@ class WareHouseRepositoryImpl @Inject constructor(
             ?: listOf()
     }
 
+    override suspend fun getPendingExportPackages(): List<ExportPackages> {
+        return retrofit.getPendingExportPackages().body()?.mapNotNull { it.convertToModel() }
+            ?: listOf()
+    }
+
     override suspend fun getDoneImportPackages(): List<ImportPackages> {
         return retrofit.getDoneImportPackages().body()?.mapNotNull { it.convertToModel() }
+            ?: listOf()
+    }
+
+    override suspend fun getDoneExportPackages(): List<ExportPackages> {
+        return retrofit.getAllDoneExportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
     }
 
@@ -108,6 +121,10 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun getUserDetails(id: String): User {
         return retrofit.getUserDetails(id = id).body()?.convertToModel()!!
+    }
+
+    override suspend fun getAllNotificationDetails(): List<Notification> {
+        return retrofit.getAllNotificationDetails().body() ?: listOf()
     }
 
 }

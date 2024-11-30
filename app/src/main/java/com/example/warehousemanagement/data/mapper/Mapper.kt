@@ -2,6 +2,7 @@ package com.example.warehousemanagement.data.mapper
 
 import com.example.warehousemanagement.data.network.dto.AddressResponse
 import com.example.warehousemanagement.data.network.dto.CustomerResponse
+import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
 import com.example.warehousemanagement.data.network.dto.ProductResponse
@@ -11,6 +12,7 @@ import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Customer
+import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
@@ -95,12 +97,7 @@ fun StorageLocation.convertToResponse(): StorageLocationResponse {
 }
 
 fun SupplierResponse.convertToModel(): Supplier? {
-    if (
-        _id == null ||
-        name == null ||
-        email == null ||
-        address == null
-    ) {
+    if (_id == null || name == null || email == null || address == null) {
         return null
     }
     return Supplier(
@@ -124,12 +121,7 @@ fun Supplier.convertToResponse(): SupplierResponse {
 }
 
 fun CustomerResponse.convertToModel(): Customer? {
-    if (
-        id == null ||
-        customerName == null ||
-        email == null ||
-        address == null
-    ) {
+    if (id == null || customerName == null || email == null || address == null) {
         return null
     }
     return Customer(
@@ -151,10 +143,7 @@ fun Customer.convertToResponse(): CustomerResponse {
 }
 
 fun AddressResponse.convertToModel(): Address? {
-    if (
-        postalCode == null ||
-        phone == null
-    ) {
+    if (postalCode == null || phone == null) {
         return null
     }
     return Address(
@@ -177,9 +166,7 @@ fun Address.convertToResponse(): AddressResponse {
 }
 
 fun ImportPackageResponseItem.convertToModel(): ImportPackages? {
-    if (
-        id == null || packageName == null || receiver == null || importDate == null
-    ) {
+    if (id == null || packageName == null || receiver == null || importDate == null) {
         return null
     }
     return ImportPackages(
@@ -226,5 +213,23 @@ fun UserResponse.convertToModel(): User? {
         username = username ?: "",
         passwordHash = passwordHash ?: "",
         information = information,
+    )
+}
+
+
+fun ExportPackageResponse.convertToModel(): ExportPackages? {
+    if (id == null || listProducts == null || sender == null || exportDate == null) {
+        return null
+    }
+    return ExportPackages(
+        idExportPackages = id,
+        packageName = packageName ?: "Package Name",
+        listProduct = listProducts.mapNotNull { it.convertToModel() },
+        exportDate = exportDate,
+        customer = customer?.convertToModel()!!,
+        status = statusDone ?: false,
+        deliveryMethod = deliveryMethod ?: "",
+        note = note,
+        sender = sender.convertToModel()!!,
     )
 }

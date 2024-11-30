@@ -1,12 +1,14 @@
 package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.network.dto.CustomerResponse
+import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
+import com.example.warehousemanagement.domain.model.Notification
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.model.User
 import retrofit2.Response
@@ -67,8 +69,14 @@ interface ApiWarehouse {
     @GET("/import-packages/pending")
     suspend fun getPendingImportPackages(): Response<List<ImportPackageResponseItem>>
 
+    @GET("/export-packages/pending")
+    suspend fun getPendingExportPackages(): Response<List<ExportPackageResponse>>
+
     @GET("/import-packages/done")
     suspend fun getDoneImportPackages(): Response<List<ImportPackageResponseItem>>
+
+    @GET("/export-packages/done")
+    suspend fun getAllDoneExportPackages(): Response<List<ExportPackageResponse>>
 
     @POST("/import-packages") // Adjust the endpoint path to match your API
     suspend fun createImportPackage(
@@ -100,6 +108,9 @@ interface ApiWarehouse {
     suspend fun getUserDetails(
         @Path("id") id: String
     ): Response<UserResponse>
+
+    @GET("/notification")
+    suspend fun getAllNotificationDetails(): Response<List<Notification>>
 
 
 }

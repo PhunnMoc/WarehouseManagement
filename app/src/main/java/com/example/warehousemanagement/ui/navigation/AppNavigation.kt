@@ -43,6 +43,7 @@ import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
 import com.example.warehousemanagement.ui.feature.customer.CustomersScreen
 import com.example.warehousemanagement.ui.feature.customer.FormAddOrEditCustomerForm
+import com.example.warehousemanagement.ui.feature.exportPackage.ExportPackageScreen
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
@@ -50,6 +51,7 @@ import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.login.LoginScreen
+import com.example.warehousemanagement.ui.feature.notification.NotificationScreen
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
 import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
@@ -120,6 +122,7 @@ fun BottomBar(
         }
     }
 }
+
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface AppEntryPoint {
@@ -153,7 +156,7 @@ fun AppNavigation(
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController = navigationController,
-                startDestination = startDestination,
+                startDestination = TopLevelDestinations.HomeAdmin.route,
                 enterTransition = {
                     scaleIntoContainer()
                 },
@@ -162,21 +165,22 @@ fun AppNavigation(
                 }) {
 
                 composable<Routes.Login> {
-                    LoginScreen(
-                        onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) }
-                    )
+                    LoginScreen(onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) })
                     isShowNavigation = false
                 }
 
                 composable<Routes.HomeAdmin> {
-                    AdminScreen(onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
+                    AdminScreen(
+                        onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
                         onNavigateToGenre = { navigationController.navigate(Routes.Genres) },
                         onNavigateToImportPackage = { navigationController.navigate(Routes.ImportPackage) },
-                        onNavigateToExportPackage = {},
+                        onNavigateToExportPackage = { navigationController.navigate(Routes.ExportPackage) },
                         onNavigateToCustomer = { navigationController.navigate(Routes.Customers) },
-                        onNavigateToSupplier = { navigationController.navigate(Routes.Suppliers) })
+                        onNavigateToSupplier = { navigationController.navigate(Routes.Suppliers) },
+                        onNavigateNotification = { navigationController.navigate(Routes.Notification) },
+                    )
                     isShowNavigation = true
                 }
 
@@ -194,6 +198,13 @@ fun AppNavigation(
                 composable<Routes.Analyze> {
                     Text(text = "Analyze")
                     isShowNavigation = true
+
+                }
+                composable<Routes.Notification> {
+                    NotificationScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                    )
+                    isShowNavigation = false
 
                 }
                 composable<Routes.QRCodeScanner> {
@@ -232,14 +243,13 @@ fun AppNavigation(
                 }
 
                 composable<Routes.AddProducts> {
-                    FormAddOrEditProductForm(onSubmit = {},
-                        onAdd1MoreProduct = { packageName ->
-                            navigationController.navigate(
-                                Routes.AddProducts(
-                                    packageName = packageName
-                                )
+                    FormAddOrEditProductForm(onSubmit = {}, onAdd1MoreProduct = { packageName ->
+                        navigationController.navigate(
+                            Routes.AddProducts(
+                                packageName = packageName
                             )
-                        },
+                        )
+                    },
 
                         onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
@@ -324,19 +334,32 @@ fun AppNavigation(
                 }
 
                 composable<Routes.ImportPackage> {
-                    ImportPackageScreen(
-                        onClickAddProduct = { packageName ->
-                            navigationController.navigate(
-                                Routes.AddProducts(
-                                    packageName = packageName
-                                )
+                    ImportPackageScreen(onClickAddProduct = { packageName ->
+                        navigationController.navigate(
+                            Routes.AddProducts(
+                                packageName = packageName
                             )
-                        },
+                        )
+                    },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { /*TODO*/ },
-                        onNavigationDetailImportPackage = {}
-                    )
+                        onNavigationDetailImportPackage = {})
+                    isShowNavigation = false
+                }
+
+                composable<Routes.ExportPackage> {
+                    ExportPackageScreen(onClickAddProduct = { packageName ->
+                        navigationController.navigate(
+                            Routes.AddProducts(
+                                packageName = packageName
+                            )
+                        )
+                    },
+                        onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickSearch = { /*TODO*/ },
+                        onNavigationDetailExportPackages = {})
                     isShowNavigation = false
                 }
 
@@ -349,9 +372,7 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.AddSuppliers> {
-                    FormAddOrEditSupplierForm(
-                        onBackClick = { navigationController.popBackStack() }
-                    )
+                    FormAddOrEditSupplierForm(onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
                 composable<Routes.Customers> {
@@ -363,10 +384,8 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.AddCustomers> {
-                    FormAddOrEditCustomerForm(
-                        onSubmit = {},
-                        onBackClick = { navigationController.popBackStack() }
-                    )
+                    FormAddOrEditCustomerForm(onSubmit = {},
+                        onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
             }

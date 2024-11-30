@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.ui.feature.importPackage
+package com.example.warehousemanagement.ui.feature.exportPackage
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -10,31 +10,34 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.warehousemanagement.ui.common.ExportPackageCard
 import com.example.warehousemanagement.ui.common.ImportPackageCard
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.ExportPackageUiState
+import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.PendingExportPViewModel
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.ImportPackageUiState
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.PendingImportPViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
-fun PendingImportPackage(
+fun PendingExportPackage(
     modifier: Modifier = Modifier,
-    viewModel: PendingImportPViewModel = hiltViewModel(),
-    onNavigationDetailImportPackages: (String) -> Unit,
+    viewModel: PendingExportPViewModel = hiltViewModel(),
+    onNavigationDetailExportPackages: (String) -> Unit,
 ) {
-    val importPackageUiState by viewModel.importPackageUiState.collectAsStateWithLifecycle()
+    val exportPackageUiState by viewModel.exportPackageUiState.collectAsStateWithLifecycle()
 
-    when (val importPackage = importPackageUiState) {
-        is ImportPackageUiState.Loading -> IndeterminateCircularIndicator()
-        is ImportPackageUiState.Error -> NothingText()
-        is ImportPackageUiState.Success -> {
+    when (val exportPackage = exportPackageUiState) {
+        is ExportPackageUiState.Loading -> IndeterminateCircularIndicator()
+        is ExportPackageUiState.Error -> NothingText()
+        is ExportPackageUiState.Success -> {
             LazyColumn(modifier = modifier.padding(Dimens.PADDING_10_DP)) {
-                items(importPackage.importPackages) { importPackage ->
-                    ImportPackageCard(
-                        importPackage = importPackage,
+                items(exportPackage.exportPackages) { exportPackage ->
+                    ExportPackageCard(
+                        exportPackage = exportPackage,
                         onCardClick = {},
-                        onLongPress = onNavigationDetailImportPackages,
+                        onLongPress = onNavigationDetailExportPackages,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

@@ -21,6 +21,9 @@ sealed class Routes {
     object Setting : Routes()
 
     @Serializable
+    object Notification : Routes()
+
+    @Serializable
     object QRCodeScanner : Routes()
 
     /////
@@ -60,6 +63,9 @@ sealed class Routes {
     ///
     @Serializable
     object ImportPackage : Routes()
+
+    @Serializable
+    object ExportPackage : Routes()
 
     ///
     @Serializable

@@ -41,7 +41,7 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterProductScreen(
+    fun FilterProductScreen(
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(onDismissRequest = { /*TODO*/ }) {

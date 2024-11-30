@@ -6,11 +6,10 @@ data class ExportPackages(
     val idExportPackages: String,
     val packageName: String,
     val listProduct: List<Product>,
-    val totalAmount: Double,
-    val exportDate: Date,
-    val idCustomer: String,
-    val shipTo: String,
-    val status: StatusPackage = StatusPackage.PENDING,
+    val exportDate: String,
+    val customer: Customer,
+    val status: Boolean,//StatusPackage = StatusPackage.PENDING,
     val deliveryMethod: String,
-    val note: String? = null
+    val note: String? = null,
+    val sender: User,
 )

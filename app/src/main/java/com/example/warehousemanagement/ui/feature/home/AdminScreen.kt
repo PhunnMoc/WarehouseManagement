@@ -44,6 +44,7 @@ fun AdminScreen(
     onNavigateToSupplier: () -> Unit,
     onNavigateToImportPackage: () -> Unit,
     onNavigateToExportPackage: () -> Unit,
+    onNavigateNotification: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -63,6 +64,7 @@ fun AdminScreen(
                         modifier = Modifier.size(Dimens.SIZE_ICON_30_DP),
                         idIcon = R.drawable.icons8_bell,
                         isNewNotification = false,
+                        onClickIcon = onNavigateNotification,
                     )
                 },
                 scrollBehavior = scrollBehavior
@@ -99,7 +101,7 @@ fun AdminScreen(
                     onNavigateToCustomer = onNavigateToCustomer,
                     onNavigateToSupplier = onNavigateToSupplier,
                     onNavigateToImportPackage = onNavigateToImportPackage,
-                    onNavigateToExportPackage =onNavigateToExportPackage ,
+                    onNavigateToExportPackage = onNavigateToExportPackage,
                     isAdmin = true
                 )
             }
