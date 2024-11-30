@@ -43,6 +43,7 @@ import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
 import com.example.warehousemanagement.ui.feature.customer.CustomersScreen
 import com.example.warehousemanagement.ui.feature.customer.FormAddOrEditCustomerForm
+import com.example.warehousemanagement.ui.feature.genre.FormAddOrEditGenreForm
 import com.example.warehousemanagement.ui.feature.exportPackage.ExportPackageScreen
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
@@ -54,8 +55,11 @@ import com.example.warehousemanagement.ui.feature.login.LoginScreen
 import com.example.warehousemanagement.ui.feature.notification.NotificationScreen
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
 import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
+import com.example.warehousemanagement.ui.feature.search.SearchCustomerScreen
+import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
 import com.example.warehousemanagement.ui.feature.setting.SettingScreen
+import com.example.warehousemanagement.ui.feature.search.SearchSupplierScreen
 import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
 import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -329,10 +333,33 @@ fun AppNavigation(
                     GenreScreen(
                         onClickSearch = { navigationController.navigate(Routes.SearchGenre) },
                         onNavigationBack = { navigationController.popBackStack() },
+                        onClickSearch = { navigationController.navigate(Routes.SearchGenre) },
+                        onClickAddGenre = { navigationController.navigate(Routes.AddGenres) },
+
+                        )
+                    isShowNavigation = false
+                }
+                composable<Routes.AddGenres> {
+                    FormAddOrEditGenreForm(
+                        onSubmit = {},
+                        onBackClick = { navigationController.popBackStack() }
                     )
                     isShowNavigation = false
                 }
+                composable<Routes.SearchGenre> {
+                    SearchGenreScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickDetailGenre = { id ->
+                            navigationController.navigate(
+                                Routes.Genre(
+                                    idGenre = id
+                                )
+                            )
+                        },
+                    )
 
+                    isShowNavigation = false
+                }
                 composable<Routes.ImportPackage> {
                     ImportPackageScreen(onClickAddProduct = { packageName ->
                         navigationController.navigate(
@@ -366,7 +393,22 @@ fun AppNavigation(
                 composable<Routes.Suppliers> {
                     SuppliersScreen(
                         onBackClick = { navigationController.popBackStack() },
+                        onClickSearch = { navigationController.navigate(Routes.SearchSupplier) },
                         onClickAddSupplier = { navigationController.navigate(Routes.AddSuppliers) },
+                    )
+
+                    isShowNavigation = false
+                }
+                composable<Routes.SearchSupplier> {
+                    SearchSupplierScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickDetailSupplier = { id ->
+                            navigationController.navigate(
+                                Routes.Supplier(
+                                    idSupplier = id
+                                )
+                            )
+                        },
                     )
 
                     isShowNavigation = false
@@ -378,7 +420,22 @@ fun AppNavigation(
                 composable<Routes.Customers> {
                     CustomersScreen(
                         onBackClick = { navigationController.popBackStack() },
+                        onClickSearch = { navigationController.navigate(Routes.SearchCustomer) },
                         onClickAddCustomer = { navigationController.navigate(Routes.AddCustomers) },
+                    )
+
+                    isShowNavigation = false
+                }
+                composable<Routes.SearchCustomer> {
+                    SearchCustomerScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                        onClickDetailCustomer = { id ->
+                            navigationController.navigate(
+                                Routes.Customer(
+                                    idCustomer = id
+                                )
+                            )
+                        },
                     )
 
                     isShowNavigation = false
@@ -392,6 +449,8 @@ fun AppNavigation(
         }
     }
 }
+
+
 
 fun scaleIntoContainer(
     direction: ScaleTransitionDirection = ScaleTransitionDirection.INWARDS,

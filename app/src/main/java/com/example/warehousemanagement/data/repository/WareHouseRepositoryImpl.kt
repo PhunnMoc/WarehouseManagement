@@ -74,6 +74,12 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun getAllSupplierDetails(): List<Supplier> {
         TODO("Not yet implemented")
     }
+    override suspend fun searchSuppliersByName(nameString: String): List<Supplier> {
+        return retrofit.getSearchedSuppliersDetails(
+            props = "supplierName", // Adjust the query parameter based on your API
+            value = nameString
+        ).body()?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
 
     override suspend fun getAllCustomers(): List<Customer> {
         return retrofit.getAllCustomer().body()?.mapNotNull { it.convertToModel() } ?: listOf()
@@ -86,7 +92,12 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun getAllCustomerDetails(): List<Customer> {
         TODO("Not yet implemented")
     }
-
+    override suspend fun searchCustomersByName(nameString: String): List<Customer> {
+        return retrofit.getSearchedCustomerDetails(
+            props = "customerName", // Adjust the query parameter based on your API
+            value = nameString
+        ).body()?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
     override suspend fun getPendingImportPackages(): List<ImportPackages> {
         return retrofit.getPendingImportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
@@ -114,6 +125,9 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun addNewSupplier(supplier: Supplier) {
         return retrofit.addNewSupplier(supplier = supplier.convertToResponse())// ?: "Can't add"
     }
+    override suspend fun addNewCustomer(customer: Customer) {
+        return retrofit.addNewCustomer(customer = customer.convertToResponse())// ?: "Can't add"
+    }
 
     override suspend fun login(username: String, password: String): Map<String, String> {
         return retrofit.login(username = username, password = password).body() ?: mapOf()
@@ -127,4 +141,7 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getAllNotificationDetails().body() ?: listOf()
     }
 
+    override suspend fun addNewGenre(genre: Genre) {
+        return retrofit.addNewGenre(genre = genre.convertToResponse())// ?: "Can't add"
+    }
 }

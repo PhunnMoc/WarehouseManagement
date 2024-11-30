@@ -38,7 +38,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,11 +47,9 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.feature.customer.viewModel.CustomerUIState
 import com.example.warehousemanagement.ui.feature.customer.viewModel.CustomerViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
-import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,6 +57,7 @@ fun CustomersScreen(
     modifier: Modifier = Modifier,
     onClickAddCustomer: () -> Unit,
     onBackClick: () -> Unit,
+    onClickSearch: () -> Unit,
     viewModel: CustomerViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -147,8 +145,16 @@ fun CustomersScreen(
             Column(
                 modifier = Modifier.padding(horizontal = Dimens.PADDING_16_DP),
             ) {
-                SearchBarPreview()
-                FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
+//                SearchBarPreview(
+//                    modifier = Modifier.clickable {
+//                        onClickSearch()
+//                    }
+//                )
+                androidx.compose.material.Button(onClick = { onClickSearch() }) {
+                    Text(text = "SEARCH")
+                }
+
+                    FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
             //Spacer(modifier = Modifier.height(16.dp))
@@ -173,10 +179,11 @@ fun CustomersScreen(
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCustomerScreen() {
-    WarehouseManagementTheme {
-        //  ProductsScreen(products = listProduct)
-    }
-}
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCustomerScreen() {
+//    WarehouseManagementTheme {
+//        //  ProductsScreen(products = listProduct)
+//    }
+//}

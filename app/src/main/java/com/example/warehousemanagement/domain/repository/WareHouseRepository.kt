@@ -24,6 +24,7 @@ interface WareHouseRepository {
     ): List<Product>
 
     suspend fun getAllGenre(): List<Genre>
+    suspend fun addNewGenre(genre: Genre)
 
     suspend fun getSearchedGenresDetails(query: String): List<Genre>
 
@@ -52,5 +53,9 @@ interface WareHouseRepository {
     suspend fun login(username: String, password: String): Map<String, String>
     suspend fun getUserDetails(id: String): User
     suspend fun getAllNotificationDetails(): List<Notification>
+    suspend fun addNewCustomer(customer: Customer)//: String
+    suspend fun searchSuppliersByName(nameString: String): List<Supplier>
+    suspend fun searchGenresByName(nameString: String): List<Genre>
+    suspend fun searchCustomersByName(nameString: String): List<Customer>
 
 }

@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.rememberDismissState
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -60,7 +61,6 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.feature.genre.viewModel.GenreUiState
 import com.example.warehousemanagement.ui.feature.genre.viewModel.GenreViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -70,6 +70,7 @@ import com.example.warehousemanagement.ui.theme.Dimens
 fun GenreScreen(
     modifier: Modifier = Modifier,
     onNavigationBack: () -> Unit,
+    onClickAddGenre: () -> Unit,
     onClickSearch: () -> Unit,
     viewModel: GenreViewModel = hiltViewModel()
 ) {
@@ -106,39 +107,14 @@ fun GenreScreen(
                                     )
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
-                                Text(text = "Add 1 item", color = Color.Black)
+                                Text(text = "Add genre", color = Color.Black)
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             FloatingActionButton(
-                                onClick = { /* TODO: Action 1 */ },
+                                onClick = { onClickAddGenre() },
                                 containerColor = colorResource(id = R.color.background_gray)
                             ) {
                                 Icon(Icons.Default.Add, contentDescription = "Action 1")
-                            }
-                        }
-                    }
-
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            // Thẻ Label cho nút FAB 2
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add Items", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { /* TODO: Action 2 */ },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 2")
                             }
                         }
                     }

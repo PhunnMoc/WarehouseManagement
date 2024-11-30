@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,27 +35,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.domain.model.Product
+import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
-import com.example.warehousemanagement.ui.common.CustomSearchBar
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductUiState
-import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductViewModel
+import com.example.warehousemanagement.ui.feature.search.viewModel.SearchSupplierUiState
+import com.example.warehousemanagement.ui.feature.search.viewModel.SearchSupplierViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchProductScreen(
-    viewModel: SearchProductViewModel = hiltViewModel(),
+fun SearchSupplierScreen(
+    viewModel: SearchSupplierViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onClickDetailProduct: (String) -> Unit,
+    onClickDetailSupplier: (String) -> Unit,
 ) {
     var searchValue by rememberSaveable { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
-    val searchResults by viewModel.searchProductUiState.collectAsState()
+    val searchResults by viewModel.searchSupplierUiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,83 +72,81 @@ fun SearchProductScreen(
             endContent = {},
             scrollBehavior = scrollBehavior
         )
-        CustomSearchBar(
-            modifier = Modifier,
-            query = searchValue,
-            onQueryChange = {
-                viewModel.onChangeSearchQuery(it)
+        OutlinedTextField(
+            value = searchValue,
+            onValueChange = {
                 searchValue = it
+                viewModel.onChangeSearchQuery(searchValue)
             },
-            enabled = true,
-            onSearch = {},
-            active = true,
-            onActiveChange = {},
-            placeHolder = "Search for me",
+            label = { Text("Search Suppliers") },
+            modifier = Modifier.fillMaxWidth(),
             trailingIcon = {
-                androidx.compose.material3.Icon(
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable {
-                            searchValue = ""
-                        },
-                    tint = colorResource(id = R.color.text_color_dark_gray),
-                    painter = painterResource(id = R.drawable.icons8_delete),
-                    contentDescription = ""
-                )
+                IconButton(
+                    onClick = {
+                        // Perform search when clicking the icon if needed
+                    },
+                    modifier = Modifier.align(Alignment.End),
+                ) {
+                    Icon(
+                        modifier = Modifier.size(Dimens.SIZE_ICON_25_DP),
+                        painter = painterResource(id = R.drawable.icons8_search),
+                        contentDescription = ""
+                    )
+                }
             }
         )
 
-        //  Spacer(modifier = Modifier.height(16.dp))
         Spacer(modifier = Modifier.height(16.dp))
+
         when (val searchResult = searchResults) {
-            is SearchProductUiState.Loading -> IndeterminateCircularIndicator()
-            is SearchProductUiState.Error -> NothingText()
-            is SearchProductUiState.Success -> {
-                if (searchResult.listSuggestionProduct.isEmpty()) {
-                    Text("No products found", color = Color.Gray)
+            is SearchSupplierUiState.Loading -> IndeterminateCircularIndicator()
+            is SearchSupplierUiState.Error -> NothingText()
+            is SearchSupplierUiState.Success -> {
+                if (searchResult.listSuggestionSupplier.isEmpty()) {
+                    Text("No suppliers found", color = Color.Gray)
                 } else {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(searchResult.listSuggestionProduct) { product ->
-                            ProductItem(
+                        items(searchResult.listSuggestionSupplier) { supplier ->
+                            SupplierItem(
                                 modifier = Modifier.clickable {
-                                    onClickDetailProduct(product.idProduct)
+                                    onClickDetailSupplier(supplier.idSupplier)
                                 },
-                                product = product
+                                supplier = supplier
                             )
                         }
                     }
                 }
             }
         }
-
     }
 }
 
 @Composable
-fun ProductItem(
+fun SupplierItem(
     modifier: Modifier = Modifier,
-    product: Product
+    supplier: Supplier
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold)
-            Text(text = "Name: ${product.productName}")
-            Text(text = "Genre: ${product.genre.genreName}")
-            Text(text = "Price: ${product.sellingPrice}")
-            Text(text = "Quantity: ${product.quantity}")
+            Text(text = "ID: ${supplier.idSupplier}", fontWeight = FontWeight.Bold)
+            Text(text = "Name: ${supplier.name}")
+            Text(text = "Email: ${supplier.email}")
+            Text(text = "Address: ${supplier.address.street}, ${supplier.address.city}, ${supplier.address.postalCode}, ${supplier.address.district}",)
+            Text(text = "Email: ${supplier.address.phone}")
+            Text(text = "Rating: ${supplier.ratings ?: "N/A"}")
             Divider(Modifier.fillMaxWidth())
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun PreviewSearchProductScreen() {
-//    SearchProductScreen(
-//        listOf(product1, product2, product3, product4)
-//    )
+fun PreviewSearchSupplierScreen() {
+    SearchSupplierScreen(
+        onBackClick = {},
+        onClickDetailSupplier = {}
+    )
 }

@@ -66,6 +66,11 @@ interface ApiWarehouse {
         @Query("value") value: String
     ): Response<List<SupplierResponse>>
 
+    @POST("/supplier") // Adjust the endpoint based on your backend configuration
+    suspend fun addNewSupplier(
+        @Body supplier: SupplierResponse
+    )
+
     @GET("/import-packages/pending")
     suspend fun getPendingImportPackages(): Response<List<ImportPackageResponseItem>>
 
@@ -85,16 +90,28 @@ interface ApiWarehouse {
 
     @GET("/supplier/{id}")
     suspend fun getSupplierDetails(@Path("id") id: String): Response<SupplierResponse>
-
+    @GET("/supplier/search")
+    suspend fun getSearchedSuppliersDetails(
+        @Query("props") props: String,
+        @Query("value") value: String
+    ): Response<List<SupplierResponse>>
     @GET("/customer")
     suspend fun getAllCustomer(): Response<List<CustomerResponse>>
 
     @GET("/customer/{id}")
     suspend fun getCustomerDetails(@Path("id") id: String): Response<CustomerResponse>
-
-    @POST("/supplier") // Adjust the endpoint based on your backend configuration
-    suspend fun addNewSupplier(
-        @Body supplier: SupplierResponse
+    @GET("/customer/search")
+    suspend fun getSearchedCustomerDetails(
+        @Query("props") props: String,
+        @Query("value") value: String
+    ): Response<List<CustomerResponse>>
+    @POST("/customer") // Adjust the endpoint based on your backend configuration
+    suspend fun addNewCustomer(
+        @Body customer: CustomerResponse
+    )
+    @POST("/genre") // Adjust the endpoint based on your backend configuration
+    suspend fun addNewGenre(
+        @Body genre: GenreResponse
     )
 
     @FormUrlEncoded
@@ -111,6 +128,5 @@ interface ApiWarehouse {
 
     @GET("/notification")
     suspend fun getAllNotificationDetails(): Response<List<Notification>>
-
 
 }
