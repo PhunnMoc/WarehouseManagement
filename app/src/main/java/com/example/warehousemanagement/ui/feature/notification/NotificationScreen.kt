@@ -51,12 +51,6 @@ fun NotificationScreenAdmin(
         },
         topBar = {
             HeaderOfScreen(
-                modifier = modifier.padding(
-                    top = Dimens.PADDING_20_DP,
-                    start = Dimens.PADDING_20_DP,
-                    end = Dimens.PADDING_20_DP,
-                    bottom = Dimens.PADDING_10_DP
-                ),
                 mainTitleText = stringResource(id = R.string.screen_notification_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),

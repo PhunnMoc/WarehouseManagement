@@ -31,7 +31,10 @@ class WareHouseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun sortProducts(sortBy: String, order: String): List<Product> {
-        TODO() //return retrofit
+        return retrofit.getSortedProductDetails(
+            props = sortBy,
+            order = order,
+        ).body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
     override suspend fun getAllGenre(): List<Genre> {

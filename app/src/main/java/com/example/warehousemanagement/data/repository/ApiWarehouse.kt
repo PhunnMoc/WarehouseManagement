@@ -38,6 +38,7 @@ interface ApiWarehouse {
         @Query("order") order: String
     ): Response<List<ProductResponse>>
 
+
     @GET("/genre")
     suspend fun getAllGenres(): Response<List<GenreResponse>>
 
@@ -99,4 +100,6 @@ interface ApiWarehouse {
     suspend fun getUserDetails(
         @Path("id") id: String
     ): Response<UserResponse>
+
+
 }

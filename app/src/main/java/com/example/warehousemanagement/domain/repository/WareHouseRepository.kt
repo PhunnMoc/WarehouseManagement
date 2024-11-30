@@ -18,7 +18,7 @@ interface WareHouseRepository {
 
     suspend fun sortProducts(
         sortBy: String,
-        order: String = "asc",
+        order: String,
     ): List<Product>
 
     suspend fun getAllGenre(): List<Genre>
