@@ -98,7 +98,7 @@ fun NotificationCard(
 
 val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
 val notification1 = Notification(
-    idNotification = "67276a79a0b1c2534dca6e72",
+    id = "67276a79a0b1c2534dca6e72",
     title = "Security Warning",
     description = "A potential security threat has been detected.",
     type = "WARNING",

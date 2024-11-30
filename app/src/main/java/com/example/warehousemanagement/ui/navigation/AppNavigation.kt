@@ -273,12 +273,12 @@ fun AppNavigation(
 //                        onSubmit = {},
 //                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
                         onBackClick = { navigationController.popBackStack() },
-                        onClickDetailGenre = { id ->
-                            TODO()
-//                            navigationController.navigate(
-//
-//                            )
-                        },
+//                        onClickDetailGenre = { id ->
+//                            TODO()
+////                            navigationController.navigate(
+////
+////                            )
+//                        },
                     )
                     isShowNavigation = false
                 }
@@ -287,12 +287,12 @@ fun AppNavigation(
 //                        onSubmit = {},
 //                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
                         onBackClick = { navigationController.popBackStack() },
-                        onClickDetailGenre = { id ->
-                            TODO()
-//                            navigationController.navigate(
-//
-//                            )
-                        },
+//                        onClickDetailGenre = { id ->
+//                            TODO()
+////                            navigationController.navigate(
+////
+////                            )
+//                        },
                     )
 
                     isShowNavigation = false
@@ -333,9 +333,7 @@ fun AppNavigation(
                     GenreScreen(
                         onClickSearch = { navigationController.navigate(Routes.SearchGenre) },
                         onNavigationBack = { navigationController.popBackStack() },
-                        onClickSearch = { navigationController.navigate(Routes.SearchGenre) },
                         onClickAddGenre = { navigationController.navigate(Routes.AddGenres) },
-
                         )
                     isShowNavigation = false
                 }
@@ -349,13 +347,13 @@ fun AppNavigation(
                 composable<Routes.SearchGenre> {
                     SearchGenreScreen(
                         onBackClick = { navigationController.popBackStack() },
-                        onClickDetailGenre = { id ->
-                            navigationController.navigate(
-                                Routes.Genre(
-                                    idGenre = id
-                                )
-                            )
-                        },
+//                        onClickDetailGenre = { id ->
+//                            navigationController.navigate(
+//                                Routes.Genre(
+//                                    idGenre = id
+//                                )
+//                            )
+//                        },
                     )
 
                     isShowNavigation = false

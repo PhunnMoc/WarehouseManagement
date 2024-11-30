@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -48,11 +49,13 @@ import com.example.warehousemanagement.ui.theme.Dimens
 fun SearchGenreScreen(
     viewModel: SearchGenreViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
-    onClickDetailGenre: (String) -> Unit,
+    // onClickDetailGenre: (String) -> Unit,
 ) {
     var searchValue by rememberSaveable { mutableStateOf("") }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val searchResults by viewModel.searchGenreUiState.collectAsState()
+    var showDialog by remember { mutableStateOf(false) }
+    var selectedGenre by remember { mutableStateOf<Genre?>(null) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -103,14 +106,15 @@ fun SearchGenreScreen(
             is SearchGenreUiState.Loading -> IndeterminateCircularIndicator()
             is SearchGenreUiState.Error -> NothingText()
             is SearchGenreUiState.Success -> {
-                if (searchResult.listSuggestionGenre.isEmpty()) {
+                if (searchResult.listGenre.isEmpty()) {
                     Text("No genres found", color = Color.Gray)
                 } else {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(searchResult.listSuggestionGenre) { genre ->
+                        items(searchResult.listGenre) { genre ->
                             GenreItem(
                                 modifier = Modifier.clickable {
-                                    onClickDetailGenre(genre.idGenre)
+                                    showDialog = true
+                                    selectedGenre = genre
                                 },
                                 genre = genre
                             )
@@ -144,7 +148,7 @@ fun GenreItem(
 fun PreviewSearchGenreScreen() {
     SearchGenreScreen(
         onBackClick = {},
-        onClickDetailGenre = {}
+        //   onClickDetailGenre = {}
     )
 }
 //

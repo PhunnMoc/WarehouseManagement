@@ -55,7 +55,6 @@ interface WareHouseRepository {
     suspend fun getAllNotificationDetails(): List<Notification>
     suspend fun addNewCustomer(customer: Customer)//: String
     suspend fun searchSuppliersByName(nameString: String): List<Supplier>
-    suspend fun searchGenresByName(nameString: String): List<Genre>
     suspend fun searchCustomersByName(nameString: String): List<Customer>
 
 }

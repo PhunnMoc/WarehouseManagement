@@ -61,6 +61,7 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.feature.genre.viewModel.GenreUiState
 import com.example.warehousemanagement.ui.feature.genre.viewModel.GenreViewModel
 import com.example.warehousemanagement.ui.theme.Dimens

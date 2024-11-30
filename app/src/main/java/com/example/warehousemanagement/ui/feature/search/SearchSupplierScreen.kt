@@ -102,11 +102,11 @@ fun SearchSupplierScreen(
             is SearchSupplierUiState.Loading -> IndeterminateCircularIndicator()
             is SearchSupplierUiState.Error -> NothingText()
             is SearchSupplierUiState.Success -> {
-                if (searchResult.listSuggestionSupplier.isEmpty()) {
+                if (searchResult.listSupplier.isEmpty()) {
                     Text("No suppliers found", color = Color.Gray)
                 } else {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(searchResult.listSuggestionSupplier) { supplier ->
+                        items(searchResult.listSupplier) { supplier ->
                             SupplierItem(
                                 modifier = Modifier.clickable {
                                     onClickDetailSupplier(supplier.idSupplier)
