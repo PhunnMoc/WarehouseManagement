@@ -55,6 +55,7 @@ import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
 import com.example.warehousemanagement.ui.feature.search.SearchCustomerScreen
+import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
 import com.example.warehousemanagement.ui.feature.search.SearchStorageLocation
 import com.example.warehousemanagement.ui.feature.search.SearchSupplierScreen
