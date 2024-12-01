@@ -40,7 +40,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
@@ -51,8 +50,9 @@ import com.example.warehousemanagement.ui.theme.Dimens
 @Composable
 fun CustomerCard(
     modifier: Modifier = Modifier, customer: Customer, // Add this parameter
-    onCardClick: () -> Unit// Image resource id for the QR code icon
-) {
+    onCardClick: () -> Unit,
+    onLongPress: (String) -> Unit,
+    ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
     Card(
@@ -70,8 +70,7 @@ fun CustomerCard(
                     isExpanded = !isExpanded
                     onCardClick()
                 }, onLongPress = {
-                    // Xử lý sự kiện nhấn giữ
-                    showDialog = true
+                    onLongPress(customer.idCustomer)
                 })
             },
 
@@ -232,8 +231,8 @@ val customer1 = Customer(
     ),
 )
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewCustomerCard() {
-    CustomerCard(customer = customer1, onCardClick = { /* Handle card click here */ })
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewCustomerCard() {
+//    CustomerCard(customer = customer1, onCardClick = { /* Handle card click here */ })
+//}
