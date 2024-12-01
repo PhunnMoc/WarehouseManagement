@@ -55,6 +55,7 @@
     <string name="filter_title">Filter</string>
     <string name="product_name_string">Product name</string>
     <string name="product_id">Product ID</string>
+    <string name="customer_id">Customer ID</string>
     <string name="supplier_name_string">Supplier name</string>
     <string name="customer_name_string">Customer name</string>
     <string name="email_string">Email</string>

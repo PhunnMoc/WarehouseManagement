@@ -57,6 +57,7 @@ fun CustomersScreen(
     modifier: Modifier = Modifier,
     onClickAddCustomer: () -> Unit,
     onBackClick: () -> Unit,
+    onNavigationDetailCustomer: (String) -> Unit,
     onClickSearch: () -> Unit,
     viewModel: CustomerViewModel = hiltViewModel()
 ) {
@@ -167,7 +168,9 @@ fun CustomersScreen(
                         items(customer.listCustomer) { customer ->
                             CustomerCard(
                                 customer = customer,
-                                onCardClick = {})
+                                onCardClick = {},
+                                onLongPress = onNavigationDetailCustomer,
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }

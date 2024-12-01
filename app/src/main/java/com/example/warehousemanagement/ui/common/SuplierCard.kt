@@ -40,11 +40,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.ui.theme.Dimens
 
@@ -52,7 +50,8 @@ import com.example.warehousemanagement.ui.theme.Dimens
 fun SuplierCard(
     modifier: Modifier = Modifier,
     supplier: Supplier, // Add this parameter
-    onCardClick: () -> Unit// Image resource id for the QR code icon
+    onCardClick: () -> Unit,// Image resource id for the QR code icon
+    onLongPress: (String) -> Unit,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -71,8 +70,7 @@ fun SuplierCard(
                     isExpanded = !isExpanded
                     onCardClick()
                 }, onLongPress = {
-                    // Xử lý sự kiện nhấn giữ
-                    showDialog = true
+                    onLongPress(supplier.idSupplier)
                 })
             },
 

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-val SEARCH_SUPPLIER_QUERY_NAME = "name_supplier"
+val SEARCH_SUPPLIER_QUERY = "id"
 
 @HiltViewModel
 class SearchSupplierViewModel @Inject constructor(
@@ -33,7 +33,7 @@ class SearchSupplierViewModel @Inject constructor(
 
     @OptIn(FlowPreview::class)
     private fun searchSupplierResult(): Flow<SearchSupplierUiState> =
-        saveStateHandle.getStateFlow(SEARCH_SUPPLIER_QUERY_NAME, "").debounce(500)
+        saveStateHandle.getStateFlow(SEARCH_SUPPLIER_QUERY, "").debounce(500)
             .map { wareHouseRepository.getSearchedSupplierByName(it) }.asResult()
             .map { listSupplier ->
                 when (listSupplier) {
@@ -47,7 +47,7 @@ class SearchSupplierViewModel @Inject constructor(
             }
 
     fun onChangeSearchQuery(query: String) {
-        saveStateHandle[SEARCH_SUPPLIER_QUERY_NAME] = query
+        saveStateHandle[SEARCH_SUPPLIER_QUERY] = query
     }
 
 }

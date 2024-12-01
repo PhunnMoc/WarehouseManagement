@@ -60,6 +60,7 @@ fun SuppliersScreen(
     modifier: Modifier = Modifier,
     onClickAddSupplier: () -> Unit,
     onClickSearch: () -> Unit,
+    onNavigationDetailSupplier: (String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: SupplierViewModel = hiltViewModel()
 ) {
@@ -163,7 +164,8 @@ fun SuppliersScreen(
                         items(supplier.listSupplier) { supplier ->
                             SuplierCard(
                                 supplier = supplier,
-                                onCardClick = {})
+                                onCardClick = {},
+                                onLongPress = onNavigationDetailSupplier,)
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }

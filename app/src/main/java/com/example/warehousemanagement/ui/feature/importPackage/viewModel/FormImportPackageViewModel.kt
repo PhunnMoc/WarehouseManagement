@@ -13,7 +13,7 @@ import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_GENRE_QUERY_NAME
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_STORAGE_LOCATION_QUERY_NAME
-import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_SUPPLIER_QUERY_NAME
+import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_SUPPLIER_QUERY
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchGenreUiState
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchStorageLocationUiState
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchSupplierUiState
@@ -23,12 +23,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.Date
 import javax.inject.Inject
 
 
@@ -150,7 +148,7 @@ class FormImportPackageViewModel @Inject constructor(
 
     @OptIn(FlowPreview::class)
     private fun searchSupplierResult(): Flow<SearchSupplierUiState> =
-        savedStateHandle.getStateFlow(SEARCH_SUPPLIER_QUERY_NAME, "").debounce(500)
+        savedStateHandle.getStateFlow(SEARCH_SUPPLIER_QUERY, "").debounce(500)
             .map { wareHouseRepository.getSearchedSupplierByName(it) }.asResult()
             .map { listSupplier ->
                 when (listSupplier) {
@@ -164,7 +162,7 @@ class FormImportPackageViewModel @Inject constructor(
             }
 
     fun onChangeSearchSupplierQuery(query: String) {
-        savedStateHandle[SEARCH_SUPPLIER_QUERY_NAME] = query
+        savedStateHandle[SEARCH_SUPPLIER_QUERY] = query
     }
 
 }

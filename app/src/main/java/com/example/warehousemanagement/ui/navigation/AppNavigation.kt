@@ -18,12 +18,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -42,24 +40,26 @@ import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
 import com.example.warehousemanagement.ui.feature.customer.CustomersScreen
+import com.example.warehousemanagement.ui.feature.customer.DetailCustomer
 import com.example.warehousemanagement.ui.feature.customer.FormAddOrEditCustomerForm
-import com.example.warehousemanagement.ui.feature.genre.FormAddOrEditGenreForm
 import com.example.warehousemanagement.ui.feature.exportPackage.ExportPackageScreen
+import com.example.warehousemanagement.ui.feature.genre.FormAddOrEditGenreForm
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
-import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
-import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
-import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
+import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
 import com.example.warehousemanagement.ui.feature.login.LoginScreen
 import com.example.warehousemanagement.ui.feature.notification.NotificationScreen
+import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
+import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
-import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchCustomerScreen
 import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
-import com.example.warehousemanagement.ui.feature.setting.SettingScreen
+import com.example.warehousemanagement.ui.feature.search.SearchStorageLocation
 import com.example.warehousemanagement.ui.feature.search.SearchSupplierScreen
+import com.example.warehousemanagement.ui.feature.setting.SettingScreen
+import com.example.warehousemanagement.ui.feature.supplier.DetailSupplier
 import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
 import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -68,7 +68,6 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.launch
 
 @Composable
 fun BottomBar(
@@ -224,7 +223,8 @@ fun AppNavigation(
                 }
 
                 composable<Routes.Products> {
-                    ProductsScreen(onBackClick = { navigationController.popBackStack() },
+                    ProductsScreen(
+                        onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { navigationController.navigate(Routes.SearchProduct) },
                         onNavigationDetailProduct = { id ->
                             navigationController.navigate(
@@ -270,8 +270,6 @@ fun AppNavigation(
 
                 composable<Routes.SearchGenre> {
                     SearchGenreScreen(
-//                        onSubmit = {},
-//                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
                         onBackClick = { navigationController.popBackStack() },
 //                        onClickDetailGenre = { id ->
 //                            TODO()
@@ -283,16 +281,14 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.SearchStorageLocation> {
-                    SearchGenreScreen(
-//                        onSubmit = {},
-//                        onAdd1MoreProduct = { navigationController.navigate(Routes.AddProducts) },
+                    SearchStorageLocation(
                         onBackClick = { navigationController.popBackStack() },
-//                        onClickDetailGenre = { id ->
-//                            TODO()
-////                            navigationController.navigate(
-////
-////                            )
-//                        },
+                        onClickDetailStorageLocation = { id ->
+                            TODO()
+//                            navigationController.navigate(
+//
+//                            )
+                        },
                     )
 
                     isShowNavigation = false
@@ -308,7 +304,7 @@ fun AppNavigation(
                                     id = id
                                 )
                             )
-                        },
+                        }        ,
                     )
 
                     isShowNavigation = false
@@ -393,10 +389,25 @@ fun AppNavigation(
                         onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { navigationController.navigate(Routes.SearchSupplier) },
                         onClickAddSupplier = { navigationController.navigate(Routes.AddSuppliers) },
-                    )
+                        onNavigationDetailSupplier = { id ->
+                            navigationController.navigate(
+                                Routes.Supplier(
+                                    idSupplier = id
+                                )
+                            )
+                        })
 
                     isShowNavigation = false
                 }
+                composable<Routes.Supplier> { backStackEntry ->
+                    //  val product: Routes.Product = backStackEntry.toRoute()
+                    DetailSupplier(
+                        onBackClick = { navigationController.popBackStack() },
+                    )
+                    isShowNavigation = false
+
+                }
+
                 composable<Routes.SearchSupplier> {
                     SearchSupplierScreen(
                         onBackClick = { navigationController.popBackStack() },
@@ -420,7 +431,13 @@ fun AppNavigation(
                         onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { navigationController.navigate(Routes.SearchCustomer) },
                         onClickAddCustomer = { navigationController.navigate(Routes.AddCustomers) },
-                    )
+                        onNavigationDetailCustomer = { id ->
+                            navigationController.navigate(
+                                Routes.Customer(
+                                    idCustomer = id
+                                )
+                            )
+                        })
 
                     isShowNavigation = false
                 }
@@ -437,6 +454,14 @@ fun AppNavigation(
                     )
 
                     isShowNavigation = false
+                }
+                composable<Routes.Customer> { backStackEntry ->
+                    //  val product: Routes.Product = backStackEntry.toRoute()
+                    DetailCustomer(
+                        onBackClick = { navigationController.popBackStack() },
+                    )
+                    isShowNavigation = false
+
                 }
                 composable<Routes.AddCustomers> {
                     FormAddOrEditCustomerForm(onSubmit = {},

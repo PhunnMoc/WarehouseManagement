@@ -29,7 +29,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.rememberDismissState
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -174,6 +173,10 @@ fun GenreScreen(
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
+                }
+                else -> {
+                    // Xử lý trường hợp còn lại, mặc dù không cần thiết nếu Result là sealed class
+                    println("Unknown state")
                 }
             }
 
