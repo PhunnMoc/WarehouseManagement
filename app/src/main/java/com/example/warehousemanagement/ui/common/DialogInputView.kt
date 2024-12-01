@@ -36,10 +36,11 @@ fun DialogWithInput(
     message: String, // Message of the dialog
     confirmText: String, // Text for the confirm button (e.g., "Create")
     cancelText: String, // Text for the cancel button
-    onConfirm: (String) -> Unit, // Action when the confirm button is clicked, passing the input text
+    onConfirm: (String, String) -> Unit, // Action when the confirm button is clicked, passing the input text
     onCancel: () -> Unit // Action when the cancel button is clicked
 ) {
-    var inputText by rememberSaveable { mutableStateOf("") } // State for the input text
+    var inputText1 by rememberSaveable { mutableStateOf("") } // State for the input text
+    var inputText2 by rememberSaveable { mutableStateOf("") } // State for the input text
 
     Dialog(onDismissRequest = onCancel) {
         Surface(
@@ -69,14 +70,21 @@ fun DialogWithInput(
 
                 // TextField for input
                 OutlinedTextField(
-                    value = inputText,
-                    onValueChange = { inputText = it },
+                    value = inputText1,
+                    onValueChange = { inputText1 = it },
                     label = { Text(text = "Package Name") },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-
+                OutlinedTextField(
+                    value = inputText2,
+                    onValueChange = { inputText2 = it },
+                    label = { Text(text = "Note") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(32.dp))
                 // Buttons
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
@@ -101,7 +109,7 @@ fun DialogWithInput(
                     // Confirm Button
                     Button(
                         onClick = {
-                            onConfirm(inputText) // Pass the input text when confirming
+                            onConfirm(inputText1, inputText2) // Pass the input text when confirming
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.background_theme)),
                         shape = RoundedCornerShape(50.dp),

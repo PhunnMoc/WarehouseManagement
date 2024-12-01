@@ -95,7 +95,7 @@ import java.util.Date
 fun FormAddOrEditProductForm(
     modifier: Modifier = Modifier,
     onSubmit: (FormData) -> Unit,
-    onAdd1MoreProduct: (String) -> Unit,
+  //  onAdd1MoreProduct: (String) -> Unit,
     onBackClick: () -> Unit,
     product: Product? = null,
     //onNavigateAddNewGenre: () -> Unit,
@@ -459,11 +459,11 @@ fun FormAddOrEditProductForm(
             }
 
             //  "inStock": true
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = isCheckedInStock, onCheckedChange = { isCheckedInStock = it })
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("In stock")
-            }
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Checkbox(checked = isCheckedInStock, onCheckedChange = { isCheckedInStock = it })
+//                Spacer(modifier = Modifier.width(8.dp))
+//                Text("In stock")
+//            }
 
             InputArea(
                 label = "Description",

@@ -23,7 +23,6 @@ class LoginViewModel @Inject constructor(
     private val webSocketManager: WebSocketManager,
 ) : ViewModel() {
 
-    val notifications: StateFlow<String> = webSocketManager.notifications
 
     private val _loginUiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val loginUiState: StateFlow<LoginUiState> = _loginUiState

@@ -2,7 +2,7 @@
 <resources>
     <!-- Main Title-->
     <string name="screen_home_admin_main_title">ADMIN</string>
-    <string name="screen_home_employee_main_title">EMPLOYEE</string>
+    <string name="screen_home_employee_main_title">WORKER</string>
     <string name="screen_notification_main_title">NOTIFICATION</string>
     <string name="screen_product_main_title">PRODUCT</string>
     <string name="screen_report_main_title">REPORT</string>

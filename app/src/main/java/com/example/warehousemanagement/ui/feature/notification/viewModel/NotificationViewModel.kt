@@ -24,6 +24,7 @@ class NotificationViewModel @Inject constructor(
     private val webSocketManager: WebSocketManager,
 ) : ViewModel() {
 
+    val notifications: StateFlow<String> = webSocketManager.notifications
     val notificationUiState: StateFlow<NotificationUiState> = getNotification().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

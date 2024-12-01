@@ -47,6 +47,7 @@ fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel()
 ) {
     val notificationUiState by viewModel.notificationUiState.collectAsStateWithLifecycle()
+    val notifications by viewModel.notifications.collectAsStateWithLifecycle()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         containerColor = colorResource(id = R.color.background_white),
@@ -72,7 +73,7 @@ fun NotificationScreen(
         ) {
 
             //Spacer(modifier = Modifier.height(16.dp))
-
+            Text(text = notifications)
             when (val notification = notificationUiState) {
                 is NotificationUiState.Loading -> IndeterminateCircularIndicator()
                 is NotificationUiState.Error -> NothingText()

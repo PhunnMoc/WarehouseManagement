@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
@@ -50,7 +49,7 @@ import com.example.warehousemanagement.ui.theme.Dimens
 @Composable
 fun ExportPackageScreen(
     modifier: Modifier = Modifier,
-    onClickAddProduct: (String) -> Unit,
+    onClickAddExportForm: (String, String) -> Unit,
     onClickAddProductByExcel: () -> Unit,
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
@@ -172,24 +171,20 @@ fun ExportPackageScreen(
                 FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
             TabBarImport()
-
         }
         if (isShowDialog) {
-            DialogWithInput(
-                title = stringResource(id = R.string.create_new_ip),
+            DialogWithInput(title = stringResource(id = R.string.create_new_ip),
                 message = stringResource(id = R.string.package_name_title),
                 confirmText = "Create",
                 cancelText = "Cancel",
-                onConfirm = {
+                onConfirm = { packageName, note ->
                     isShowDialog = false
-                    onClickAddProduct(it)
-                }
-            ) {
+                    onClickAddExportForm(packageName, note)
+                }) {
 
             }
         }
     }
-
 }
 
 @Composable
@@ -201,7 +196,6 @@ fun TabBarImport() {
     var selectedTabIndex by remember { mutableStateOf(0) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // TabRow để hiển thị các tab
         TabRow(
             selectedTabIndex = selectedTabIndex,
             modifier = Modifier.fillMaxWidth(),
@@ -209,15 +203,12 @@ fun TabBarImport() {
             contentColor = colorResource(id = R.color.background_theme)
         ) {
             tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTabIndex == index,
+                Tab(selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(text = title) }
-                )
+                    text = { Text(text = title) })
             }
         }
 
-        // Hiển thị nội dung của tab tương ứng
         when (selectedTabIndex) {
             0 -> {
                 PendingExportPackage(

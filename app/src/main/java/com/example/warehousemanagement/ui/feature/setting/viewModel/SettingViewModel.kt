@@ -25,10 +25,10 @@ class SettingViewModel @Inject constructor(
     private val webSocketManager: WebSocketManager,
 ) : ViewModel() {
 
-    override fun onCleared() {
-        super.onCleared()
-        webSocketManager.disconnect()
-    }
+//    override fun onCleared() {
+//        super.onCleared()
+//        webSocketManager.disconnect()
+//    }
 
     val informationUiState: StateFlow<InformationUiState> = getInformation().stateIn(
         scope = viewModelScope,
@@ -52,6 +52,7 @@ class SettingViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             preferencesRepository.deleteUser()
+           // webSocketManager.disconnect()
         }
     }
 }

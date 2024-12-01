@@ -45,6 +45,7 @@ import com.example.warehousemanagement.ui.feature.genre.FormAddOrEditGenreForm
 import com.example.warehousemanagement.ui.feature.exportPackage.ExportPackageScreen
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
+import com.example.warehousemanagement.ui.feature.home.WorkerScreen
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
 import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
@@ -156,14 +157,13 @@ fun AppNavigation(
 
     val token by preferencesRepository.getAccessToken().collectAsState(initial = null)
     val role by preferencesRepository.getUserRole().collectAsState(initial = null)
-    val startDestination =
-        if (!token.isNullOrEmpty()) {
-            if (role == "ADMIN") {
-                TopLevelDestinations.HomeAdmin.route
-            } else {
-                TopLevelDestinations.HomeWorker.route
-            }
-        } else Routes.Login
+    val startDestination = if (!token.isNullOrEmpty()) {
+        if (role == "ADMIN") {
+            TopLevelDestinations.HomeAdmin.route
+        } else {
+            TopLevelDestinations.HomeWorker.route
+        }
+    } else Routes.Login
 
     Scaffold(containerColor = colorResource(id = R.color.icon_tint_white), bottomBar = {
         if (isShowNavigation) {
@@ -204,7 +204,7 @@ fun AppNavigation(
                 }
 
                 composable<Routes.HomeWorker> {
-                    Text(text = "Home")
+                    WorkerScreen()
                     isShowNavigation = true
                 }
 
@@ -262,14 +262,7 @@ fun AppNavigation(
                 }
 
                 composable<Routes.AddProducts> {
-                    FormAddOrEditProductForm(onSubmit = {}, onAdd1MoreProduct = { packageName ->
-                        navigationController.navigate(
-                            Routes.AddProducts(
-                                packageName = packageName
-                            )
-                        )
-                    },
-
+                    FormAddOrEditProductForm(onSubmit = {},
                         onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
@@ -353,10 +346,8 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.AddGenres> {
-                    FormAddOrEditGenreForm(
-                        onSubmit = {},
-                        onBackClick = { navigationController.popBackStack() }
-                    )
+                    FormAddOrEditGenreForm(onSubmit = {},
+                        onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
                 composable<Routes.SearchGenre> {
@@ -374,10 +365,11 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.ImportPackage> {
-                    ImportPackageScreen(onClickAddProduct = { packageName ->
+                    ImportPackageScreen(onClickAddProduct = { packageName, note ->
                         navigationController.navigate(
                             Routes.AddProducts(
-                                packageName = packageName
+                                packageName = packageName,
+                                note = note,
                             )
                         )
                     },
@@ -389,10 +381,10 @@ fun AppNavigation(
                 }
 
                 composable<Routes.ExportPackage> {
-                    ExportPackageScreen(onClickAddProduct = { packageName ->
+                    ExportPackageScreen(onClickAddExportForm = { packageName, note ->
                         navigationController.navigate(
                             Routes.AddProducts(
-                                packageName = packageName
+                                note = note, packageName = packageName
                             )
                         )
                     },

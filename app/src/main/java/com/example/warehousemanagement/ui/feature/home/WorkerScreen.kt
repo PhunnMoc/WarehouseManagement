@@ -109,7 +109,7 @@ fun WorkerScreen(modifier: Modifier = Modifier) {
                     start = Dimens.PADDING_20_DP,
                     end = Dimens.PADDING_20_DP
                 ),
-                mainTitleText = stringResource(id = R.string.screen_customer_main_title),
+                mainTitleText = stringResource(id = R.string.screen_home_employee_main_title),
                 endContent = {
                     WrapIcon(
                         tint = colorResource(id = R.color.icon_tint_gray),

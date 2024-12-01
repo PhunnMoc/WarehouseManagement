@@ -41,7 +41,6 @@ class FormImportPackageViewModel @Inject constructor(
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
 
-
     fun addPackage(date: String) {
         viewModelScope.launch {
             try {
@@ -51,7 +50,7 @@ class FormImportPackageViewModel @Inject constructor(
                         idImportPackages = "",
                         importDate = date,
                         listProducts = products.value,
-                        note = "",
+                        note = savedStateHandle.get<String>("note") ?: "",
                         packageName = savedStateHandle.get<String>("packageName") ?: "",
                         receiver = ReceiverResponse(
                             _id = preferencesRepository.getUserId().stateIn(this).value,
@@ -68,6 +67,7 @@ class FormImportPackageViewModel @Inject constructor(
             }
         }
     }
+
 
     fun addProduct(product: Product) {
         _products.value = _products.value + product

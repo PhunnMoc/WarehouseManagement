@@ -50,7 +50,7 @@ import com.example.warehousemanagement.ui.theme.Dimens
 @Composable
 fun ImportPackageScreen(
     modifier: Modifier = Modifier,
-    onClickAddProduct: (String) -> Unit,
+    onClickAddProduct: (String, String) -> Unit,
     onClickAddProductByExcel: () -> Unit,
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
@@ -180,9 +180,9 @@ fun ImportPackageScreen(
                 message = stringResource(id = R.string.package_name_title),
                 confirmText = "Create",
                 cancelText = "Cancel",
-                onConfirm = {
+                onConfirm = { packageName, note ->
                     isShowDialog = false
-                    onClickAddProduct(it)
+                    onClickAddProduct(packageName, note)
                 }
             ) {
 

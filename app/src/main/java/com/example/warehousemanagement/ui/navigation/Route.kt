@@ -43,7 +43,7 @@ sealed class Routes {
     data class Product(val id: String) : Routes()
 
     @Serializable
-    data class AddProducts(val packageName: String) : Routes()
+    data class AddProducts(val packageName: String, val note: String) : Routes()
 
     @Serializable
     object AddProductByExcel : Routes()

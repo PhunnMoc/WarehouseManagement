@@ -141,7 +141,7 @@ fun ImportPackageCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "Import Date:", weight = 3f)
-                      //  TableCell(text = importPackage.importDate.toString(), weight = 7f)
+                        TableCell(text = importPackage.importDate.toString(), weight = 7f)
                     }
                     Row(
                         modifier = Modifier
