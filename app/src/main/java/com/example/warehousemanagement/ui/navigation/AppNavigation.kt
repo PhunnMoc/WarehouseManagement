@@ -78,6 +78,7 @@ fun BottomBar(
     homeRoute: Routes,
 ) {
 
+
     val iconNav = listOf(
         R.drawable.icons8_home__1_,
         R.drawable.icons8_setting,
@@ -179,7 +180,7 @@ fun AppNavigation(
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController = navigationController,
-                startDestination = TopLevelDestinations.HomeAdmin.route,
+                startDestination = startDestination,
                 enterTransition = {
                     scaleIntoContainer()
                 },

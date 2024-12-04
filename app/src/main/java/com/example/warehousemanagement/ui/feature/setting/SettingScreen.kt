@@ -1,7 +1,9 @@
 package com.example.warehousemanagement.ui.feature.setting
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,18 +23,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.feature.importPackage.UploadImageButton
 import com.example.warehousemanagement.ui.feature.setting.viewModel.InformationUiState
 import com.example.warehousemanagement.ui.feature.setting.viewModel.SettingViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
-
 
 
 @Composable
@@ -42,7 +47,6 @@ fun SettingScreen(
 ) {
     val user by viewModel.informationUiState.collectAsStateWithLifecycle()
 
-    // State to hold editable user info
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -73,15 +77,32 @@ fun SettingScreen(
                 email = temp.user.information.email ?: ""
                 image = temp.user.information.picture ?: ""
 
-                Image(
-                    painter = rememberImagePainter(image.ifEmpty { R.drawable.customer }),
-                    contentDescription = "Profile Picture",
+                Text(text = "Setting")
+                Box(
                     modifier = Modifier
-                        .size(150.dp)
-                        .padding(8.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .clip(CircleShape)
-                )
+                        .fillMaxWidth()
+                ) {
+                    UploadImageButton(
+                        modifier = Modifier
+                            .zIndex(1f)
+                            .align(Alignment.Center),
+                        isText = false,
+                        onImageSelected = { image = it ?: "" })
+                    Image(
+                        painter = rememberAsyncImagePainter(model = image),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(end = 8.dp)
+                            .size(100.dp) // Thiết lập kích thước cho ảnh
+                            .clip(CircleShape) // Cắt hình ảnh thành hình tròn
+                            .border(
+                                width = 2.dp, // Độ dày của viền
+                                color = Color.Gray, // Màu sắc của viền
+                                shape = CircleShape // Hình dạng viền
+                            ) // Khoảng cách bên trong nếu cần
+                    )
+                }
 
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -109,14 +130,14 @@ fun SettingScreen(
                             singleLine = true
                         )
                         OutlinedTextField(
-                            value = email ,
+                            value = email,
                             onValueChange = { email = it },
                             label = { Text("Email") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true
                         )
                         OutlinedTextField(
-                            value = image ,
+                            value = image,
                             onValueChange = { image = it },
                             label = { Text("URL Image") },
                             modifier = Modifier.fillMaxWidth(),

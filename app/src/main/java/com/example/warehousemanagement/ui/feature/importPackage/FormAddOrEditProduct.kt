@@ -576,7 +576,11 @@ data class FormData(
 )
 
 @Composable
-fun UploadImageButton(onImageSelected: (String?) -> Unit) {
+fun UploadImageButton(
+    modifier: Modifier = Modifier,
+    isText: Boolean = true,
+    onImageSelected: (String?) -> Unit
+) {
     val context = LocalContext.current
     var imageName by remember { mutableStateOf("") }
 
@@ -618,16 +622,17 @@ fun UploadImageButton(onImageSelected: (String?) -> Unit) {
 
     // Giao diện Button
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
+        verticalAlignment = Alignment.Bottom,
         // verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            modifier = Modifier.padding(end = Dimens.PADDING_10_DP),
-            text = "Upload Image",
-            color = Color.DarkGray
-        )
+        if (isText) {
+            Text(
+                modifier = Modifier.padding(end = Dimens.PADDING_10_DP),
+                text = "Upload Image",
+                color = Color.DarkGray
+            )
+        }
         IconButton(modifier = Modifier
             .clip(
                 shape = RoundedCornerShape(Dimens.PADDING_50_DP)
