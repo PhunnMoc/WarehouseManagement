@@ -11,5 +11,5 @@ data class ImportPackageResponseItem(
     val note: String?,
     val packageName: String?,
     val `receiver`: ReceiverResponse?,
-    val statusDone: Boolean?,
+    val statusDone: String?,
 )

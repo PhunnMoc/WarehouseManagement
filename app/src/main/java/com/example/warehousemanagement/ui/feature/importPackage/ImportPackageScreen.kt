@@ -171,7 +171,7 @@ fun ImportPackageScreen(
 //                )
                 FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
-            TabBarImport()
+            TabBarImport(onClickDetail = onNavigationDetailImportPackage)
 
         }
         if (isShowDialog) {
@@ -193,7 +193,9 @@ fun ImportPackageScreen(
 }
 
 @Composable
-fun TabBarImport() {
+fun TabBarImport(
+    onClickDetail: (String) -> Unit,
+) {
     val tabs = listOf(
         stringResource(id = R.string.pending_import_title),
         stringResource(id = R.string.done_import_title)
@@ -221,13 +223,13 @@ fun TabBarImport() {
         when (selectedTabIndex) {
             0 -> {
                 PendingImportPackage(
-                    onNavigationDetailImportPackages = {},
+                    onNavigationDetailImportPackages = onClickDetail,
                 )
             }
 
             1 -> {
                 DoneImportPackage(
-                    onNavigationDetailImportPackages = {},
+                    onNavigationDetailImportPackages = onClickDetail,
                 )
             }
         }

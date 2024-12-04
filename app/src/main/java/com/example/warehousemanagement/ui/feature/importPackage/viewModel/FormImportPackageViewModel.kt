@@ -56,8 +56,7 @@ class FormImportPackageViewModel @Inject constructor(
                             null,
                             null
                         ),
-                        statusDone = false,
-                        status = StatusPackage.PENDING,
+                        status = "PENDING",
                     )
                 )
             } catch (e: Exception) {

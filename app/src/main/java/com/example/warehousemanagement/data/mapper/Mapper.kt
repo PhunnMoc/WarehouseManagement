@@ -174,7 +174,7 @@ fun ImportPackageResponseItem.convertToModel(): ImportPackages? {
         packageName = packageName,
         importDate = importDate,
         listProducts = listProducts!!.mapNotNull { it.convertToModel() },
-        statusDone = statusDone ?: false,
+        status = statusDone ?: "",
         note = note ?: "",
         receiver = receiver,
     )
@@ -188,7 +188,7 @@ fun ImportPackages.convertToResponse(): ImportPackageResponseItem {
         note = note,
         packageName = packageName,
         receiver = receiver,
-        statusDone = statusDone ?: false,
+        statusDone = status,
     )
 }
 

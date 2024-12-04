@@ -40,6 +40,11 @@ class WareHouseRepositoryImpl @Inject constructor(
         ).body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
+    override suspend fun getFilteredProductsDetails(filters: Map<String, String>): List<Product> {
+        return retrofit.getFilteredProductsDetails(filters).body()
+            ?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
+
     override suspend fun getAllGenre(): List<Genre> {
         return retrofit.getAllGenres().body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
@@ -74,6 +79,7 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun getAllSupplierDetails(): List<Supplier> {
         TODO("Not yet implemented")
     }
+
     override suspend fun searchSuppliersByName(nameString: String): List<Supplier> {
         return retrofit.getSearchedSuppliersDetails(
             props = "supplierName", // Adjust the query parameter based on your API
@@ -92,15 +98,21 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun getAllCustomerDetails(): List<Customer> {
         TODO("Not yet implemented")
     }
+
     override suspend fun searchCustomersByName(nameString: String): List<Customer> {
         return retrofit.getSearchedCustomerDetails(
             props = "customerName", // Adjust the query parameter based on your API
             value = nameString
         ).body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
+
     override suspend fun getPendingImportPackages(): List<ImportPackages> {
         return retrofit.getPendingImportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
+    }
+
+    override suspend fun getImportPackageById(id: String): ImportPackages {
+        return retrofit.getImportPackageById(id = id).body()?.convertToModel()!!
     }
 
     override suspend fun getPendingExportPackages(): List<ExportPackages> {
@@ -125,6 +137,7 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun addNewSupplier(supplier: Supplier) {
         return retrofit.addNewSupplier(supplier = supplier.convertToResponse())// ?: "Can't add"
     }
+
     override suspend fun addNewCustomer(customer: Customer) {
         return retrofit.addNewCustomer(customer = customer.convertToResponse())// ?: "Can't add"
     }

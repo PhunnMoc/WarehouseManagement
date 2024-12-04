@@ -95,7 +95,7 @@ import java.util.Date
 fun FormAddOrEditProductForm(
     modifier: Modifier = Modifier,
     onSubmit: (FormData) -> Unit,
-  //  onAdd1MoreProduct: (String) -> Unit,
+    //  onAdd1MoreProduct: (String) -> Unit,
     onBackClick: () -> Unit,
     product: Product? = null,
     //onNavigateAddNewGenre: () -> Unit,
@@ -551,6 +551,7 @@ fun FormAddOrEditProductForm(
                         isCheckedInStock = false
                         imageUrl = ""
                         description = ""
+                        onBackClick()
                     }) {
                     Icon(
                         modifier = Modifier.size(Dimens.SIZE_ICON_35_DP),

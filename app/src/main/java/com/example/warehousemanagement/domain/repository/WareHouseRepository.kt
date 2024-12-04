@@ -23,6 +23,10 @@ interface WareHouseRepository {
         order: String,
     ): List<Product>
 
+    suspend fun getFilteredProductsDetails(
+        filters: Map<String, String>
+    ): List<Product>
+
     suspend fun getAllGenre(): List<Genre>
     suspend fun addNewGenre(genre: Genre)
 
@@ -33,6 +37,7 @@ interface WareHouseRepository {
     suspend fun getSearchedStorageLocationByName(query: String): List<StorageLocation>
 
     suspend fun getPendingImportPackages(): List<ImportPackages>
+    suspend fun getImportPackageById(id: String): ImportPackages
     suspend fun getPendingExportPackages(): List<ExportPackages>
     suspend fun getDoneImportPackages(): List<ImportPackages>
     suspend fun getDoneExportPackages(): List<ExportPackages>

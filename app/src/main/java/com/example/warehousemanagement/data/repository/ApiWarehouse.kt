@@ -9,16 +9,19 @@ import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.domain.model.Notification
-import com.example.warehousemanagement.domain.model.Supplier
-import com.example.warehousemanagement.domain.model.User
+import com.example.warehousemanagement.ui.navigation.Routes.ImportPackage
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
+
 
 interface ApiWarehouse {
     @GET("/product")
@@ -38,6 +41,11 @@ interface ApiWarehouse {
     suspend fun getSortedProductDetails(
         @Query("props") props: String,
         @Query("order") order: String
+    ): Response<List<ProductResponse>>
+
+    @GET("/product/filter")
+    suspend fun getFilteredProductsDetails(
+        @QueryMap filters: Map<String, String>
     ): Response<List<ProductResponse>>
 
 
@@ -74,6 +82,19 @@ interface ApiWarehouse {
     @GET("/import-packages/pending")
     suspend fun getPendingImportPackages(): Response<List<ImportPackageResponseItem>>
 
+    @GET("import-packages/pending/{id}")
+    suspend fun getImportPackageById(
+        @Path("id") id: String
+    ): Response<ImportPackageResponseItem>
+
+//    @PUT("/{id}")
+//    fun updateImportPackage(
+//        @PathVariable id: String?,
+//        @RequestBody importPackage: ImportPackage?
+//    ): ResponseEntity<ImportPackage?>? {
+//        return importPackageService.updateImportPackage(id, importPackage)
+//    }
+
     @GET("/export-packages/pending")
     suspend fun getPendingExportPackages(): Response<List<ExportPackageResponse>>
 
@@ -90,25 +111,30 @@ interface ApiWarehouse {
 
     @GET("/supplier/{id}")
     suspend fun getSupplierDetails(@Path("id") id: String): Response<SupplierResponse>
+
     @GET("/supplier/search")
     suspend fun getSearchedSuppliersDetails(
         @Query("props") props: String,
         @Query("value") value: String
     ): Response<List<SupplierResponse>>
+
     @GET("/customer")
     suspend fun getAllCustomer(): Response<List<CustomerResponse>>
 
     @GET("/customer/{id}")
     suspend fun getCustomerDetails(@Path("id") id: String): Response<CustomerResponse>
+
     @GET("/customer/search")
     suspend fun getSearchedCustomerDetails(
         @Query("props") props: String,
         @Query("value") value: String
     ): Response<List<CustomerResponse>>
+
     @POST("/customer") // Adjust the endpoint based on your backend configuration
     suspend fun addNewCustomer(
         @Body customer: CustomerResponse
     )
+
     @POST("/genre") // Adjust the endpoint based on your backend configuration
     suspend fun addNewGenre(
         @Body genre: GenreResponse

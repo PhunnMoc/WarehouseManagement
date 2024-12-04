@@ -21,6 +21,5 @@ data class ImportPackages(
     val note: String,
     val packageName: String,
     val receiver: ReceiverResponse,
-    val statusDone: Boolean,
-    val status: StatusPackage = StatusPackage.PENDING,
+    val status: String,
 )

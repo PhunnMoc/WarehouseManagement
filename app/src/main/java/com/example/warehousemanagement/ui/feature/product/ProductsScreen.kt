@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -33,6 +34,7 @@ import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
 import com.example.warehousemanagement.ui.common.SearchBarPreview
+import com.example.warehousemanagement.ui.feature.filter.FilterProductScreen
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiState
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -49,7 +51,7 @@ fun ProductsScreen(
 ) {
     val productUiState by viewModel.productUiState.collectAsStateWithLifecycle()
     var isExpanded by remember { mutableStateOf(false) }
-    var isFilter by remember {
+    var isFilter by rememberSaveable {
         mutableStateOf(false)
     }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -87,6 +89,9 @@ fun ProductsScreen(
 //                    Text(text = "SEARCH")
 //                }
                 FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
+//                Button(onClick = { isFilter = true }) {
+//                    Text(text = "Filter")
+//                }
             }
 
             //Spacer(modifier = Modifier.height(16.dp))
@@ -107,9 +112,13 @@ fun ProductsScreen(
                     }
                 }
             }
-//            if (isFilter) {
-//                FilterProductScreen()
-//            }
+
+        }
+        if (isFilter) {
+            FilterProductScreen(
+                onClickFilter = viewModel::addFilterMap,
+                onDismiss = { isFilter = false }
+            )
         }
     }
 

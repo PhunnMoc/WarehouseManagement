@@ -48,6 +48,7 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.common.SuplierCard
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.SupplierUIState
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.SupplierViewModel
@@ -144,13 +145,12 @@ fun SuppliersScreen(
             Column(
                 modifier = Modifier.padding(horizontal = Dimens.PADDING_16_DP),
             ) {
-//                SearchBarPreview(modifier = Modifier.clickable
-//                {
-//                    onClickSearch()
-//                })
-                Button(onClick = { onClickSearch() }) {
-                    Text(text = "SEARCH")
-                }
+                SearchBarPreview(
+                    enabled = false,
+                    modifier = Modifier.clickable {
+                        onClickSearch()
+                    }
+                )
                 FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
@@ -165,7 +165,8 @@ fun SuppliersScreen(
                             SuplierCard(
                                 supplier = supplier,
                                 onCardClick = {},
-                                onLongPress = onNavigationDetailSupplier,)
+                                onLongPress = onNavigationDetailSupplier,
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }

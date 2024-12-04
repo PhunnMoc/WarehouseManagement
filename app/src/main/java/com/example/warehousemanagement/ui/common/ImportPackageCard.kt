@@ -75,7 +75,9 @@ fun ImportPackageCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = if (importPackage.statusDone) colorResource(id = R.color.background_done) else colorResource(
+                        color = if (importPackage.status == "APPROVED" || importPackage.status == "DECLINE") colorResource(
+                            id = R.color.background_done
+                        ) else colorResource(
                             id = R.color.background_pending
                         )
                     )
@@ -111,10 +113,12 @@ fun ImportPackageCard(
                         color = colorResource(id = R.color.text_color_light_black)
                     )
                     Text(
-                        text = "Status: ${importPackage.status.name}",
+                        text = "Status: ${importPackage.status}",
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
-                        color = if (importPackage.statusDone) colorResource(id = R.color.background_done) else colorResource(
+                        color = if (importPackage.status == "APPROVED" || importPackage.status == "DECLINE") colorResource(
+                            id = R.color.background_done
+                        ) else colorResource(
                             id = R.color.background_pending
                         )
                     )

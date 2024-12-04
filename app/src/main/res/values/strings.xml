@@ -74,5 +74,7 @@
     <string name="done_import_title">Done IP</string>
     <string name="create_new_ip">Create new Import Package</string>
     <string name="package_name_title">Name of package</string>
+    <string name="see_more">See more</string>
+    <string name="see_less">See less</string>
     <!--________________________________________________-->
 </resources>

@@ -47,6 +47,7 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.feature.customer.viewModel.CustomerUIState
 import com.example.warehousemanagement.ui.feature.customer.viewModel.CustomerViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -120,12 +121,6 @@ fun CustomersScreen(
         },
         topBar = {
             HeaderOfScreen(
-                modifier = modifier.padding(
-                    top = Dimens.PADDING_20_DP,
-                    start = Dimens.PADDING_20_DP,
-                    end = Dimens.PADDING_20_DP,
-                    bottom = Dimens.PADDING_10_DP
-                ),
                 mainTitleText = stringResource(id = R.string.screen_customer_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
@@ -146,16 +141,14 @@ fun CustomersScreen(
             Column(
                 modifier = Modifier.padding(horizontal = Dimens.PADDING_16_DP),
             ) {
-//                SearchBarPreview(
-//                    modifier = Modifier.clickable {
-//                        onClickSearch()
-//                    }
-//                )
-                androidx.compose.material.Button(onClick = { onClickSearch() }) {
-                    Text(text = "SEARCH")
-                }
+                SearchBarPreview(
+                    enabled = false,
+                    modifier = Modifier.clickable {
+                        onClickSearch()
+                    }
+                )
 
-                    FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
+                FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
             //Spacer(modifier = Modifier.height(16.dp))

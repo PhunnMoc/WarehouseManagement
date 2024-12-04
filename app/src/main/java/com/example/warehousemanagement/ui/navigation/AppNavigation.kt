@@ -47,7 +47,9 @@ import com.example.warehousemanagement.ui.feature.genre.FormAddOrEditGenreForm
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.home.WorkerScreen
+import com.example.warehousemanagement.ui.feature.importPackage.DetailImportPackage
 import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
+import com.example.warehousemanagement.ui.feature.importPackage.ImportPackage
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
 import com.example.warehousemanagement.ui.feature.login.LoginScreen
 import com.example.warehousemanagement.ui.feature.notification.NotificationScreen
@@ -75,7 +77,6 @@ fun BottomBar(
     navController: NavHostController, modifier: Modifier = Modifier,
     homeRoute: Routes,
 ) {
-
 
     val iconNav = listOf(
         R.drawable.icons8_home__1_,
@@ -178,7 +179,7 @@ fun AppNavigation(
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController = navigationController,
-                startDestination = startDestination,
+                startDestination = TopLevelDestinations.HomeAdmin.route,
                 enterTransition = {
                     scaleIntoContainer()
                 },
@@ -316,7 +317,7 @@ fun AppNavigation(
                                     id = id
                                 )
                             )
-                        }        ,
+                        },
                     )
 
                     isShowNavigation = false
@@ -376,8 +377,16 @@ fun AppNavigation(
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { /*TODO*/ },
-                        onNavigationDetailImportPackage = {})
+                        onNavigationDetailImportPackage = { id ->
+                            navigationController.navigate(
+                                Routes.DetailImportPackage(id = id)
+                            )
+                        })
                     isShowNavigation = false
+                }
+
+                composable<Routes.DetailImportPackage> {
+                    DetailImportPackage()
                 }
 
                 composable<Routes.ExportPackage> {
