@@ -96,7 +96,7 @@ fun CustomerCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_importpackage),
+                    painter = painterResource(id = R.drawable.customer_ic),
                     contentDescription = "Product Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

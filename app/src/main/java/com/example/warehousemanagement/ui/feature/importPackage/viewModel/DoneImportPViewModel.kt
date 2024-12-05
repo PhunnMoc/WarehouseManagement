@@ -27,14 +27,15 @@ class DoneImportPViewModel @Inject constructor(
     )
 
     private fun getAllImportPackage(): Flow<ImportPackageUiState> =
-        flow { emit(wareHouseRepository.getDoneImportPackages()) }.asResult().map { importPackages ->
-            when (importPackages) {
-                is Result.Success -> {
-                    ImportPackageUiState.Success(importPackages = importPackages.data)
-                }
+        flow { emit(wareHouseRepository.getDoneImportPackages()) }.asResult()
+            .map { importPackages ->
+                when (importPackages) {
+                    is Result.Success -> {
+                        ImportPackageUiState.Success(importPackages = importPackages.data.reversed())
+                    }
 
-                is Result.Error -> ImportPackageUiState.Error
-                is Result.Loading -> ImportPackageUiState.Loading
+                    is Result.Error -> ImportPackageUiState.Error
+                    is Result.Loading -> ImportPackageUiState.Loading
+                }
             }
-        }
 }

@@ -140,7 +140,7 @@ fun ProductItem(
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold)
             Text(text = "Name: ${product.productName}")
-            Text(text = "Genre: ${product.genre.genreName}")
+            Text(text = "Genre: ${product.genre?.genreName}")
             Text(text = "Price: ${product.sellingPrice}")
             Text(text = "Quantity: ${product.quantity}")
             Divider(Modifier.fillMaxWidth())

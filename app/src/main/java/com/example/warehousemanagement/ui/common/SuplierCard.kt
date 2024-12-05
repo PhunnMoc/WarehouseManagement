@@ -96,7 +96,7 @@ fun SuplierCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.supplier_image),
+                    painter = painterResource(id = R.drawable.supplier),
                     contentDescription = "Product Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

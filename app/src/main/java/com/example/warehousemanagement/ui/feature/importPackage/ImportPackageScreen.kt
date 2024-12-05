@@ -39,12 +39,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.DialogWithInput
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -183,14 +185,15 @@ fun ImportPackageScreen(
                 onConfirm = { packageName, note ->
                     isShowDialog = false
                     onClickAddProduct(packageName, note)
-                }
-            ) {
-
-            }
+                },
+                onCancel = {
+                    isShowDialog = false
+                },
+            )
         }
     }
-
 }
+
 
 @Composable
 fun TabBarImport(
@@ -211,11 +214,15 @@ fun TabBarImport(
             contentColor = colorResource(id = R.color.background_theme)
         ) {
             tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTabIndex == index,
+                Tab(selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(text = title) }
-                )
+                    text = {
+                        Text(
+                            text = title,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = QuickSand
+                        )
+                    })
             }
         }
 

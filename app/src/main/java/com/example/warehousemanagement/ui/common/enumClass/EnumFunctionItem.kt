@@ -20,7 +20,7 @@ val functionItemsAdmin: List<FunctionItem> = listOf(
     ),
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.STORAGE_LOCATION,
-        iconResource = R.drawable.storage_location,
+        iconResource = R.drawable.location,
     ),
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.GENRE,
@@ -36,11 +36,11 @@ val functionItemsAdmin: List<FunctionItem> = listOf(
     ),
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.IMPORT_PACKAGE,
-        iconResource = R.drawable.ic_importpackage,
+        iconResource = R.drawable.import_package,
     ),
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.EXPORT_PACKAGE,
-        iconResource = R.drawable.package_image,
+        iconResource = R.drawable.export_package,
     )
 )
 

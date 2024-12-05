@@ -6,7 +6,6 @@ import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.ImportPackages
-import com.example.warehousemanagement.domain.model.Information
 import com.example.warehousemanagement.domain.model.Notification
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
@@ -111,8 +110,30 @@ class WareHouseRepositoryImpl @Inject constructor(
             ?: listOf()
     }
 
+    override suspend fun getPendingImportPackageById(id: String): ImportPackages {
+        return retrofit.getPendingImportPackageById(id = id).body()?.convertToModel()!!
+    }
+
     override suspend fun getImportPackageById(id: String): ImportPackages {
         return retrofit.getImportPackageById(id = id).body()?.convertToModel()!!
+    }
+
+    override suspend fun updateImportPackage(
+        id: String, status: String
+    ) {
+        return retrofit.updateImportPackage(
+            id = id, status = status
+        )
+    }
+
+    override suspend fun updateProductsInImportPackage(
+        id: String,
+        storageLocationIds: Map<String, String>
+    ) {
+        retrofit.updateProductsInImportPackage(
+            id = id,
+            storageLocationIds = storageLocationIds
+        )
     }
 
     override suspend fun getPendingExportPackages(): List<ExportPackages> {

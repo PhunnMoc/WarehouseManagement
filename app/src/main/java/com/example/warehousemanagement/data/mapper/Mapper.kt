@@ -20,23 +20,21 @@ import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.model.User
 
-fun ProductResponse.convertToModel(): Product? {
-    if (id == null || description == null || genre == null || image == null || importPrice == null || inStock == null || productName == null || quantity == null || sellingPrice == null || storageLocation == null || supplier == null) {
-        return null
-    }
+fun ProductResponse.convertToModel(): Product {
+
     return Product(
-        idProduct = id,
-        description = description,
-        genre = genre.convertToModel() ?: return null,
-        image = image,
-        importPrice = importPrice,
-        inStock = inStock,
+        idProduct = id ?: "",
+        description = description ?: "",
+        genre = genre?.convertToModel(),
+        image = image ?: "",
+        importPrice = importPrice ?: 0,
+        inStock = inStock ?: false,
         lastUpdated = lastUpdated ?: "",
-        productName = productName,
-        quantity = quantity,
-        sellingPrice = sellingPrice,
-        storageLocation = storageLocation.convertToModel() ?: return null,
-        supplier = supplier.convertToModel() ?: return null,
+        productName = productName ?: "",
+        quantity = quantity ?: 0,
+        sellingPrice = sellingPrice ?: 0,
+        storageLocation = storageLocation?.convertToModel(),
+        supplier = supplier?.convertToModel(),
     )
 
 }
@@ -45,7 +43,7 @@ fun Product.convertToResponse(): ProductResponse {
     return ProductResponse(
         id = idProduct,
         description = description,
-        genre = genre.convertToResponse(),
+        genre = genre?.convertToResponse(),
         image = image,
         importPrice = importPrice,
         inStock = inStock,
@@ -53,8 +51,8 @@ fun Product.convertToResponse(): ProductResponse {
         productName = productName,
         quantity = quantity,
         sellingPrice = sellingPrice,
-        storageLocation = storageLocation.convertToResponse(),
-        supplier = supplier.convertToResponse(),
+        storageLocation = storageLocation?.convertToResponse(),
+        supplier = supplier?.convertToResponse(),
     )
 
 }

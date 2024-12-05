@@ -10,9 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 val KEY_ID = "id"
@@ -32,7 +32,7 @@ class DetailImportViewModel @Inject constructor(
         savedStateHandle.getStateFlow(KEY_ID, "")
             .map {
                 print("IRIS $it")
-                wareHouseRepository.getImportPackageById(id = it)
+                wareHouseRepository.getPendingImportPackageById(id = it)
             }.asResult()
             .map { detailImportPackages ->
                 when (detailImportPackages) {
@@ -44,5 +44,15 @@ class DetailImportViewModel @Inject constructor(
                     is Result.Loading -> DetailImportUiState.Loading
                 }
             }
+
+    fun updateImportPackage(status: String) {
+        val id = savedStateHandle.get<String>(KEY_ID)
+        viewModelScope.launch {
+            wareHouseRepository.updateImportPackage(
+                id = id ?: "",
+                status = status,
+            )
+        }
+    }
 
 }

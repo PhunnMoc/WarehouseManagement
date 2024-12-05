@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -76,7 +77,10 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun DetailImportPackage(
+    isDone: Boolean = false,
     viewModel: DetailImportViewModel = hiltViewModel(),
+    navigateToSetStorageLocationScreen: (String) -> Unit,
+    onBack: () -> Unit,
 ) {
     val detailImportUiState by viewModel.detailImportPackageUiState.collectAsStateWithLifecycle()
 
@@ -86,16 +90,25 @@ fun DetailImportPackage(
         is DetailImportUiState.Success -> {
             ImportPackage(
                 importPackage = detail.detailImportPackage,
+                navigateToSetStorageLocationScreen = navigateToSetStorageLocationScreen,
+                onBack = onBack,
                 onEditClick = { productId ->
                     //    editingProduct = importPackage.listProducts.find { it.id == productId }
-                }
+                },
+                onUpdateImportPackage = viewModel::updateImportPackage
             )
         }
     }
 }
 
 @Composable
-fun ImportPackage(importPackage: ImportPackages, onEditClick: (String) -> Unit) {
+fun ImportPackage(
+    importPackage: ImportPackages,
+    navigateToSetStorageLocationScreen: (String) -> Unit,
+    onEditClick: (String) -> Unit,
+    onBack: () -> Unit,
+    onUpdateImportPackage: (String) -> Unit,
+) {
     val scrollState = rememberLazyListState()
     val headerHeight by remember {
         derivedStateOf {
@@ -124,6 +137,7 @@ fun ImportPackage(importPackage: ImportPackages, onEditClick: (String) -> Unit) 
                     fontSize = 25.sp,
                     // color = colorResource(id = R.color.text_color_light_black)
                 )
+                print("KHANH ${importPackage.packageName}")
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(50.dp))
@@ -200,15 +214,10 @@ fun ImportPackage(importPackage: ImportPackages, onEditClick: (String) -> Unit) 
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(
-                        onClick = { /* Handle Cancel action */ },
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(16.dp),
-                    ) {
-                        Text(text = "Cancel")
-                    }
-                    Button(
-                        onClick = { /* Handle Decline action */ },
+                        onClick = {
+                            onUpdateImportPackage("decline")
+                            onBack()
+                        },
                         modifier = Modifier
                             .weight(1f)
                             .padding(16.dp),
@@ -216,7 +225,10 @@ fun ImportPackage(importPackage: ImportPackages, onEditClick: (String) -> Unit) 
                         Text(text = "Decline")
                     }
                     Button(
-                        onClick = { /* Handle Approve action */ },
+                        onClick = {
+                            onUpdateImportPackage("approved")
+                            navigateToSetStorageLocationScreen(importPackage.idImportPackages)
+                        },
                         modifier = Modifier
                             .weight(1f)
                             .padding(16.dp),
@@ -245,6 +257,7 @@ fun ProductItemDetail(product: Product, onEditClick: (String) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+                .clickable { onEditClick(product.idProduct) }
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -257,7 +270,7 @@ fun ProductItemDetail(product: Product, onEditClick: (String) -> Unit) {
                         fontSize = 17.sp,
                         fontWeight = FontWeight.W600
                     )
-                    Text(text = "Genre: ${product.genre.genreName}")
+                    Text(text = "Genre: ${product.genre?.genreName}")
                 }
                 IconButton(
                     onClick = { isCompactView = !isCompactView },
@@ -306,19 +319,19 @@ fun ExpandedView(product: Product) {
                     .padding(10.dp)
             )
             Column(modifier = Modifier.weight(1f, false)) {
-                Text(text = "Genre: ${product.genre.genreName}")
+                Text(text = "Genre: ${product.genre?.genreName}")
                 Text(
                     text = "Description: ${product.description}",
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
                 Text(
-                    text = "Supplier: ${product.supplier.name}",
+                    text = "Supplier: ${product.supplier?.name}",
                 )
-                Text(text = "Contact: ${product.supplier.email}")
+                Text(text = "Contact: ${product.supplier?.email}")
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Text(text = "Storage Location: ${product.storageLocation.storageLocationName}")
+                Text(text = "Storage Location: ${product.storageLocation?.storageLocationName}")
 
             }
         }

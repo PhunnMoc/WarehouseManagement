@@ -160,7 +160,7 @@ fun ProductCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "Supplier customerName:", weight = 3f)
-                        TableCell(text = product.supplier.name, weight = 7f)
+                        product.supplier?.let { TableCell(text = it.name, weight = 7f) }
                     }
                     Row(
                         modifier = Modifier
@@ -185,7 +185,7 @@ fun ProductCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "Genre customerName:", weight = 3f)
-                        TableCell(text = product.genre.genreName, weight = 7f)
+                        product.genre?.let { TableCell(text = it.genreName, weight = 7f) }
                     }
                     Row(
                         modifier = Modifier
@@ -201,7 +201,7 @@ fun ProductCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "Location customerName:", weight = 3f)
-                        TableCell(text = product.storageLocation.storageLocationName, weight = 7f)
+                        product.storageLocation?.let { TableCell(text = it.storageLocationName, weight = 7f) }
                     }
                     Row(
                         modifier = Modifier

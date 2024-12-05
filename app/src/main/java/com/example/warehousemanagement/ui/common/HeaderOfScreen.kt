@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,10 +51,9 @@ fun HeaderOfScreen(
             Text(
                 text = mainTitleText,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.W500
-                )
+                fontFamily = QuickSand,
+                fontWeight = FontWeight.W800,
+                fontSize = 17.sp
             )
         },
         navigationIcon = {

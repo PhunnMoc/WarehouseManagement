@@ -88,7 +88,7 @@ fun ExportPackageCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_importpackage),
+                    painter = painterResource(id = R.drawable.package_ic),
                     contentDescription = "Product Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

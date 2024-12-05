@@ -25,11 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -51,11 +53,13 @@ import com.example.warehousemanagement.ui.feature.importPackage.DetailImportPack
 import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackage
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
+import com.example.warehousemanagement.ui.feature.importPackage.SetStorageLocationPendingProduct
 import com.example.warehousemanagement.ui.feature.login.LoginScreen
 import com.example.warehousemanagement.ui.feature.notification.NotificationScreen
 import com.example.warehousemanagement.ui.feature.product.AddProductsByExcel
 import com.example.warehousemanagement.ui.feature.product.DetailProduct
 import com.example.warehousemanagement.ui.feature.product.ProductsScreen
+import com.example.warehousemanagement.ui.feature.report.ReportScreen
 import com.example.warehousemanagement.ui.feature.search.SearchCustomerScreen
 import com.example.warehousemanagement.ui.feature.search.SearchGenreScreen
 import com.example.warehousemanagement.ui.feature.search.SearchProductScreen
@@ -66,7 +70,9 @@ import com.example.warehousemanagement.ui.feature.supplier.DetailSupplier
 import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
 import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 import com.example.warehousemanagement.ui.theme.size_icon_30
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -108,7 +114,11 @@ fun BottomBar(
         topLevelDestinations.map { screen ->
             NavigationBarItem(
                 label = {
-                    Text(text = screen.label)
+                    Text(
+                        fontFamily = QuickSand,
+                        fontWeight = FontWeight.W600,
+                        text = screen.label
+                    )
                 },
                 icon = {
                     Icon(
@@ -155,6 +165,11 @@ fun hiltEntryPoint(): AppEntryPoint {
 fun AppNavigation(
     preferencesRepository: PreferencesRepository = hiltEntryPoint().preferencesRepository()
 ) {
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setSystemBarsColor(
+        color = Color.Transparent,
+        darkIcons = true,
+    )
     val navigationController = rememberNavController()
     var isShowNavigation by remember {
         mutableStateOf(true)
@@ -180,7 +195,7 @@ fun AppNavigation(
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController = navigationController,
-                startDestination = startDestination,
+                startDestination = TopLevelDestinations.HomeAdmin.route,
                 enterTransition = {
                     scaleIntoContainer()
                 },
@@ -220,7 +235,7 @@ fun AppNavigation(
                 }
 
                 composable<Routes.Analyze> {
-                    Text(text = "Analyze")
+                    ReportScreen()
                     isShowNavigation = true
 
                 }
@@ -269,7 +284,7 @@ fun AppNavigation(
 
                 composable<Routes.AddProducts> {
                     FormAddOrEditProductForm(onSubmit = {},
-                        onBackClick = { navigationController.popBackStack() })
+                        onBackClick = { navigationController.navigate(Routes.ImportPackage) })
                     isShowNavigation = false
                 }
 
@@ -387,7 +402,19 @@ fun AppNavigation(
                 }
 
                 composable<Routes.DetailImportPackage> {
-                    DetailImportPackage()
+                    DetailImportPackage(
+                        onBack = { navigationController.popBackStack() },
+                        navigateToSetStorageLocationScreen = { id ->
+                            navigationController.navigate(
+                                Routes.SetStorageImportPackage(id = id)
+                            )
+                        }
+                    )
+                }
+                composable<Routes.SetStorageImportPackage> {
+                    SetStorageLocationPendingProduct(
+                        navigateToImportPackageScreen = { navigationController.navigate(Routes.ImportPackage) }
+                    )
                 }
 
                 composable<Routes.ExportPackage> {

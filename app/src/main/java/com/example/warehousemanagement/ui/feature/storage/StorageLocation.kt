@@ -62,6 +62,7 @@ import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.feature.storage.viewModel.StorageLocationUiState
 import com.example.warehousemanagement.ui.feature.storage.viewModel.StorageLocationViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -243,6 +244,7 @@ fun WarehouseAreaCard(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Text(
+                    fontFamily = QuickSand,
                     text = "Delete", color = Color.White, modifier = Modifier.padding(16.dp)
                 )
             }
@@ -260,10 +262,12 @@ fun WarehouseAreaCard(
                 ) {
                     Column {
                         Text(
+                            fontFamily = QuickSand,
                             text = "ID: ${area.id}",
                             color = colorResource(id = R.color.background_theme)
                         )
                         Text(
+                            fontFamily = QuickSand,
                             fontWeight = FontWeight.W600,
                             fontSize = 16.sp,
                             color = colorResource(id = R.color.text_color_light_black),

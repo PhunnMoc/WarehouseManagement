@@ -4,7 +4,6 @@ import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.ImportPackages
-import com.example.warehousemanagement.domain.model.Information
 import com.example.warehousemanagement.domain.model.Notification
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.StorageLocation
@@ -37,7 +36,17 @@ interface WareHouseRepository {
     suspend fun getSearchedStorageLocationByName(query: String): List<StorageLocation>
 
     suspend fun getPendingImportPackages(): List<ImportPackages>
+    suspend fun getPendingImportPackageById(id: String): ImportPackages
     suspend fun getImportPackageById(id: String): ImportPackages
+    suspend fun updateImportPackage(
+        id: String,
+        status: String,
+    )
+    suspend fun updateProductsInImportPackage(
+        id: String,
+        storageLocationIds: Map<String, String>
+    )
+
     suspend fun getPendingExportPackages(): List<ExportPackages>
     suspend fun getDoneImportPackages(): List<ImportPackages>
     suspend fun getDoneExportPackages(): List<ExportPackages>

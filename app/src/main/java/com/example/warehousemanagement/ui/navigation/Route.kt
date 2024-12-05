@@ -76,6 +76,9 @@ sealed class Routes {
     data class DetailImportPackage(val id: String) : Routes()
 
     @Serializable
+    data class SetStorageImportPackage(val id: String) : Routes()
+
+    @Serializable
     object ExportPackage : Routes()
 
     ///

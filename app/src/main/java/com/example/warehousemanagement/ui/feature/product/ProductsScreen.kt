@@ -100,14 +100,14 @@ fun ProductsScreen(
                 is ProductUiState.Loading -> IndeterminateCircularIndicator()
                 is ProductUiState.Error -> NothingText()
                 is ProductUiState.Success -> {
-                    LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
+                    LazyColumn(modifier = Modifier.padding(horizontal = Dimens.PADDING_20_DP)) {
                         items(product.listProduct) { product ->
                             ProductCard(
                                 product = product,
                                 onCardClick = {},
                                 onLongPress = onNavigationDetailProduct,
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(modifier = Modifier.height(20.dp))
                         }
                     }
                 }

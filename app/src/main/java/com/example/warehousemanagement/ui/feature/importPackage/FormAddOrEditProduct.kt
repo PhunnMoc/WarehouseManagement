@@ -104,8 +104,6 @@ fun FormAddOrEditProductForm(
     var name by remember { mutableStateOf(product?.productName ?: "") }
     var genreName by remember { mutableStateOf("") }
     var genre by remember { mutableStateOf<Genre?>(null) }
-    var storageLocationName by remember { mutableStateOf("") }
-    var storageLocation by remember { mutableStateOf<StorageLocation?>(null) }
     var supplierName by remember { mutableStateOf("") }
     var supplier by remember { mutableStateOf<Supplier?>(null) }
     var quantity by remember { mutableStateOf(product?.quantity?.toString() ?: "") }
@@ -348,85 +346,6 @@ fun FormAddOrEditProductForm(
                 }
             }
 
-            //storageLocationId
-            var expandedStorageLocation by remember { mutableStateOf(false) }
-            OutlinedTextField(
-                value = storageLocationName,
-                onValueChange = {
-                    storageLocationName = it
-                    viewModel.onChangeSearchStorageLocationQuery(it)
-                    expandedStorageLocation = true
-                },
-                label = { Text("Storage location") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(Dimens.PADDING_10_DP)
-            )
-
-            AnimatedVisibility(
-                visible = expandedStorageLocation,
-                enter = expandVertically(animationSpec = tween(durationMillis = 500)) + fadeIn(),
-                exit = shrinkVertically(animationSpec = tween(durationMillis = 500)) + fadeOut()
-            ) {
-                when (val storageLocations = listStorageLocation) {
-                    is SearchStorageLocationUiState.Loading -> IndeterminateCircularIndicator()
-                    is SearchStorageLocationUiState.Error -> NothingText()
-                    is SearchStorageLocationUiState.Success -> {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(Dimens.PADDING_10_DP)
-                                .background(color = MaterialTheme.colorScheme.surface)
-                                .border(
-                                    1.dp,
-                                    MaterialTheme.colorScheme.primary,
-                                    RoundedCornerShape(Dimens.PADDING_10_DP)
-                                )
-                                .padding(Dimens.PADDING_5_DP)
-                        ) {
-                            if (storageLocations.listSearchStorageLocation.isEmpty()) {
-                                Text(
-                                    "No storage location found",
-                                    color = Color.Gray,
-                                    modifier = Modifier.padding(Dimens.PADDING_5_DP)
-                                )
-                            } else {
-                                FlowRow(
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    storageLocations.listSearchStorageLocation.forEach { option ->
-                                        Box(
-                                            modifier = Modifier
-                                                .padding(Dimens.PADDING_5_DP)
-                                                .clip(RoundedCornerShape(Dimens.PADDING_10_DP))
-                                                .background(MaterialTheme.colorScheme.primary)
-                                                .clickable {
-                                                    storageLocationName = option.storageLocationName
-                                                    storageLocation = option
-                                                    expandedStorageLocation = false
-                                                }
-                                                .padding(Dimens.PADDING_10_DP)
-                                        ) {
-                                            Text(
-                                                text = option.storageLocationName,
-                                                color = Color.White,
-                                                style = MaterialTheme.typography.bodySmall
-                                            )
-                                        }
-                                    }
-                                }
-                                Text(
-                                    text = "Add new StorageLocationName",
-                                    modifier = Modifier
-                                        .padding(top = Dimens.PADDING_10_DP)
-                                        .clickable { /* Handle Add New Genre */ },
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
 
             // DateTime Picker
             OutlinedTextField(
@@ -446,17 +365,15 @@ fun FormAddOrEditProductForm(
 
             //image
             UploadImageButton(onImageSelected = { imageUrl = it ?: "" })
-            imageUrl.let { url ->
-                Image(
-                    painter = rememberAsyncImagePainter(url),
-                    contentDescription = "Uploaded Image",
-                    modifier = Modifier
-                        .size(200.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .border(2.dp, Color.Gray, RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop
-                )
-            }
+            Image(
+                painter = rememberAsyncImagePainter(imageUrl),
+                contentDescription = "Uploaded Image",
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .border(2.dp, Color.Gray, RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
 
             //  "inStock": true
 //            Row(verticalAlignment = Alignment.CenterVertically) {
@@ -486,7 +403,7 @@ fun FormAddOrEditProductForm(
                 val date1: Date =
                     Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
                 BigButton(modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
-                    enabled = name.isNotEmpty() && genre != null && storageLocation != null
+                    enabled = name.isNotEmpty() && genre != null
                             && supplier != null
                             && quantity.isNotEmpty()
                             && importPrice.isNotEmpty()
@@ -507,7 +424,7 @@ fun FormAddOrEditProductForm(
                                 productName = name,
                                 quantity = quantity.toInt(),
                                 sellingPrice = exportPrice.toInt(),
-                                storageLocation = storageLocation!!,
+                                storageLocation =null,
                                 supplier = supplier!!,
                             )
                         )
@@ -515,8 +432,9 @@ fun FormAddOrEditProductForm(
                             date = LocalDate.now().atStartOfDay()
                                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                         )
+                        onBackClick()
                     })
-                IconButton(enabled = name.isNotEmpty() && genre != null && storageLocation != null
+                IconButton(enabled = name.isNotEmpty() && genre != null
                         && supplier != null
                         && quantity.isNotEmpty()
                         && importPrice.isNotEmpty()
@@ -534,15 +452,13 @@ fun FormAddOrEditProductForm(
                                 productName = name,
                                 quantity = quantity.toInt(),
                                 sellingPrice = exportPrice.toInt(),
-                                storageLocation = storageLocation!!,
+                                storageLocation = null,
                                 supplier = supplier!!,
                             )
                         )
                         name = ""
                         genreName = ""
                         genre = null
-                        storageLocationName = ""
-                        storageLocation = null
                         supplierName = ""
                         supplier = null
                         quantity = ""
@@ -551,7 +467,6 @@ fun FormAddOrEditProductForm(
                         isCheckedInStock = false
                         imageUrl = ""
                         description = ""
-                        onBackClick()
                     }) {
                     Icon(
                         modifier = Modifier.size(Dimens.SIZE_ICON_35_DP),
@@ -560,7 +475,6 @@ fun FormAddOrEditProductForm(
                         contentDescription = ""
                     )
                 }
-
             }
         }
     }

@@ -2,7 +2,9 @@ package com.example.warehousemanagement.ui.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,12 +33,12 @@ fun NothingText(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
+            modifier = modifier.wrapContentSize(),
             text = "There are some issue of networking",
-            color = MaterialTheme.colorScheme.primary
         )
     }
 }

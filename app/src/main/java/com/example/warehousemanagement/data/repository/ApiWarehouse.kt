@@ -9,8 +9,6 @@ import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.domain.model.Notification
-import com.example.warehousemanagement.ui.navigation.Routes.ImportPackage
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -82,18 +80,27 @@ interface ApiWarehouse {
     @GET("/import-packages/pending")
     suspend fun getPendingImportPackages(): Response<List<ImportPackageResponseItem>>
 
-    @GET("import-packages/pending/{id}")
+    @GET("/import-packages/pending/{id}")
+    suspend fun getPendingImportPackageById(
+        @Path("id") id: String
+    ): Response<ImportPackageResponseItem>
+
+    @GET("/import-packages/{id}")
     suspend fun getImportPackageById(
         @Path("id") id: String
     ): Response<ImportPackageResponseItem>
 
-//    @PUT("/{id}")
-//    fun updateImportPackage(
-//        @PathVariable id: String?,
-//        @RequestBody importPackage: ImportPackage?
-//    ): ResponseEntity<ImportPackage?>? {
-//        return importPackageService.updateImportPackage(id, importPackage)
-//    }
+    @PUT("/import-packages/{id}")
+    suspend fun updateImportPackage(
+        @Path("id") id: String,
+        @Query("status") status: String,
+    )
+
+    @PUT("/import-packages/{id}/update-products")
+    suspend fun updateProductsInImportPackage(
+        @Path("id") id: String,
+        @QueryMap(encoded = true) storageLocationIds: Map<String, String>
+    )
 
     @GET("/export-packages/pending")
     suspend fun getPendingExportPackages(): Response<List<ExportPackageResponse>>

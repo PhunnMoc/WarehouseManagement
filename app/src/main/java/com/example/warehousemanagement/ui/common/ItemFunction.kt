@@ -59,14 +59,11 @@ fun ItemFunction(
             modifier = Modifier
                 .size(70.dp)
                 .padding(5.dp)
-                .background(
-                    shape = RoundedCornerShape(10.dp),
-                    color = colorResource(id = R.color.background_light_theme)
-                )
                 .wrapContentSize(),
         ) {
             Image(
-                modifier = modifier.padding(Dimens.PADDING_10_DP),
+                modifier = modifier.padding(Dimens.PADDING_10_DP)
+                    .size(50.dp),
                 painter = painterResource(id = iconResource), // Use the passed resource id
                 contentDescription = contentDescription ?: functionName
             )
