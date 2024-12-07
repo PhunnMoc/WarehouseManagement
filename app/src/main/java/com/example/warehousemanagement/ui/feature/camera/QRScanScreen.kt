@@ -71,7 +71,6 @@ fun QRCodeScannerScreen(
             val imageAnalysis = ImageAnalysis.Builder()
                 .build()
 
-            // Setup ImageAnalysis để quét QR code
             imageAnalysis.setAnalyzer(Executors.newSingleThreadExecutor()) { imageProxy ->
                 processImageProxy(imageProxy, barcodeScanner) { barcodeResult ->
                     onNavigateToProductDetail(barcodeResult)

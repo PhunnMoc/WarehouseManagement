@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.domain.repository
 
+import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
@@ -42,6 +43,7 @@ interface WareHouseRepository {
         id: String,
         status: String,
     )
+
     suspend fun updateProductsInImportPackage(
         id: String,
         storageLocationIds: Map<String, String>
@@ -66,9 +68,11 @@ interface WareHouseRepository {
     /// Login
     suspend fun login(username: String, password: String): Map<String, String>
     suspend fun getUserDetails(id: String): User
+    suspend fun getAllUserDetails(): List<User>
     suspend fun getAllNotificationDetails(): List<Notification>
     suspend fun addNewCustomer(customer: Customer)//: String
     suspend fun searchSuppliersByName(nameString: String): List<Supplier>
     suspend fun searchCustomersByName(nameString: String): List<Customer>
 
+    suspend fun getStockSummaryByLocation(): List<StorageLocationSummary>
 }

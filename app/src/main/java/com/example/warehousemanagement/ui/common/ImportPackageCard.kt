@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
 fun ImportPackageCard(
@@ -87,7 +88,8 @@ fun ImportPackageCard(
             ) {
                 Text(
                     text = "Package ID: ${importPackage.idImportPackages}",
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = QuickSand,
                 )
                 QRCodeScreen(id = importPackage.idImportPackages)
             }
@@ -110,7 +112,8 @@ fun ImportPackageCard(
                         text = "Package Name: ${importPackage.packageName}",
                         fontWeight = FontWeight.W600,
                         fontSize = 16.sp,
-                        color = colorResource(id = R.color.text_color_light_black)
+                        color = colorResource(id = R.color.text_color_light_black),
+                        fontFamily = QuickSand,
                     )
                     Text(
                         text = "Status: ${importPackage.status}",
@@ -120,11 +123,11 @@ fun ImportPackageCard(
                             id = R.color.background_done
                         ) else colorResource(
                             id = R.color.background_pending
-                        )
+                        ),
+                        fontFamily = QuickSand,
                     )
                 }
             }
-
 
             if (isExpanded) {
                 Column(
@@ -163,11 +166,13 @@ fun ImportPackageCard(
                         text = "Note:",
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
+                        fontFamily = QuickSand,
                         color = Color.Gray
                     )
                     Text(
                         modifier = Modifier.padding(top = Dimens.PADDING_10_DP),
                         text = importPackage.note,
+                        fontFamily = QuickSand,
                         fontSize = 14.sp,
                         color = Color.Gray
                     )

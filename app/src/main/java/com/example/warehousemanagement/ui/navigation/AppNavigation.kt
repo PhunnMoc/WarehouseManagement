@@ -51,7 +51,6 @@ import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.home.WorkerScreen
 import com.example.warehousemanagement.ui.feature.importPackage.DetailImportPackage
 import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
-import com.example.warehousemanagement.ui.feature.importPackage.ImportPackage
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
 import com.example.warehousemanagement.ui.feature.importPackage.SetStorageLocationPendingProduct
 import com.example.warehousemanagement.ui.feature.login.LoginScreen
@@ -69,6 +68,8 @@ import com.example.warehousemanagement.ui.feature.setting.SettingScreen
 import com.example.warehousemanagement.ui.feature.supplier.DetailSupplier
 import com.example.warehousemanagement.ui.feature.supplier.FormAddOrEditSupplierForm
 import com.example.warehousemanagement.ui.feature.supplier.SuppliersScreen
+import com.example.warehousemanagement.ui.feature.user.ManagerUserScreen
+import com.example.warehousemanagement.ui.feature.user.UserDetailSreen
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 import com.example.warehousemanagement.ui.theme.size_icon_30
@@ -195,7 +196,7 @@ fun AppNavigation(
     }) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             NavHost(navController = navigationController,
-                startDestination = TopLevelDestinations.HomeAdmin.route,
+                startDestination = startDestination,
                 enterTransition = {
                     scaleIntoContainer()
                 },
@@ -219,6 +220,7 @@ fun AppNavigation(
                         onNavigateToCustomer = { navigationController.navigate(Routes.Customers) },
                         onNavigateToSupplier = { navigationController.navigate(Routes.Suppliers) },
                         onNavigateNotification = { navigationController.navigate(Routes.Notification) },
+                        onNavigateToManagerUser = { navigationController.navigate(Routes.ManagerUsers) },
                     )
                     isShowNavigation = true
                 }
@@ -244,7 +246,6 @@ fun AppNavigation(
                         onBackClick = { navigationController.popBackStack() },
                     )
                     isShowNavigation = false
-
                 }
                 composable<Routes.QRCodeScanner> {
                     QRCodeScannerScreen(onNavigateToProductDetail = { id ->
@@ -284,6 +285,7 @@ fun AppNavigation(
 
                 composable<Routes.AddProducts> {
                     FormAddOrEditProductForm(onSubmit = {},
+                        onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) },
                         onBackClick = { navigationController.navigate(Routes.ImportPackage) })
                     isShowNavigation = false
                 }
@@ -514,6 +516,23 @@ fun AppNavigation(
                 composable<Routes.AddCustomers> {
                     FormAddOrEditCustomerForm(onSubmit = {},
                         onBackClick = { navigationController.popBackStack() })
+                    isShowNavigation = false
+                }
+                composable<Routes.ManagerUsers> {
+                    ManagerUserScreen(
+                        onNavigateToUserDetail = { id ->
+                            navigationController.navigate(
+                                Routes.UserDetail(
+                                    id = id
+                                )
+                            )
+                        },
+                        onNavigationBack = { navigationController.popBackStack() })
+                    isShowNavigation = false
+                }
+                composable<Routes.UserDetail> {
+                    UserDetailSreen(
+                        onNavigationBack = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
             }

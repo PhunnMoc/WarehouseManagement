@@ -107,6 +107,11 @@ sealed class Routes {
     @Serializable
     object AddCustomers : Routes()
 
+    @Serializable
+    object ManagerUsers : Routes()
+    @Serializable
+    data class UserDetail(val id:String) : Routes()
+
 }
 
 enum class TopLevelDestinations(

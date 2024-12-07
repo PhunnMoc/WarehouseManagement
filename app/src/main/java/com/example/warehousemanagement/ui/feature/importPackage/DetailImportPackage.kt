@@ -30,6 +30,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
@@ -68,12 +69,14 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
+import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.TableCell
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.DetailImportUiState
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.DetailImportViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
 fun DetailImportPackage(
@@ -83,12 +86,13 @@ fun DetailImportPackage(
     onBack: () -> Unit,
 ) {
     val detailImportUiState by viewModel.detailImportPackageUiState.collectAsStateWithLifecycle()
-
+    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
     when (val detail = detailImportUiState) {
         is DetailImportUiState.Loading -> IndeterminateCircularIndicator()
         is DetailImportUiState.Error -> NothingText()
         is DetailImportUiState.Success -> {
             ImportPackage(
+                user = currentUser,
                 importPackage = detail.detailImportPackage,
                 navigateToSetStorageLocationScreen = navigateToSetStorageLocationScreen,
                 onBack = onBack,
@@ -103,6 +107,7 @@ fun DetailImportPackage(
 
 @Composable
 fun ImportPackage(
+    user: User,
     importPackage: ImportPackages,
     navigateToSetStorageLocationScreen: (String) -> Unit,
     onEditClick: (String) -> Unit,
@@ -131,13 +136,21 @@ fun ImportPackage(
                     .fillMaxWidth()
                     .padding(Dimens.PADDING_5_DP)
             ) {
-                Text(
-                    text = "Package Name: ${importPackage.packageName}",
-                    fontWeight = FontWeight.W600,
-                    fontSize = 25.sp,
-                    // color = colorResource(id = R.color.text_color_light_black)
-                )
-                print("KHANH ${importPackage.packageName}")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        modifier = Modifier.clickable { onBack() },
+                        painter = painterResource(id = R.drawable.icons8_back),
+                        contentDescription = ""
+                    )
+                    Text(
+                        modifier = Modifier.padding(10.dp),
+                        text = importPackage.packageName,
+                        fontWeight = FontWeight.W600,
+                        fontSize = 25.sp,
+                        fontFamily = QuickSand
+                        // color = colorResource(id = R.color.text_color_light_black)
+                    )
+                }
                 Row(
                     modifier = Modifier
                         .clip(RoundedCornerShape(50.dp))
@@ -150,6 +163,7 @@ fun ImportPackage(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
+                        fontFamily = QuickSand,
                         text = "Status: ${importPackage.status}",
                     )
                 }
@@ -166,14 +180,17 @@ fun ImportPackage(
                         painter = painterResource(id = R.drawable.baseline_calendar_month_24),
                         contentDescription = ""
                     )
-                    Text(text = importPackage.importDate.toString())
+                    Text(
+                        text = importPackage.importDate.toString(),
+                        fontFamily = QuickSand
+                    )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
 
             }
             Row {
                 Image(
-                    painter = rememberAsyncImagePainter(model = importPackage.receiver.information?.picture),
+                    painter = rememberAsyncImagePainter(model = user.information?.picture),
                     contentDescription = "",
                     modifier = Modifier
                         .padding(end = 8.dp)
@@ -183,12 +200,15 @@ fun ImportPackage(
                             width = 2.dp, // Độ dày của viền
                             color = Color.Gray, // Màu sắc của viền
                             shape = CircleShape // Hình dạng viền
-                        ) // Khoảng cách bên trong nếu cần
+                        )
                 )
 
                 Column {
-                    Text(text = "Receiver:", style = MaterialTheme.typography.subtitle1)
-                    Text(text = "Email: ${importPackage.receiver.information?.email}")
+                    Text(
+                        text = "Receiver:${user.information?.firstName + user.information?.lastName}",
+                        style = MaterialTheme.typography.subtitle1
+                    )
+                    Text(text = "Email: ${user.username}")
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -196,7 +216,8 @@ fun ImportPackage(
                 text = "Note: ${importPackage.note}",
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
-                color = Color.Gray
+                color = Color.Gray,
+                fontFamily = QuickSand,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "Products:", style = MaterialTheme.typography.h6)
@@ -209,7 +230,8 @@ fun ImportPackage(
             item {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(10.dp),
 
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
@@ -218,9 +240,11 @@ fun ImportPackage(
                             onUpdateImportPackage("decline")
                             onBack()
                         },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.line_light_gray)),
+                        shape = RoundedCornerShape(50.dp),
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(16.dp),
+                            .width(95.2.dp)
+                            .height(38.6.dp)
                     ) {
                         Text(text = "Decline")
                     }
@@ -229,9 +253,11 @@ fun ImportPackage(
                             onUpdateImportPackage("approved")
                             navigateToSetStorageLocationScreen(importPackage.idImportPackages)
                         },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.background_theme)),
+                        shape = RoundedCornerShape(50.dp),
                         modifier = Modifier
-                            .weight(1f)
-                            .padding(16.dp),
+                            .width(95.2.dp)
+                            .height(38.6.dp)
                     ) {
                         Text(text = "Approve")
                     }
@@ -389,44 +415,4 @@ fun ExpandedView(product: Product) {
 }
 
 
-@Composable
-fun EditProductDialog(
-    product: Product,
-    onDismiss: () -> Unit,
-    onSave: (Product) -> Unit
-) {
-    var quantity by remember { mutableStateOf(product.quantity.toString()) }
-    var description by remember { mutableStateOf(product.description) }
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(text = "Edit Product") },
-        text = {
-            Column {
-                OutlinedTextField(
-                    value = quantity,
-                    onValueChange = { quantity = it },
-                    label = { Text("Quantity") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-                OutlinedTextField(
-                    value = description,
-                    onValueChange = { description = it },
-                    label = { Text("Description") }
-                )
-            }
-        },
-        confirmButton = {
-            Button(onClick = {
-                onSave(product.copy(quantity = quantity.toInt(), description = description))
-            }) {
-                Text("Save")
-            }
-        },
-        dismissButton = {
-            Button(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
-    )
-}

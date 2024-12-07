@@ -104,11 +104,6 @@ fun WorkerScreen(modifier: Modifier = Modifier) {
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             HeaderOfScreen(
-                modifier = modifier.padding(
-                    top = Dimens.PADDING_20_DP,
-                    start = Dimens.PADDING_20_DP,
-                    end = Dimens.PADDING_20_DP
-                ),
                 mainTitleText = stringResource(id = R.string.screen_home_employee_main_title),
                 endContent = {
                     WrapIcon(

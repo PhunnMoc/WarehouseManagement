@@ -100,7 +100,8 @@ fun SuplierCard(
                     contentDescription = "Product Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(60.dp)
+                        .padding(10.dp)
                         .clip(RoundedCornerShape(8.dp))
                 )
 

@@ -6,6 +6,7 @@ import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
+import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.domain.model.Notification
@@ -159,7 +160,13 @@ interface ApiWarehouse {
         @Path("id") id: String
     ): Response<UserResponse>
 
+    @GET("/user")
+    suspend fun getAllUserDetails(): Response<List<UserResponse>>
+
     @GET("/notification")
     suspend fun getAllNotificationDetails(): Response<List<Notification>>
 
+
+    @GET("/statistic/in-stock")
+    suspend fun getStockSummaryByLocation(): Response<List<StorageLocationSummary>>
 }

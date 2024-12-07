@@ -42,7 +42,6 @@ class FormImportPackageViewModel @Inject constructor(
     fun addPackage(date: String) {
         viewModelScope.launch {
             try {
-                preferencesRepository
                 wareHouseRepository.createImportPackage(
                     importPackage = ImportPackages(
                         idImportPackages = "",

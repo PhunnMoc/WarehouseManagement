@@ -264,7 +264,7 @@ fun WarehouseAreaCard(
                         Text(
                             fontFamily = QuickSand,
                             text = "ID: ${area.id}",
-                            color = colorResource(id = R.color.background_theme)
+                          //  color = colorResource(id = R.color.background_theme)
                         )
                         Text(
                             fontFamily = QuickSand,

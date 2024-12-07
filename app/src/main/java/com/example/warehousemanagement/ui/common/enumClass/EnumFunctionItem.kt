@@ -11,6 +11,7 @@ enum class EnumFunctionItem(val functionName: String) {
     SUPPLIER("Supplier"),
     IMPORT_PACKAGE("Import package"),
     EXPORT_PACKAGE("Export package"),
+    MANGER_USER("Manager Account"),
 }
 
 val functionItemsAdmin: List<FunctionItem> = listOf(
@@ -41,6 +42,10 @@ val functionItemsAdmin: List<FunctionItem> = listOf(
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.EXPORT_PACKAGE,
         iconResource = R.drawable.export_package,
+    ),
+    FunctionItem(
+        enumFunctionItem = EnumFunctionItem.MANGER_USER,
+        iconResource = R.drawable.customer_ic,
     )
 )
 

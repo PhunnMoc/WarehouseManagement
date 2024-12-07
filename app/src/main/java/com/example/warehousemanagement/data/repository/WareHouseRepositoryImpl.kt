@@ -2,6 +2,7 @@ package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.mapper.convertToModel
 import com.example.warehousemanagement.data.mapper.convertToResponse
+import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
@@ -105,6 +106,10 @@ class WareHouseRepositoryImpl @Inject constructor(
         ).body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
+    override suspend fun getStockSummaryByLocation(): List<StorageLocationSummary> {
+        return retrofit.getStockSummaryByLocation().body() ?: listOf()
+    }
+
     override suspend fun getPendingImportPackages(): List<ImportPackages> {
         return retrofit.getPendingImportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
@@ -169,6 +174,10 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun getUserDetails(id: String): User {
         return retrofit.getUserDetails(id = id).body()?.convertToModel()!!
+    }
+
+    override suspend fun getAllUserDetails(): List<User> {
+        return retrofit.getAllUserDetails().body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
     override suspend fun getAllNotificationDetails(): List<Notification> {

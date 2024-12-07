@@ -57,6 +57,7 @@ fun AdminView(
     onNavigateToSupplier: () -> Unit,
     onNavigateToImportPackage: () -> Unit,
     onNavigateToExportPackage: () -> Unit,
+    onNavigateToManagerUser: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
 
@@ -81,6 +82,7 @@ fun AdminView(
                 EnumFunctionItem.SUPPLIER -> onNavigateToSupplier
                 EnumFunctionItem.IMPORT_PACKAGE -> onNavigateToImportPackage
                 EnumFunctionItem.EXPORT_PACKAGE -> onNavigateToExportPackage
+                EnumFunctionItem.MANGER_USER -> onNavigateToManagerUser
 
             }
             ItemFunction(
@@ -122,6 +124,7 @@ fun FunctionContainer(
     onNavigateToSupplier: () -> Unit,
     onNavigateToImportPackage: () -> Unit,
     onNavigateToExportPackage: () -> Unit,
+    onNavigateToManagerUser: () -> Unit,
     modifier: Modifier = Modifier,
     isAdmin: Boolean
 ) {
@@ -135,6 +138,7 @@ fun FunctionContainer(
                 onNavigateToSupplier = onNavigateToSupplier,
                 onNavigateToImportPackage = onNavigateToImportPackage,
                 onNavigateToExportPackage = onNavigateToExportPackage,
+                onNavigateToManagerUser = onNavigateToManagerUser,
             )
         } else {
             NonAdminView(modifier = modifier)

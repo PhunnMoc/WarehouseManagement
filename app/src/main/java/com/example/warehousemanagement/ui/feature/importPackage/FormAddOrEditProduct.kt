@@ -97,6 +97,7 @@ fun FormAddOrEditProductForm(
     onSubmit: (FormData) -> Unit,
     //  onAdd1MoreProduct: (String) -> Unit,
     onBackClick: () -> Unit,
+    onNavigationToHome: () -> Unit,
     product: Product? = null,
     //onNavigateAddNewGenre: () -> Unit,
     viewModel: FormImportPackageViewModel = hiltViewModel()
@@ -133,7 +134,7 @@ fun FormAddOrEditProductForm(
                         modifier = Modifier
                             .size(25.dp)
                             .clickable {
-                                onBackClick()
+                                onNavigationToHome()
                             })
                 },
                 endContent = {},
@@ -399,9 +400,6 @@ fun FormAddOrEditProductForm(
             ) {
                 val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-// Chuyển từ LocalDate sang Date
-                val date1: Date =
-                    Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
                 BigButton(modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
                     enabled = name.isNotEmpty() && genre != null
                             && supplier != null
@@ -424,7 +422,7 @@ fun FormAddOrEditProductForm(
                                 productName = name,
                                 quantity = quantity.toInt(),
                                 sellingPrice = exportPrice.toInt(),
-                                storageLocation =null,
+                                storageLocation = null,
                                 supplier = supplier!!,
                             )
                         )

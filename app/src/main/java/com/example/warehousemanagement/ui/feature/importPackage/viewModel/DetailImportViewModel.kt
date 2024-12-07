@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.asResult
+import com.example.warehousemanagement.domain.model.User
+import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -21,12 +23,22 @@ val KEY_ID = "id"
 class DetailImportViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
     private val savedStateHandle: SavedStateHandle,
+    val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
     val detailImportPackageUiState: StateFlow<DetailImportUiState> = getAllImportPackage().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = DetailImportUiState.Loading
     )
+
+    val currentUser: StateFlow<User> = preferencesRepository.getUserId().map {
+        wareHouseRepository.getUserDetails(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = User("", "", "", null)
+    )
+
 
     private fun getAllImportPackage(): Flow<DetailImportUiState> =
         savedStateHandle.getStateFlow(KEY_ID, "")

@@ -1,6 +1,7 @@
-package com.example.warehousemanagement.ui.feature.importPackage
+package com.example.warehousemanagement.ui.feature.user
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,10 +15,9 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -39,32 +40,36 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.ui.common.DialogWithInput
-import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
+import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.common.SearchBarPreview
+import com.example.warehousemanagement.ui.feature.user.viewModel.ManagerUserUiState
+import com.example.warehousemanagement.ui.feature.user.viewModel.ManagerUserViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ImportPackageScreen(
+fun ManagerUserScreen(
+    onNavigationBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onClickAddProduct: (String, String) -> Unit,
-    onClickAddProductByExcel: () -> Unit,
-    onBackClick: () -> Unit,
-    onClickSearch: () -> Unit,
-    onNavigationDetailImportPackage: (String) -> Unit,
+    onNavigateToUserDetail: (String) -> Unit,
+    viewModel: ManagerUserViewModel = hiltViewModel(),
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val userUiState by viewModel.managerUserUiState.collectAsStateWithLifecycle()
     var isExpanded by remember { mutableStateOf(false) }
-    var isShowDialog by remember { mutableStateOf(false) }
-    var isFilter by remember {
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    var isShowDialog by remember {
         mutableStateOf(false)
     }
-
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
@@ -87,6 +92,7 @@ fun ImportPackageScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
                         ) {
+                            // Thẻ Label cho nút FAB 1
                             Box(
                                 modifier = Modifier
                                     .background(
@@ -94,7 +100,7 @@ fun ImportPackageScreen(
                                     )
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
-                                Text(text = "Add products", color = Color.Black)
+                                Text(text = "Add new account", color = Color.Black)
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             FloatingActionButton(
@@ -102,31 +108,6 @@ fun ImportPackageScreen(
                                 containerColor = colorResource(id = R.color.background_gray)
                             ) {
                                 Icon(Icons.Default.Add, contentDescription = "Action 1")
-                            }
-                        }
-                    }
-
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            // Thẻ Label cho nút FAB 2
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add products by excel", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { onClickAddProductByExcel() },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 2")
                             }
                         }
                     }
@@ -146,14 +127,14 @@ fun ImportPackageScreen(
         },
         topBar = {
             HeaderOfScreen(
-                mainTitleText = stringResource(id = R.string.screen_import_main_title),
+                mainTitleText = "Manager Account",
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
                         contentDescription = "Back",
                         modifier = Modifier
                             .size(25.dp)
                             .clickable {
-                                onBackClick()
+                                onNavigationBack()
                             })
                 },
                 endContent = {},
@@ -166,80 +147,95 @@ fun ImportPackageScreen(
             Column(
                 modifier = Modifier.padding(horizontal = Dimens.PADDING_16_DP),
             ) {
-//                SearchBarPreview(
-//                    modifier = Modifier.clickable {
-//                        onClickSearch()
-//                    }
-//                )
-                FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
+                SearchBarPreview(
+                    enabled = false,
+                    modifier = Modifier.clickable {
+                        //  onClickSearch()
+                    }
+                )
             }
-            TabBarImport(onClickDetail = onNavigationDetailImportPackage)
+            when (val users = userUiState) {
+                is ManagerUserUiState.Loading -> IndeterminateCircularIndicator()
+                is ManagerUserUiState.Error -> NothingText()
+                is ManagerUserUiState.Success -> {
+                    val groupedData = users.listUser.groupBy {
+                        it.information?.firstName?.first()
+                            ?: it.information?.lastName?.first()
+                    }.toList().sortedBy { it.first }.toMap()
+                    StickyHeaderList(
+                        groupedData = groupedData,
+                        onNavigateToUserDetail = onNavigateToUserDetail,
+                    )
+                }
+            }
+
+            if (isShowDialog) {
+                DialogAddAccount(
+                    onConfirm = { a, b, c -> },
+                    onCancel = {
+                        isShowDialog = false
+                    }
+                )
+            }
 
         }
-        if (isShowDialog) {
-            DialogWithInput(
-                title = stringResource(id = R.string.create_new_ip),
-                message = stringResource(id = R.string.package_name_title),
-                confirmText = "Create",
-                cancelText = "Cancel",
-                onConfirm = { packageName, note ->
-                    isShowDialog = false
-                    onClickAddProduct(packageName, note)
-                },
-                onCancel = {
-                    isShowDialog = false
-                },
-            )
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun StickyHeaderList(
+    groupedData: Map<Char?, List<User>>,
+    onNavigateToUserDetail: (String) -> Unit
+) {
+    LazyColumn(modifier = Modifier.padding(Dimens.PADDING_20_DP)) {
+        groupedData.forEach { (initial, persons) ->
+            stickyHeader {
+                HeaderItem(initial = initial?.uppercaseChar() ?: "Z".toCharArray().get(0))
+            }
+            items(persons) { person ->
+                PersonItem(
+                    person = person,
+                    onNavigateToUserDetail = onNavigateToUserDetail
+                )
+            }
         }
     }
 }
-
 
 @Composable
-fun TabBarImport(
-    onClickDetail: (String) -> Unit,
-) {
-    val tabs = listOf(
-        stringResource(id = R.string.pending_import_title),
-        stringResource(id = R.string.done_import_title)
-    ) // Danh sách các tab
-    var selectedTabIndex by remember { mutableStateOf(0) }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        // TabRow để hiển thị các tab
-        TabRow(
-            selectedTabIndex = selectedTabIndex,
-            modifier = Modifier.fillMaxWidth(),
-            backgroundColor = Color.White,
-            contentColor = colorResource(id = R.color.text_color_black),
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
-                    text = {
-                        Text(
-                            text = title,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = QuickSand
-                        )
-                    })
-            }
-        }
-
-        // Hiển thị nội dung của tab tương ứng
-        when (selectedTabIndex) {
-            0 -> {
-                PendingImportPackage(
-                    onNavigationDetailImportPackages = onClickDetail,
-                )
-            }
-
-            1 -> {
-                DoneImportPackage(
-                    onNavigationDetailImportPackages = onClickDetail,
-                )
-            }
-        }
+fun HeaderItem(initial: Char) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.LightGray)
+            .padding(8.dp)
+    ) {
+        Text(
+            fontFamily = QuickSand,
+            text = initial.toString(),
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Black
+        )
     }
 }
 
+@Composable
+fun PersonItem(
+    person: User,
+    onNavigateToUserDetail: (String) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .clickable { onNavigateToUserDetail(person.idUser) }
+    ) {
+        Text(
+            fontFamily = QuickSand,
+            text = "${person.information?.firstName ?: ""} ${person.information?.lastName ?: ""}",
+            //  style = MaterialTheme.typography.body1
+        )
+    }
+}

@@ -45,6 +45,7 @@ fun AdminScreen(
     onNavigateToImportPackage: () -> Unit,
     onNavigateToExportPackage: () -> Unit,
     onNavigateNotification: () -> Unit,
+    onNavigateToManagerUser: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -97,6 +98,7 @@ fun AdminScreen(
                     onNavigateToSupplier = onNavigateToSupplier,
                     onNavigateToImportPackage = onNavigateToImportPackage,
                     onNavigateToExportPackage = onNavigateToExportPackage,
+                    onNavigateToManagerUser = onNavigateToManagerUser,
                     isAdmin = true
                 )
             }

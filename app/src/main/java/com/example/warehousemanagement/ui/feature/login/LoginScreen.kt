@@ -41,6 +41,7 @@ import com.example.warehousemanagement.ui.feature.importPackage.viewModel.Import
 import com.example.warehousemanagement.ui.feature.login.viewModel.LoginUiState
 import com.example.warehousemanagement.ui.feature.login.viewModel.LoginViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
 fun LoginScreen(
@@ -51,7 +52,7 @@ fun LoginScreen(
     val loginUiState by viewModel.loginUiState.collectAsStateWithLifecycle()
     Box(modifier = modifier.fillMaxSize()) {
         when (val temp = loginUiState) {
-            is LoginUiState.Idle -> {
+            is LoginUiState.Idle, LoginUiState.Error -> {
                 Column(
                     modifier = modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -86,6 +87,7 @@ fun LoginScreen(
                             text = "WhereHow",
                             fontWeight = FontWeight.W600,
                             fontSize = 30.sp,
+                            fontFamily = QuickSand,
                             color = colorResource(id = R.color.background_theme)
                         )
                         // Input email
@@ -98,11 +100,13 @@ fun LoginScreen(
                             label = { Text("Email") },
                             isError = emailError.isNotEmpty(),
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
-                        )
+                            singleLine = true,
+
+                            )
                         // Hiển thị lỗi nếu có
                         if (emailError.isNotEmpty()) {
                             Text(
+                                fontFamily = QuickSand,
                                 text = emailError,
                                 color = Color.Red,
                                 style = MaterialTheme.typography.body2,
@@ -129,6 +133,7 @@ fun LoginScreen(
                         // Hiển thị lỗi nếu có
                         if (passwordError.isNotEmpty()) {
                             Text(
+                                fontFamily = QuickSand,
                                 text = passwordError,
                                 color = Color.Red,
                                 style = MaterialTheme.typography.body2,
@@ -149,7 +154,10 @@ fun LoginScreen(
                             modifier = Modifier.fillMaxWidth(),
                             enabled = isEmailValid(email) && isPasswordValid(password)
                         ) {
-                            Text("Login")
+                            Text(
+                                "Login",
+                                fontFamily = QuickSand,
+                            )
                         }
                     }
                 }
@@ -160,7 +168,6 @@ fun LoginScreen(
             }
 
             is LoginUiState.Loading -> IndeterminateCircularIndicator()
-            is LoginUiState.Error -> NothingText()
         }
         HalfIcon(
             modifier = Modifier.align(Alignment.BottomStart)

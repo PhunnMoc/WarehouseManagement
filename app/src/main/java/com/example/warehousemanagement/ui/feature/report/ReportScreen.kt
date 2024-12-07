@@ -49,103 +49,102 @@ import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiSta
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
+import androidx.navigation.compose.*
+import com.example.warehousemanagement.ui.feature.report.lineChart.PerformanceChart
+import kotlinx.coroutines.launch
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReportScreen(
-    modifier: Modifier = Modifier,
-) {
+fun ReportScreen() {
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+    val navController = rememberNavController()
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    Scaffold(containerColor = colorResource(id = R.color.background_white),
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             HeaderOfScreen(
+                mainTitleText = "Report",
+                startContent = {
+                    IconButton(onClick = {
+                        coroutineScope.launch { scaffoldState.drawerState.open() }
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_menu_24), // Replace with your menu icon resource
+                            contentDescription = "Menu"
+                        )
+                    }
+                },
                 scrollBehavior = scrollBehavior,
-                mainTitleText = stringResource(id = R.string.screen_report_main_title),
-                endContent = {})
-        }) { innerpadding ->
-        Column(
-            modifier = Modifier.padding(innerpadding)
+            )
+        },
+        drawerContent = {
+            DrawerContent(navController = navController, scaffoldState = scaffoldState)
+        }
+    ) { padding ->
+        NavHost(
+            modifier = Modifier.padding(padding),
+            navController = navController, startDestination = "screen_a"
         ) {
-            IncomeOutcome()
+            composable("screen_a") { DashBoardReportScreen() }
+            composable("screen_b") { InventoryScreen() }
+            composable("screen_c") { StorageLocationReportScreen() }
         }
     }
 }
 
 @Composable
-fun IncomeOutcome() {
-    Column(
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxWidth()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFFFFD699), Color(0xFFFFF8CD)) // Gradient colors
-                ),
-                shape = RoundedCornerShape(10.dp) // Rounded corners
-            )
-            .padding(10.dp)
-    ) {
-        Text(
-            text = "Income Outcome",
-            fontSize = 15.sp,
-            fontFamily = QuickSand,
-            fontWeight = FontWeight.W600,
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier
-                    .padding(Dimens.PADDING_5_DP)
-                    .weight(1f)
-                    .height(80.dp)
-                    .background(
-                        color = Color(0xC4FFFAEB),
-                        shape = RoundedCornerShape(10.dp)
-                    ),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Row {
-                    Icon(painter = painterResource(id = R.drawable.import_package), contentDescription ="" )
-                    Text(
-                        text = "\$500",
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Text(text = "Total", fontFamily = QuickSand)
-            }
-            Column(
-                modifier = Modifier
-                    .padding(Dimens.PADDING_5_DP)
-                    .weight(1f)
-                    .height(80.dp)
-                    .background(
-                        color = Color(0xC4FFFAEB),
-                        shape = RoundedCornerShape(10.dp)
-                    ),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Row {
-                    Icon(painter = painterResource(id = R.drawable.export_package), contentDescription ="" )
-                    Text(
-                        text = "\$500",
-                        fontSize = 25.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Text(text = "Total", fontFamily = QuickSand)
-            }
+fun DrawerContent(navController: NavController, scaffoldState: ScaffoldState) {
+    val coroutineScope = rememberCoroutineScope()
+
+    Column {
+        Text("Report", style = MaterialTheme.typography.h6, modifier = Modifier.padding(16.dp))
+        Divider()
+
+        DrawerOption("DashBoard", "screen_a", navController, scaffoldState)
+        DrawerOption("Inventory", "screen_b", navController, scaffoldState)
+        DrawerOption("Statistics by month", "screen_c", navController, scaffoldState)
+    }
+}
+
+@Composable
+fun DrawerOption(
+    label: String,
+    route: String,
+    navController: NavController,
+    scaffoldState: ScaffoldState
+) {
+    val coroutineScope = rememberCoroutineScope()
+
+    TextButton(onClick = {
+        coroutineScope.launch {
+            scaffoldState.drawerState.close()
         }
+        navController.navigate(route) {
+            popUpTo(navController.graph.startDestinationId) { inclusive = true }
+        }
+    }) {
+        Text(label)
+    }
+}
+
+@Composable
+fun ScreenContent(screenName: String) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = screenName, style = MaterialTheme.typography.h4)
     }
 }
 
 @Preview
 @Composable
 fun PreviewIncomeOutcome() {
-    IncomeOutcome()
+    // IncomeOutcome()
+    //  AppScaffold()
 }
