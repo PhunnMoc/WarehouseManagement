@@ -1,4 +1,5 @@
 package com.example.warehousemanagement.ui.common
+
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Notification
+import com.example.warehousemanagement.ui.theme.Dimens
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -77,15 +79,17 @@ fun NotificationCard(
                 )
                 Text(
                     text = notification.timestamp.toString(),
-                    fontSize = 14.sp,
+                    fontSize = 10.sp,
                 )
             }
             Divider()
 
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
 
                 Text(
-                    text = "Description: ${notification.description}", fontSize = 14.sp, color = Color.Gray
+                    text = "Description: ${notification.description}",
+                    fontSize = 14.sp,
+                    color = Color.Gray
                 )
                 Text(
                     text = "Type: ${notification.type}", fontSize = 14.sp, color = Color.Gray

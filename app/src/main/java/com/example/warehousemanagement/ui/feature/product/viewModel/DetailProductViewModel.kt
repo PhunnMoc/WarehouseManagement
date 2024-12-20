@@ -33,7 +33,6 @@ class DetailProductViewModel @Inject constructor(
                 initialValue = DetailProductUiState.Loading
             )
 
-    @OptIn(FlowPreview::class)
     private fun detailProduct(): Flow<DetailProductUiState> =
         savedStateHandle.getStateFlow(SEARCH_PRODUCT_QUERY, "")
             .map { wareHouseRepository.getProductById(it) }.asResult()

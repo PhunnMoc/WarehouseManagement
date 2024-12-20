@@ -74,60 +74,63 @@ fun GenreScreen(
     onClickSearch: () -> Unit,
     viewModel: GenreViewModel = hiltViewModel()
 ) {
+    val roleUiState by viewModel.roleUiState.collectAsStateWithLifecycle()
     val genreUiState by viewModel.genreUiState.collectAsStateWithLifecycle()
     var isExpanded by remember { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
-            Box(
-                contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxSize()
-            ) {
-                if (isExpanded) {
-                    Box(modifier = Modifier
-                        .offset(x = 16.dp, y = 15.dp)
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable { isExpanded = false })
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.End,
+            if (roleUiState) {
+                Box(
+                    contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxSize()
                 ) {
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            // Thẻ Label cho nút FAB 1
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add genre", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { onClickAddGenre() },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 1")
-                            }
-                        }
+                    if (isExpanded) {
+                        Box(modifier = Modifier
+                            .offset(x = 16.dp, y = 15.dp)
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.5f))
+                            .clickable { isExpanded = false })
                     }
 
-                    FloatingActionButton(
-                        modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
-                        onClick = { isExpanded = !isExpanded },
-                        containerColor = colorResource(id = R.color.background_theme)
+                    Column(
+                        horizontalAlignment = Alignment.End,
                     ) {
-                        Icon(
-                            imageVector = if (isExpanded) Icons.Default.Menu else Icons.Default.Add,
-                            contentDescription = "Toggle FAB"
-                        )
+                        AnimatedVisibility(visible = isExpanded) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
+                            ) {
+                                // Thẻ Label cho nút FAB 1
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            Color.White, shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Text(text = "Add genre", color = Color.Black)
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                FloatingActionButton(
+                                    onClick = { onClickAddGenre() },
+                                    containerColor = colorResource(id = R.color.background_gray)
+                                ) {
+                                    Icon(Icons.Default.Add, contentDescription = "Action 1")
+                                }
+                            }
+                        }
+
+                        FloatingActionButton(
+                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
+                            onClick = { isExpanded = !isExpanded },
+                            containerColor = colorResource(id = R.color.background_theme)
+                        ) {
+                            Icon(
+                                imageVector = if (isExpanded) Icons.Default.Menu else Icons.Default.Add,
+                                contentDescription = "Toggle FAB"
+                            )
+                        }
                     }
                 }
             }
@@ -174,6 +177,7 @@ fun GenreScreen(
                         }
                     }
                 }
+
                 else -> {
                     // Xử lý trường hợp còn lại, mặc dù không cần thiết nếu Result là sealed class
                     println("Unknown state")

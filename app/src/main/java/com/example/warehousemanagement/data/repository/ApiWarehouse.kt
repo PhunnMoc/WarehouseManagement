@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.network.dto.CustomerResponse
+import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
@@ -105,6 +106,20 @@ interface ApiWarehouse {
 
     @GET("/export-packages/pending")
     suspend fun getPendingExportPackages(): Response<List<ExportPackageResponse>>
+
+    @POST("/export-packages/pending")
+    suspend fun addPendingExportPackages(
+        @Body pendingExportPackage: ExportPackagePendingDto,
+    )
+
+    @GET("export-packages/{id}")
+    suspend fun getExportPackageById(
+        @Path("id") id: String
+    ): Response<ExportPackageResponse>
+    @PUT("export-packages/approve/{id}")
+    suspend fun approveExportPackage(
+        @Path("id") id: String
+    )
 
     @GET("/import-packages/done")
     suspend fun getDoneImportPackages(): Response<List<ImportPackageResponseItem>>

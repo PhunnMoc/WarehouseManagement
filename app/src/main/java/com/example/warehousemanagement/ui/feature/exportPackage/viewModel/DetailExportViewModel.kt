@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.ui.feature.importPackage.viewModel
+package com.example.warehousemanagement.ui.feature.exportPackage.viewModel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -8,6 +8,8 @@ import com.example.warehousemanagement.data.util.asResult
 import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
+import com.example.warehousemanagement.ui.feature.importPackage.viewModel.DetailImportUiState
+import com.example.warehousemanagement.ui.feature.importPackage.viewModel.KEY_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,18 +19,16 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-val KEY_ID = "id"
-
 @HiltViewModel
-class DetailImportViewModel @Inject constructor(
+class DetailExportViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
     private val savedStateHandle: SavedStateHandle,
     val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
-    val detailImportPackageUiState: StateFlow<DetailImportUiState> = getAllImportPackage().stateIn(
+    val detailExportPackageUiState: StateFlow<DetailExportUiState> = getAllExportPackage().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = DetailImportUiState.Loading
+        initialValue = DetailExportUiState.Loading
     )
 
     val currentUser: StateFlow<User> = preferencesRepository.getUserId().map {
@@ -40,29 +40,28 @@ class DetailImportViewModel @Inject constructor(
     )
 
 
-    private fun getAllImportPackage(): Flow<DetailImportUiState> =
+    private fun getAllExportPackage(): Flow<DetailExportUiState> =
         savedStateHandle.getStateFlow(KEY_ID, "")
             .map {
                 print("IRIS $it")
-                wareHouseRepository.getPendingImportPackageById(id = it)
+                wareHouseRepository.getExportPackageById(id = it)
             }.asResult()
-            .map { detailImportPackages ->
-                when (detailImportPackages) {
+            .map { detailExportPackages ->
+                when (detailExportPackages) {
                     is Result.Success -> {
-                        DetailImportUiState.Success(detailImportPackage = detailImportPackages.data)
+                        DetailExportUiState.Success(detailExportPackage = detailExportPackages.data)
                     }
 
-                    is Result.Error -> DetailImportUiState.Error
-                    is Result.Loading -> DetailImportUiState.Loading
+                    is Result.Error -> DetailExportUiState.Error
+                    is Result.Loading -> DetailExportUiState.Loading
                 }
             }
 
-    fun updateImportPackage(status: String) {
+    fun updateImportPackage() {
         val id = savedStateHandle.get<String>(KEY_ID)
         viewModelScope.launch {
-            wareHouseRepository.updateImportPackage(
+            wareHouseRepository.approveExportPackage(
                 id = id ?: "",
-                status = status,
             )
         }
     }

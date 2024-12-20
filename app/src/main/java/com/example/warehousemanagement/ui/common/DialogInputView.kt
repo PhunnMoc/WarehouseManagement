@@ -37,7 +37,7 @@ fun DialogWithInput(
     confirmText: String, // Text for the confirm button (e.g., "Create")
     cancelText: String, // Text for the cancel button
     onConfirm: (String, String) -> Unit, // Action when the confirm button is clicked, passing the input text
-    onCancel: () -> Unit // Action when the cancel button is clicked
+    onCancel: () -> Unit, // Action when the cancel button is clicked
 ) {
     var inputText1 by rememberSaveable { mutableStateOf("") } // State for the input text
     var inputText2 by rememberSaveable { mutableStateOf("") } // State for the input text
@@ -85,6 +85,7 @@ fun DialogWithInput(
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(32.dp))
+
                 // Buttons
                 Row(
                     horizontalArrangement = Arrangement.SpaceEvenly,
@@ -128,3 +129,5 @@ fun DialogWithInput(
         }
     }
 }
+
+

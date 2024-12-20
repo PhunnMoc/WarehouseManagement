@@ -2,6 +2,7 @@ package com.example.warehousemanagement.ui.feature.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,10 +31,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import com.example.warehousemanagement.ui.common.FunctionContainer
 import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
-fun ImportExportPackages(modifier: Modifier = Modifier) {
+fun ImportExportPackages(
+    modifier: Modifier = Modifier,
+    onNavigateToImportPackage: () -> Unit,
+    onNavigateToExportPackage: () -> Unit,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -42,6 +48,7 @@ fun ImportExportPackages(modifier: Modifier = Modifier) {
     ) {
         // Import Package Box
         PackageBox(
+            modifier = modifier.clickable { onNavigateToImportPackage() },
             label = "Import package",
             painter = painterResource(id = R.drawable.package_image),
             -2.5f,
@@ -49,18 +56,18 @@ fun ImportExportPackages(modifier: Modifier = Modifier) {
 
         // Export Package Box
         PackageBox(
+            modifier = modifier.clickable { onNavigateToExportPackage() },
             label = "Export package",
             painter = painterResource(id = R.drawable.package_image),
             2.5f,
-
-            )
+        )
     }
 }
 
 @Composable
-fun PackageBox(label: String, painter: Painter, x: Float) {
+fun PackageBox(modifier: Modifier = Modifier, label: String, painter: Painter, x: Float) {
     Box(
-        modifier = Modifier
+        modifier = modifier
     ) {
         Box(
             modifier = Modifier
@@ -98,7 +105,19 @@ fun PackageBox(label: String, painter: Painter, x: Float) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkerScreen(modifier: Modifier = Modifier) {
+fun WorkerScreen(
+    onNavigateToScranQrScreen: () -> Unit,
+    onNavigateToProduct: () -> Unit,
+    onNavigateToStorageLocation: () -> Unit,
+    onNavigateToGenre: () -> Unit,
+    onNavigateToCustomer: () -> Unit,
+    onNavigateToSupplier: () -> Unit,
+    onNavigateToImportPackage: () -> Unit,
+    onNavigateToExportPackage: () -> Unit,
+    onNavigateNotification: () -> Unit,
+    onNavigateToManagerUser: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -138,11 +157,23 @@ fun WorkerScreen(modifier: Modifier = Modifier) {
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            ImportExportPackages()
+            ImportExportPackages(
+                onNavigateToImportPackage = onNavigateToImportPackage,
+                onNavigateToExportPackage = onNavigateToExportPackage,
+            )
             Spacer(modifier = Modifier.weight(1f))
-//            FunctionContainer(
-//               // modifier=Modifier.padding(bottom = Dimens.PADDING_20_DP),
-//                isAdmin = false)
+            FunctionContainer(
+                modifier = Modifier.padding( Dimens.PADDING_20_DP),
+                onNavigateToProduct = onNavigateToProduct,
+                onNavigateToStorageLocation = onNavigateToStorageLocation,
+                onNavigateToGenre = onNavigateToGenre,
+                onNavigateToCustomer = onNavigateToCustomer,
+                onNavigateToSupplier = onNavigateToSupplier,
+                onNavigateToImportPackage = onNavigateToImportPackage,
+                onNavigateToExportPackage = onNavigateToExportPackage,
+                onNavigateToManagerUser = onNavigateToManagerUser,
+                isAdmin = false
+            )
         }
     }
 }
@@ -150,5 +181,7 @@ fun WorkerScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewWorkerActivity() {
-    WorkerScreen()
+//    WorkerScreen(
+//        {}, {}
+//    )
 }

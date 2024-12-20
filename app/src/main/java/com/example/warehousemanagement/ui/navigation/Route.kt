@@ -43,7 +43,14 @@ sealed class Routes {
     data class Product(val id: String) : Routes()
 
     @Serializable
-    data class AddProducts(val packageName: String, val note: String) : Routes()
+    data class AddImportPackages(val packageName: String, val note: String) : Routes()
+
+    @Serializable
+    data class AddExportPackages(
+        val packageName: String,
+        val note: String,
+        val customerId: String
+    ) : Routes()
 
     @Serializable
     object AddProductByExcel : Routes()
@@ -76,6 +83,9 @@ sealed class Routes {
     data class DetailImportPackage(val id: String) : Routes()
 
     @Serializable
+    data class DetailExportPackage(val id: String) : Routes()
+
+    @Serializable
     data class SetStorageImportPackage(val id: String) : Routes()
 
     @Serializable
@@ -98,7 +108,7 @@ sealed class Routes {
     object Customers : Routes()
 
     @Serializable
-    data class Customer(val idCustomer: String) : Routes()
+    data class Customer(val id: String) : Routes()
 
     @Serializable
     object SearchCustomer : Routes()
@@ -109,8 +119,9 @@ sealed class Routes {
 
     @Serializable
     object ManagerUsers : Routes()
+
     @Serializable
-    data class UserDetail(val id:String) : Routes()
+    data class UserDetail(val id: String) : Routes()
 
 }
 

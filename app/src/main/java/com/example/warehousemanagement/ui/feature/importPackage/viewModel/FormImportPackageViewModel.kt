@@ -132,10 +132,6 @@ class FormImportPackageViewModel @Inject constructor(
                 }
             }
 
-    fun onChangeSearchStorageLocationQuery(query: String) {
-        savedStateHandle[SEARCH_STORAGE_LOCATION_QUERY_NAME] = query
-    }
-
     val searchSupplierUiState: StateFlow<SearchSupplierUiState> =
         searchSupplierResult()
             .stateIn(

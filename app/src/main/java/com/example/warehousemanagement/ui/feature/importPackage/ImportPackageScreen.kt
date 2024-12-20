@@ -41,10 +41,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.DialogWithInput
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.feature.importPackage.viewModel.ImportPackageViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 
@@ -57,6 +60,7 @@ fun ImportPackageScreen(
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
     onNavigationDetailImportPackage: (String) -> Unit,
+    importPackageViewModel: ImportPackageViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     var isExpanded by remember { mutableStateOf(false) }
@@ -65,81 +69,84 @@ fun ImportPackageScreen(
         mutableStateOf(false)
     }
 
+    val roleUiState by importPackageViewModel.roleUiState.collectAsStateWithLifecycle()
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
-            Box(
-                contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxSize()
-            ) {
-                if (isExpanded) {
-                    Box(modifier = Modifier
-                        .offset(x = 16.dp, y = 15.dp)
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable { isExpanded = false })
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.End,
+            if (roleUiState) {
+                Box(
+                    contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxSize()
                 ) {
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add products", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { isShowDialog = true },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 1")
-                            }
-                        }
+                    if (isExpanded) {
+                        Box(modifier = Modifier
+                            .offset(x = 16.dp, y = 15.dp)
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.5f))
+                            .clickable { isExpanded = false })
                     }
 
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            // Thẻ Label cho nút FAB 2
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add products by excel", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { onClickAddProductByExcel() },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 2")
-                            }
-                        }
-                    }
-
-                    FloatingActionButton(
-                        modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
-                        onClick = { isExpanded = !isExpanded },
-                        containerColor = colorResource(id = R.color.background_theme)
+                    Column(
+                        horizontalAlignment = Alignment.End,
                     ) {
-                        Icon(
-                            imageVector = if (isExpanded) Icons.Default.Menu else Icons.Default.Add,
-                            contentDescription = "Toggle FAB"
-                        )
+                        AnimatedVisibility(visible = isExpanded) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            Color.White, shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Text(text = "Add products", color = Color.Black)
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                FloatingActionButton(
+                                    onClick = { isShowDialog = true },
+                                    containerColor = colorResource(id = R.color.background_gray)
+                                ) {
+                                    Icon(Icons.Default.Add, contentDescription = "Action 1")
+                                }
+                            }
+                        }
+
+                        AnimatedVisibility(visible = isExpanded) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
+                            ) {
+                                // Thẻ Label cho nút FAB 2
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            Color.White, shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Text(text = "Add products by excel", color = Color.Black)
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                FloatingActionButton(
+                                    onClick = { onClickAddProductByExcel() },
+                                    containerColor = colorResource(id = R.color.background_gray)
+                                ) {
+                                    Icon(Icons.Default.Add, contentDescription = "Action 2")
+                                }
+                            }
+                        }
+
+                        FloatingActionButton(
+                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
+                            onClick = { isExpanded = !isExpanded },
+                            containerColor = colorResource(id = R.color.background_theme)
+                        ) {
+                            Icon(
+                                imageVector = if (isExpanded) Icons.Default.Menu else Icons.Default.Add,
+                                contentDescription = "Toggle FAB"
+                            )
+                        }
                     }
                 }
             }

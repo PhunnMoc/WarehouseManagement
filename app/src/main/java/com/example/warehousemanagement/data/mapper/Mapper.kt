@@ -225,7 +225,7 @@ fun ExportPackageResponse.convertToModel(): ExportPackages? {
         listProduct = listProducts.mapNotNull { it.convertToModel() },
         exportDate = exportDate,
         customer = customer?.convertToModel()!!,
-        status = statusDone ?: false,
+        status = statusDone ?:"PENDING",
         deliveryMethod = deliveryMethod ?: "",
         note = note,
         sender = sender.convertToModel()!!,

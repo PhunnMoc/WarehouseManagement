@@ -120,7 +120,6 @@ fun FormAddOrEditProductForm(
 
 
     val listGenre by viewModel.searchGenreUiState.collectAsStateWithLifecycle()
-    val listStorageLocation by viewModel.searchStorageLocationUiState.collectAsStateWithLifecycle()
     val listSupplier by viewModel.searchSupplierUiState.collectAsStateWithLifecycle()
 
     Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -347,7 +346,6 @@ fun FormAddOrEditProductForm(
                 }
             }
 
-
             // DateTime Picker
             OutlinedTextField(
                 value = date,
@@ -388,7 +386,6 @@ fun FormAddOrEditProductForm(
                 value = description,
                 onValueChange = { description = it }
             )
-
 
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -564,13 +561,3 @@ fun UploadImageButton(
 
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewFormAddOrEditProduct() {
-//    FormAddOrEditProductForm(
-//        onSubmit = {},
-//        onBackClick = {},
-//        onAdd1MoreProduct = {},
-//    )
-//}

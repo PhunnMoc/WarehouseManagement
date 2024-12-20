@@ -56,7 +56,7 @@ val functionItemsWorker: List<FunctionItem> = listOf(
     ),
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.STORAGE_LOCATION,
-        iconResource = R.drawable.storage_location,
+        iconResource = R.drawable.location,
     ),
     FunctionItem(
         enumFunctionItem = EnumFunctionItem.GENRE,

@@ -75,85 +75,88 @@ fun StorageLocationScreen(
     viewModel: StorageLocationViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val roleUiState by viewModel.roleUiState.collectAsStateWithLifecycle()
 
     val warehouseAreas by viewModel.storageLocationUiState.collectAsStateWithLifecycle()
     var isExpanded by remember { mutableStateOf(false) }
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         floatingActionButton = {
-            Box(
-                contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxSize()
-            ) {
-                if (isExpanded) {
-                    Box(modifier = Modifier
-                        .offset(x = 16.dp, y = 15.dp)
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable { isExpanded = false })
-                }
-
-                Column(
-                    horizontalAlignment = Alignment.End,
+            if (roleUiState) {
+                Box(
+                    contentAlignment = Alignment.BottomEnd, modifier = Modifier.fillMaxSize()
                 ) {
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            // Thẻ Label cho nút FAB 1
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add 1 item", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { /* TODO: Action 1 */ },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 1")
-                            }
-                        }
+                    if (isExpanded) {
+                        Box(modifier = Modifier
+                            .offset(x = 16.dp, y = 15.dp)
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.5f))
+                            .clickable { isExpanded = false })
                     }
 
-                    AnimatedVisibility(visible = isExpanded) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                        ) {
-                            // Thẻ Label cho nút FAB 2
-                            Box(
-                                modifier = Modifier
-                                    .background(
-                                        Color.White, shape = RoundedCornerShape(8.dp)
-                                    )
-                                    .padding(horizontal = 8.dp, vertical = 4.dp)
-                            ) {
-                                Text(text = "Add Items", color = Color.Black)
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            FloatingActionButton(
-                                onClick = { /* TODO: Action 2 */ },
-                                containerColor = colorResource(id = R.color.background_gray)
-                            ) {
-                                Icon(Icons.Default.Add, contentDescription = "Action 2")
-                            }
-                        }
-                    }
-
-                    FloatingActionButton(
-                        modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
-                        onClick = { isExpanded = !isExpanded },
-                        containerColor = colorResource(id = R.color.background_theme)
+                    Column(
+                        horizontalAlignment = Alignment.End,
                     ) {
-                        Icon(
-                            imageVector = if (isExpanded) Icons.Default.Menu else Icons.Default.Add,
-                            contentDescription = "Toggle FAB"
-                        )
+                        AnimatedVisibility(visible = isExpanded) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
+                            ) {
+                                // Thẻ Label cho nút FAB 1
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            Color.White, shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Text(text = "Add 1 item", color = Color.Black)
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                FloatingActionButton(
+                                    onClick = { /* TODO: Action 1 */ },
+                                    containerColor = colorResource(id = R.color.background_gray)
+                                ) {
+                                    Icon(Icons.Default.Add, contentDescription = "Action 1")
+                                }
+                            }
+                        }
+
+                        AnimatedVisibility(visible = isExpanded) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
+                            ) {
+                                // Thẻ Label cho nút FAB 2
+                                Box(
+                                    modifier = Modifier
+                                        .background(
+                                            Color.White, shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                                ) {
+                                    Text(text = "Add Items", color = Color.Black)
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                FloatingActionButton(
+                                    onClick = { /* TODO: Action 2 */ },
+                                    containerColor = colorResource(id = R.color.background_gray)
+                                ) {
+                                    Icon(Icons.Default.Add, contentDescription = "Action 2")
+                                }
+                            }
+                        }
+
+                        FloatingActionButton(
+                            modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
+                            onClick = { isExpanded = !isExpanded },
+                            containerColor = colorResource(id = R.color.background_theme)
+                        ) {
+                            Icon(
+                                imageVector = if (isExpanded) Icons.Default.Menu else Icons.Default.Add,
+                                contentDescription = "Toggle FAB"
+                            )
+                        }
                     }
                 }
             }
@@ -180,12 +183,9 @@ fun StorageLocationScreen(
             Column(
                 modifier = Modifier.padding(horizontal = Dimens.PADDING_16_DP),
             ) {
-                SearchBarPreview(
-                    enabled = false,
-                    modifier = Modifier.clickable {
-                        onClickSearch()
-                    }
-                )
+                SearchBarPreview(enabled = false, modifier = Modifier.clickable {
+                    onClickSearch()
+                })
                 FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
@@ -245,7 +245,9 @@ fun WarehouseAreaCard(
             ) {
                 Text(
                     fontFamily = QuickSand,
-                    text = "Delete", color = Color.White, modifier = Modifier.padding(16.dp)
+                    text = "Delete",
+                    color = Color.White,
+                    modifier = Modifier.padding(16.dp)
                 )
             }
         },
@@ -264,7 +266,7 @@ fun WarehouseAreaCard(
                         Text(
                             fontFamily = QuickSand,
                             text = "ID: ${area.id}",
-                          //  color = colorResource(id = R.color.background_theme)
+                            //  color = colorResource(id = R.color.background_theme)
                         )
                         Text(
                             fontFamily = QuickSand,

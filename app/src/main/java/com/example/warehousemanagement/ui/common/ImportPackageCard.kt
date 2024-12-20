@@ -155,7 +155,7 @@ fun ImportPackageCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Number of Products:", weight = 3f)
+                        TableCell(text = "Number of ExportProductDto:", weight = 3f)
                         TableCell(
                             modifier = Modifier.background(colorResource(id = R.color.background_light_theme)),
                             text = "${importPackage.listProducts.size}",

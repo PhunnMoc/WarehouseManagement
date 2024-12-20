@@ -78,7 +78,6 @@ fun NotificationScreen(
                                 onCardClick = {},
                               //  onLongPress = onNavigationDetailProduct,
                             )
-                            Text(text = notification.title)
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }

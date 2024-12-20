@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
 fun ExportPackageCard(
@@ -70,8 +71,13 @@ fun ExportPackageCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = if (exportPackage.status) colorResource(id = R.color.background_done) else colorResource(
+                        color = if (exportPackage.status=="APPROVED") colorResource(id = R.color.background_done) else colorResource(
                             id = R.color.background_pending
+
+
+
+
+
                         )
                     )
                     .padding(Dimens.PADDING_10_DP),
@@ -79,6 +85,7 @@ fun ExportPackageCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
+                    fontFamily = QuickSand,
                     text = "Package ID: ${exportPackage.idExportPackages}",
                     fontWeight = FontWeight.Bold
                 )
@@ -99,12 +106,14 @@ fun ExportPackageCard(
                     modifier = Modifier.padding(Dimens.PADDING_10_DP)
                 ) {
                     Text(
+                        fontFamily = QuickSand,
                         text = "Package Name: ${exportPackage.packageName}",
                         fontWeight = FontWeight.W600,
                         fontSize = 16.sp,
                         color = colorResource(id = R.color.text_color_light_black)
                     )
                     Text(
+                        fontFamily = QuickSand,
                         text = "Status: ${exportPackage.status}",
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
@@ -142,7 +151,7 @@ fun ExportPackageCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Number of Products:", weight = 3f)
+                        TableCell(text = "Number of products:", weight = 3f)
                         TableCell(
                             modifier = Modifier.background(colorResource(id = R.color.background_light_theme)),
                             text = "${exportPackage.listProduct.size}",
@@ -150,12 +159,14 @@ fun ExportPackageCard(
                         )
                     }
                     Text(
+                        fontFamily = QuickSand,
                         text = "Note:",
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         color = Color.Gray
                     )
                     Text(
+                        fontFamily = QuickSand,
                         modifier = Modifier.padding(top = Dimens.PADDING_10_DP),
                         text = exportPackage.note ?: "",
                         fontSize = 14.sp,

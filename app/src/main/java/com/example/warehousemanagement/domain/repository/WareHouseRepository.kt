@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.domain.repository
 
+import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
@@ -50,7 +51,11 @@ interface WareHouseRepository {
     )
 
     suspend fun getPendingExportPackages(): List<ExportPackages>
+    suspend fun addPendingExportPackages(pendingExportPackage: ExportPackagePendingDto)
     suspend fun getDoneImportPackages(): List<ImportPackages>
+
+    suspend fun getExportPackageById(id: String): ExportPackages
+    suspend fun approveExportPackage(id: String)
     suspend fun getDoneExportPackages(): List<ExportPackages>
     suspend fun createImportPackage(importPackage: ImportPackages)//: ImportPackages
 
@@ -61,7 +66,7 @@ interface WareHouseRepository {
     suspend fun getAllSupplierDetails(): List<Supplier>
 
     suspend fun getAllCustomers(): List<Customer>
-    suspend fun getCustomerById(idCustomer: String): Customer
+    suspend fun getCustomerById(idCustomer: String): Customer?
     suspend fun getAllCustomerDetails(): List<Customer>
     suspend fun addNewSupplier(supplier: Supplier)//: String
 

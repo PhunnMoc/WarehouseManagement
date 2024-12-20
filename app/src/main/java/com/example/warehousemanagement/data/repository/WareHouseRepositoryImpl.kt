@@ -2,6 +2,7 @@ package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.mapper.convertToModel
 import com.example.warehousemanagement.data.mapper.convertToResponse
+import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
@@ -91,8 +92,8 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getAllCustomer().body()?.mapNotNull { it.convertToModel() } ?: listOf()
     }
 
-    override suspend fun getCustomerById(idCustomer: String): Customer {
-        return retrofit.getCustomerDetails(id = idCustomer).body()?.convertToModel()!!
+    override suspend fun getCustomerById(idCustomer: String): Customer? {
+        return retrofit.getCustomerDetails(id = idCustomer).body()?.convertToModel()
     }
 
     override suspend fun getAllCustomerDetails(): List<Customer> {
@@ -146,9 +147,21 @@ class WareHouseRepositoryImpl @Inject constructor(
             ?: listOf()
     }
 
+    override suspend fun addPendingExportPackages(pendingExportPackage: ExportPackagePendingDto) {
+        retrofit.addPendingExportPackages(pendingExportPackage = pendingExportPackage)
+    }
+
     override suspend fun getDoneImportPackages(): List<ImportPackages> {
         return retrofit.getDoneImportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
+    }
+
+    override suspend fun getExportPackageById(id: String): ExportPackages {
+        return retrofit.getExportPackageById(id = id).body()?.convertToModel()!!
+    }
+
+    override suspend fun approveExportPackage(id: String){
+        return retrofit.approveExportPackage(id)
     }
 
     override suspend fun getDoneExportPackages(): List<ExportPackages> {

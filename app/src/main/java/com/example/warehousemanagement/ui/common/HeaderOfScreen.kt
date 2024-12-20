@@ -38,7 +38,7 @@ fun HeaderOfScreen(
     mainTitleText: String,
     startContent: @Composable() (() -> Unit)? = null,
     endContent: @Composable() (() -> Unit)? = null,
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     TopAppBar(
         scrollBehavior = scrollBehavior,

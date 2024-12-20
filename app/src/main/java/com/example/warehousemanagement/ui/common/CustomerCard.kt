@@ -25,6 +25,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,6 +56,10 @@ fun CustomerCard(
     ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(customer){
+        println("Iris Test ${customer.idCustomer}")
+    }
     Card(
         backgroundColor = Color.White,
         //  shape = RoundedCornerShape(10.dp),

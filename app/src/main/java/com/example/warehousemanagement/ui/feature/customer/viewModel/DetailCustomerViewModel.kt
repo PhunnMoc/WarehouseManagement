@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.asResult
+import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_CUSTOMER_QUERY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +38,7 @@ class DetailCustomerViewModel @Inject constructor(
             .map { detailCustomer ->
                 when (detailCustomer) {
                     is Result.Success -> {
-                        DetailCustomerUiState.Success(customer = detailCustomer.data)
+                        DetailCustomerUiState.Success(customer = detailCustomer.data!!)
                     }
 
                     is Result.Error -> DetailCustomerUiState.Error

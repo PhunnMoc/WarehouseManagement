@@ -8,3 +8,7 @@ sealed interface ImportPackageUiState {
     data object Error : ImportPackageUiState
     data object Loading : ImportPackageUiState
 }
+
+data class RoleUiState(
+    val isAdmin :Boolean,
+)

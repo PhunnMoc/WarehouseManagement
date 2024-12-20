@@ -54,7 +54,7 @@ class SearchProductViewModel @Inject constructor(
             }
 
     fun onChangeSearchQuery(query: String) {
-        saveStateHandle[SEARCH_PRODUCT_QUERY] = query
+        saveStateHandle[SEARCH_PRODUCT_QUERY_NAME] = query
     }
 
 }
