@@ -14,5 +14,5 @@ object WebSocketModule {
     @Provides
     @Singleton
     fun provideWebSocketManager(): WebSocketManager =
-        WebSocketManager(baseUrl = "ws://192.168.59.1:8081/warehouse")
+        WebSocketManager(baseUrl = "ws://192.168.0.143:8081/warehouse")
 }

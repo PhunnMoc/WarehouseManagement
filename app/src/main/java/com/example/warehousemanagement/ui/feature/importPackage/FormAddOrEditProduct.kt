@@ -61,7 +61,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.OffsetMapping
+import androidx.compose.ui.text.input.TransformedText
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -123,7 +127,7 @@ fun FormAddOrEditProductForm(
     val listSupplier by viewModel.searchSupplierUiState.collectAsStateWithLifecycle()
 
     Scaffold(modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        containerColor = Color.White,
+       // containerColor = Color.White,
         topBar = {
             HeaderOfScreen(
                 mainTitleText = stringResource(id = R.string.screen_product_main_title),
@@ -139,7 +143,91 @@ fun FormAddOrEditProductForm(
                 endContent = {},
                 scrollBehavior = scrollBehavior
             )
-        }) { innerPadding ->
+        },
+        bottomBar = { Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(Dimens.PADDING_10_DP),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+            BigButton(modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
+                enabled = name.isNotEmpty() && genre != null
+                        && supplier != null
+                        && quantity.isNotEmpty()
+                        && importPrice.isNotEmpty()
+                        && exportPrice.isNotEmpty(),
+                labelname = "Submit",
+                onClick = {
+
+                    viewModel.addProduct(
+                        Product(
+                            idProduct = "",
+                            description = description,
+                            genre = genre!!,
+                            image = imageUrl,
+                            importPrice = importPrice.toInt(),
+                            inStock = isCheckedInStock,
+                            lastUpdated = LocalDate.now().atStartOfDay()
+                                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                            productName = name,
+                            quantity = quantity.toInt(),
+                            sellingPrice = exportPrice.toInt(),
+                            storageLocation = null,
+                            supplier = supplier!!,
+                        )
+                    )
+                    viewModel.addPackage(
+                        date = LocalDate.now().atStartOfDay()
+                            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                    )
+                    onBackClick()
+                })
+            IconButton(enabled = name.isNotEmpty() && genre != null
+                    && supplier != null
+                    && quantity.isNotEmpty()
+                    && importPrice.isNotEmpty()
+                    && exportPrice.isNotEmpty(),
+                onClick = {
+                    viewModel.addProduct(
+                        Product(
+                            idProduct = "",
+                            description = description,
+                            genre = genre!!,
+                            image = imageUrl,
+                            importPrice = importPrice.toInt(),
+                            inStock = isCheckedInStock,
+                            lastUpdated = date,
+                            productName = name,
+                            quantity = quantity.toInt(),
+                            sellingPrice = exportPrice.toInt(),
+                            storageLocation = null,
+                            supplier = supplier!!,
+                        )
+                    )
+                    name = ""
+                    genreName = ""
+                    genre = null
+                    supplierName = ""
+                    supplier = null
+                    quantity = ""
+                    importPrice = ""
+                    exportPrice = ""
+                    isCheckedInStock = false
+                    imageUrl = ""
+                    description = ""
+                }) {
+                Icon(
+                    modifier = Modifier.size(Dimens.SIZE_ICON_35_DP),
+                    tint = colorResource(id = R.color.background_theme),
+                    painter = painterResource(id = R.drawable.ic_add_mini_button),
+                    contentDescription = ""
+                )
+            }
+        }}
+        ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -148,14 +236,35 @@ fun FormAddOrEditProductForm(
                 .padding(horizontal = Dimens.PADDING_10_DP),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            //Product customerName
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text(text = stringResource(id = R.string.product_name_string)) },
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(Dimens.PADDING_10_DP)
-            )
+                horizontalArrangement = Arrangement.spacedBy(Dimens.PADDING_10_DP)
+            ) {
+                // Product customerName (70%)
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text(text = stringResource(id = R.string.product_name_string)) },
+                    modifier = Modifier
+                        .weight(0.7f)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+                )
+
+                // Quantity (30%)
+                OutlinedTextField(
+                    value = quantity,
+                    maxLines = 1,
+                    onValueChange = { if (it.all { char -> char.isDigit() }) quantity = it },
+                    label = { Text(text = stringResource(id = R.string.quantity_title)) },
+                    modifier = Modifier
+                        .weight(0.3f)
+                        .fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+                )
+            }
+
 
             //Genre
             var expandedGenre by remember { mutableStateOf(false) }
@@ -237,35 +346,35 @@ fun FormAddOrEditProductForm(
             }
 
 
-            //Quantity
-            OutlinedTextField(
-                value = quantity,
-                onValueChange = { if (it.all { char -> char.isDigit() }) quantity = it },
-                label = { Text(text = stringResource(id = R.string.quantity_title)) },
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                shape = RoundedCornerShape(Dimens.PADDING_10_DP),
-            )
+                horizontalArrangement = Arrangement.spacedBy(Dimens.PADDING_10_DP) // Khoảng cách giữa các trường
+            ) {
+                // Import Price
+                OutlinedTextField(
+                    value = importPrice,
+                    onValueChange = { if (it.all { char -> char.isDigit() }) importPrice = it },
+                    label = { Text(text = stringResource(id = R.string.import_price_title)) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(), // Chiếm toàn bộ không gian phân bổ
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    shape = RoundedCornerShape(Dimens.PADDING_10_DP),
+                )
 
-            //importPrice
-            OutlinedTextField(
-                value = importPrice,
-                onValueChange = { if (it.all { char -> char.isDigit() }) importPrice = it },
-                label = { Text(text = stringResource(id = R.string.import_price_title)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                shape = RoundedCornerShape(Dimens.PADDING_10_DP),
-            )
+                // Selling Price
+                OutlinedTextField(
+                    value = exportPrice,
+                    onValueChange = { if (it.all { char -> char.isDigit() }) exportPrice = it },
+                    label = { Text(text = stringResource(id = R.string.selling_price_title)) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(), // Chiếm toàn bộ không gian phân bổ
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    shape = RoundedCornerShape(Dimens.PADDING_10_DP),
+                )
+            }
 
-            //sellingPrice
-            OutlinedTextField(
-                value = exportPrice,
-                onValueChange = { if (it.all { char -> char.isDigit() }) exportPrice = it },
-                label = { Text(text = stringResource(id = R.string.selling_price_title)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                shape = RoundedCornerShape(Dimens.PADDING_10_DP),
-            )
 
             //supplier
             var expandedSupplierLocation by remember { mutableStateOf(false) }
@@ -388,89 +497,7 @@ fun FormAddOrEditProductForm(
             )
 
             Spacer(modifier = Modifier.weight(1f))
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(Dimens.PADDING_10_DP),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-                BigButton(modifier = Modifier.padding(vertical = Dimens.PADDING_10_DP),
-                    enabled = name.isNotEmpty() && genre != null
-                            && supplier != null
-                            && quantity.isNotEmpty()
-                            && importPrice.isNotEmpty()
-                            && exportPrice.isNotEmpty(),
-                    labelname = "Submit",
-                    onClick = {
-
-                        viewModel.addProduct(
-                            Product(
-                                idProduct = "",
-                                description = description,
-                                genre = genre!!,
-                                image = imageUrl,
-                                importPrice = importPrice.toInt(),
-                                inStock = isCheckedInStock,
-                                lastUpdated = LocalDate.now().atStartOfDay()
-                                    .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                                productName = name,
-                                quantity = quantity.toInt(),
-                                sellingPrice = exportPrice.toInt(),
-                                storageLocation = null,
-                                supplier = supplier!!,
-                            )
-                        )
-                        viewModel.addPackage(
-                            date = LocalDate.now().atStartOfDay()
-                                .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-                        )
-                        onBackClick()
-                    })
-                IconButton(enabled = name.isNotEmpty() && genre != null
-                        && supplier != null
-                        && quantity.isNotEmpty()
-                        && importPrice.isNotEmpty()
-                        && exportPrice.isNotEmpty(),
-                    onClick = {
-                        viewModel.addProduct(
-                            Product(
-                                idProduct = "",
-                                description = description,
-                                genre = genre!!,
-                                image = imageUrl,
-                                importPrice = importPrice.toInt(),
-                                inStock = isCheckedInStock,
-                                lastUpdated = date,
-                                productName = name,
-                                quantity = quantity.toInt(),
-                                sellingPrice = exportPrice.toInt(),
-                                storageLocation = null,
-                                supplier = supplier!!,
-                            )
-                        )
-                        name = ""
-                        genreName = ""
-                        genre = null
-                        supplierName = ""
-                        supplier = null
-                        quantity = ""
-                        importPrice = ""
-                        exportPrice = ""
-                        isCheckedInStock = false
-                        imageUrl = ""
-                        description = ""
-                    }) {
-                    Icon(
-                        modifier = Modifier.size(Dimens.SIZE_ICON_35_DP),
-                        tint = colorResource(id = R.color.background_theme),
-                        painter = painterResource(id = R.drawable.ic_add_mini_button),
-                        contentDescription = ""
-                    )
-                }
-            }
         }
     }
 
