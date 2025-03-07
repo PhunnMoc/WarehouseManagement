@@ -22,6 +22,7 @@ fun PendingImportPackage(
     modifier: Modifier = Modifier,
     viewModel: PendingImportPViewModel = hiltViewModel(),
     onNavigationDetailImportPackages: (String) -> Unit,
+    onNavigationEditImportPackages: (String) -> Unit,
 ) {
     val importPackageUiState by viewModel.importPackageUiState.collectAsStateWithLifecycle()
 
@@ -35,6 +36,7 @@ fun PendingImportPackage(
                         importPackage = importPackage,
                         onCardClick = {},
                         onLongPress = onNavigationDetailImportPackages,
+                        onEditPendingPackage = onNavigationEditImportPackages,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

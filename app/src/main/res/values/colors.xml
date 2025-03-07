@@ -22,4 +22,5 @@
 
     <!-- Line Color -->
     <color name="line_light_gray">#F1F1F1</color> <!-- Light gray line color -->
+    <color name="line_gray">#D7D7D7</color> <!-- Light gray line color -->
 </resources>

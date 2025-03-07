@@ -56,6 +56,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
 import com.example.warehousemanagement.ui.feature.report.lineChart.PerformanceChart
+import com.example.warehousemanagement.ui.feature.report.ui.GenreByRangeDay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,7 +96,11 @@ fun ReportScreen() {
         ) {
             composable("screen_a") { DashBoardReportScreen() }
             composable("screen_b") { InventoryScreen() }
-            composable("screen_c") { StorageLocationReportScreen() }
+            composable("screen_c") {
+                GenreByRangeDay(
+                    onBack = {}
+                )
+            }
         }
     }
 }

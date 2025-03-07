@@ -49,6 +49,7 @@ fun ImportPackageCard(
     importPackage: ImportPackages,
     onCardClick: () -> Unit,
     onLongPress: (String) -> Unit,
+    onEditPendingPackage: (String) -> Unit,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -75,13 +76,13 @@ fun ImportPackageCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        color = if (importPackage.status == "APPROVED" || importPackage.status == "DECLINE") colorResource(
-                            id = R.color.background_done
-                        ) else colorResource(
-                            id = R.color.background_pending
-                        )
-                    )
+//                    .background(
+//                        color = if (importPackage.status == "APPROVED" || importPackage.status == "DECLINE") colorResource(
+//                            id = R.color.background_done
+//                        ) else colorResource(
+//                            id = R.color.background_pending
+//                        )
+//                    )
                     .padding(Dimens.PADDING_10_DP),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -91,19 +92,32 @@ fun ImportPackageCard(
                     fontWeight = FontWeight.Bold,
                     fontFamily = QuickSand,
                 )
-                QRCodeScreen(id = importPackage.idImportPackages)
+                // QRCodeScreen(id = importPackage.idImportPackages)
+                Image(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable { onEditPendingPackage(importPackage.idImportPackages) },
+                    painter = painterResource(id = R.drawable.icons8_edit),
+                    contentDescription = "Delete"
+                )
             }
             Divider()
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.import_package_ic),
-                    contentDescription = "Product Image",
-                    contentScale = ContentScale.Crop,
+//                Image(
+//                    painter = painterResource(id = R.drawable.import_package_ic),
+//                    contentDescription = "Product Image",
+//                    contentScale = ContentScale.Crop,
+//                    modifier = Modifier
+//                        .padding(Dimens.PADDING_10_DP)
+//                        .size(64.dp)
+//                )
+                QRCodeScreen(
                     modifier = Modifier
                         .padding(Dimens.PADDING_10_DP)
-                        .size(64.dp)
+                        .size(64.dp),
+                    id = importPackage.idImportPackages
                 )
                 Column(
                     modifier = Modifier.padding(Dimens.PADDING_10_DP)

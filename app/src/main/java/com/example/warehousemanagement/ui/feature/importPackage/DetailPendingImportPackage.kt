@@ -1,4 +1,4 @@
-package com.example.warehousemanagement.ui.feature.exportPackage
+package com.example.warehousemanagement.ui.feature.importPackage
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -20,12 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.MaterialTheme
@@ -38,7 +34,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,43 +56,37 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.example.warehousemanagement.R
-import com.example.warehousemanagement.domain.model.ExportPackages
+import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.DetailExportUiState
-import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.DetailExportViewModel
-import com.example.warehousemanagement.ui.feature.importPackage.CardInfoImportPackage
-import com.example.warehousemanagement.ui.feature.importPackage.ExpandedImportView
-import com.example.warehousemanagement.ui.feature.importPackage.ProductItemDetail
+import com.example.warehousemanagement.ui.feature.importPackage.viewModel.DetailImportUiState
+import com.example.warehousemanagement.ui.feature.importPackage.viewModel.DetailImportViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
-fun DetailExportPackage(
-    viewModel: DetailExportViewModel = hiltViewModel(),
+fun DetailPendingImportPackage(
+    viewModel: DetailImportViewModel = hiltViewModel(),
     navigateToSetStorageLocationScreen: (String) -> Unit,
     onBack: () -> Unit,
 ) {
     CompositionLocalProvider(LocalTextStyle provides TextStyle(fontFamily = QuickSand)) {
-        val detailExportUiState by viewModel.detailExportPackageUiState.collectAsStateWithLifecycle()
+        val detailImportUiState by viewModel.detailPendingImportPackageUiState.collectAsStateWithLifecycle()
         val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
-        when (val detail = detailExportUiState) {
-            is DetailExportUiState.Loading -> IndeterminateCircularIndicator()
-            is DetailExportUiState.Error -> NothingText()
-            is DetailExportUiState.Success -> {
-                ExportPackage(
+        when (val detail = detailImportUiState) {
+            is DetailImportUiState.Loading -> IndeterminateCircularIndicator()
+            is DetailImportUiState.Error -> NothingText()
+            is DetailImportUiState.Success -> {
+                ImportPackage(
                     user = currentUser,
-                    exportPackage = detail.detailExportPackage,
+                    importPackage = detail.detailImportPackage,
                     navigateToSetStorageLocationScreen = navigateToSetStorageLocationScreen,
                     onBack = onBack,
-                    onEditClick = { productId ->
-                        //    editingProduct = importPackage.listProducts.find { it.id == productId }
-                    },
-                    onUpdateExportPackage = viewModel::updateExportPackage,
+                    onUpdateImportPackage = viewModel::updateImportPackage
                 )
             }
         }
@@ -106,15 +95,14 @@ fun DetailExportPackage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExportPackage(
-    user: User,
-    exportPackage: ExportPackages,
-    navigateToSetStorageLocationScreen: (String) -> Unit,
-    onEditClick: (String) -> Unit,
-    onBack: () -> Unit,
-    onUpdateExportPackage: (String) -> Unit,
+fun ImportPackage(
+    isPending : Boolean = true,
     modifier: Modifier = Modifier,
-    isPending: Boolean = true,
+    user: User,
+    importPackage: ImportPackages,
+    navigateToSetStorageLocationScreen: (String) -> Unit,
+    onBack: () -> Unit,
+    onUpdateImportPackage: (String) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -124,7 +112,7 @@ fun ExportPackage(
         topBar = {
             HeaderOfScreen(
                 containerColor = Color.Transparent,
-                mainTitleText = stringResource(id = R.string.screen_export_main_title),
+                mainTitleText = stringResource(id = R.string.screen_import_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
                         contentDescription = "Back",
@@ -139,7 +127,7 @@ fun ExportPackage(
             )
         },
         bottomBar = {
-            if (isPending) {
+            if(isPending){
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -148,7 +136,7 @@ fun ExportPackage(
                 ) {
                     BigButton(
                         onClick = {
-                            //  onUpdateExportPackage("decline")
+                            onUpdateImportPackage("decline")
                             onBack()
                         },
                         enabled = true,
@@ -162,8 +150,8 @@ fun ExportPackage(
                     Spacer(modifier = Modifier.width(5.dp))
                     BigButton(
                         onClick = {
-                            onUpdateExportPackage("approved")
-                            navigateToSetStorageLocationScreen(exportPackage.idExportPackages)
+                            onUpdateImportPackage("approved")
+                            navigateToSetStorageLocationScreen(importPackage.idImportPackages)
                         },
                         enabled = true,
                         modifier = Modifier
@@ -224,7 +212,7 @@ fun ExportPackage(
                                     contentDescription = ""
                                 )
                                 Text(
-                                    text = exportPackage.exportDate.toString(),
+                                    text = importPackage.importDate.toString(),
                                     fontFamily = QuickSand
                                 )
                             }
@@ -234,7 +222,7 @@ fun ExportPackage(
                                 modifier = Modifier
                                     .border(
                                         width = 2.dp,
-                                        color = if (exportPackage.status == "APPROVED") colorResource(
+                                        color = if (importPackage.status == "APPROVED") colorResource(
                                             id = R.color.background_done
                                         ) else colorResource(
                                             id = R.color.background_pending
@@ -246,17 +234,16 @@ fun ExportPackage(
                             ) {
                                 Text(
                                     fontFamily = QuickSand,
-                                    text = "Status: ${exportPackage.status}",
+                                    text = "Status: ${importPackage.status}",
                                 )
                             }
                         }
 
                     }
                     item {
-                        CardInfoExportPackage(
-                            packageName = exportPackage.packageName,
-                            packageDescription = exportPackage.note ?: "",
-                            customer = exportPackage.customer,
+                        CardInfoImportPackage(
+                            packageName = importPackage.packageName,
+                            packageDescription = importPackage.note,
                         )
                     }
 
@@ -275,8 +262,8 @@ fun ExportPackage(
                                 text = "Check carefully the purchase price, selling price, and quantity of products before moving on to the next step because these products will be saved in the database.",
                                 fontSize = 10.sp,
                             )
-                            exportPackage.listProduct.forEach { product ->
-                                ExportProductItemDetail(exportProduct = product)
+                            importPackage.listProducts.forEach { product ->
+                                ProductItemDetail(product = product)
                             }
 
                         }
@@ -287,11 +274,10 @@ fun ExportPackage(
     }
 }
 
-
 @Composable
-fun ExportProductItemDetail(
+fun ProductItemDetail(
     modifier: Modifier = Modifier,
-    exportProduct: Product,
+    product: Product,
 ) {
     var isCompactView by remember { mutableStateOf(false) }
     Row {
@@ -313,15 +299,15 @@ fun ExportProductItemDetail(
             )
 
             // Animation cho nội dung hiển thị
-            Column {
+            Column{
                 AnimatedVisibility(visible = !isCompactView) {
-                    ExpandedExportView(product = exportProduct)
+                    ExpandedImportView(product = product)
                 }
-                if (isCompactView) {
+                if (isCompactView){
                     Text(
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
-                        text = exportProduct.productName,
+                        text = product.productName,
                         modifier = Modifier.padding(vertical = 5.dp)
                     )
                 }
@@ -332,7 +318,7 @@ fun ExportProductItemDetail(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ExpandedExportView(product: Product) {
+fun ExpandedImportView(product: Product) {
     Column {
         Row(verticalAlignment = Alignment.Top) {
             Image(
@@ -389,6 +375,20 @@ fun ExpandedExportView(product: Product) {
                     )
                     .padding(Dimens.PADDING_10_DP), verticalAlignment = Alignment.CenterVertically
             ) {
+                Text(text = "Import Price: \$${product.importPrice}")
+            }
+            Row(
+                modifier = Modifier
+                    .padding(5.dp)
+                    .border(
+                        width = 2.dp,
+                        shape = RoundedCornerShape(10.dp),
+                        color = colorResource(
+                            id = R.color.background_pending
+                        )
+                    )
+                    .padding(Dimens.PADDING_10_DP), verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(text = "Selling Price: \$${product.sellingPrice}")
 
             }
@@ -405,9 +405,12 @@ fun ExpandedExportView(product: Product) {
                     .padding(Dimens.PADDING_10_DP), verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Export Quantity: ${product.quantity}",
+                    text = "Quantity: ${product.quantity}",
                 )
             }
         }
     }
 }
+
+
+

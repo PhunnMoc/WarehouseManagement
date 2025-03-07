@@ -10,7 +10,9 @@ import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
+import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Notification
+import com.example.warehousemanagement.domain.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -87,6 +89,11 @@ interface ApiWarehouse {
         @Path("id") id: String
     ): Response<ImportPackageResponseItem>
 
+    @GET("/import-packages/done/{id}")
+    suspend fun getDoneImportPackageById(
+        @Path("id") id: String
+    ): Response<ImportPackageResponseItem>
+
     @GET("/import-packages/{id}")
     suspend fun getImportPackageById(
         @Path("id") id: String
@@ -99,9 +106,15 @@ interface ApiWarehouse {
     )
 
     @PUT("/import-packages/{id}/update-products")
-    suspend fun updateProductsInImportPackage(
+    suspend fun updateProductsLocationInImportPackage(
         @Path("id") id: String,
         @QueryMap(encoded = true) storageLocationIds: Map<String, String>
+    )
+
+    @PUT("/import-packages/pending/{id}/update")
+    suspend fun updatePendingImportPackage(
+        @Path("id") id: String,
+        @Body updatedImportPackage: ImportPackages,
     )
 
     @GET("/export-packages/pending")
@@ -118,7 +131,8 @@ interface ApiWarehouse {
     ): Response<ExportPackageResponse>
     @PUT("export-packages/approve/{id}")
     suspend fun approveExportPackage(
-        @Path("id") id: String
+        @Path("id") id: String,
+        @Query("status") status: String,
     )
 
     @GET("/import-packages/done")
@@ -177,6 +191,12 @@ interface ApiWarehouse {
 
     @GET("/user")
     suspend fun getAllUserDetails(): Response<List<UserResponse>>
+
+    @PUT("/user/{id}")
+    suspend fun updateUser(
+        @Path("id") id: String,
+        @Body updated: User,
+    )
 
     @GET("/notification")
     suspend fun getAllNotificationDetails(): Response<List<Notification>>

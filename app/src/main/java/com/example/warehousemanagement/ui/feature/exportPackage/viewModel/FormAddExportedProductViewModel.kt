@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -36,35 +37,35 @@ class FormAddExportedProductViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
-    private val _products = MutableStateFlow<List<ExportProductDto>>(listOf())
-    val products: StateFlow<List<ExportProductDto>> = _products
-    fun addPackage() {
+
+    val idSender = preferencesRepository.getUserId()
+    fun addPackage(
+        date: String,
+        note: String,
+        customerId: String,
+        packageName: String,
+        listExportProducts: List<ExportProductDto>,
+    ) {
         viewModelScope.launch {
             try {
-                wareHouseRepository.addPendingExportPackages(
-                    pendingExportPackage = ExportPackagePendingDto(
-                        customerId = savedStateHandle.get<String>("customerId") ?: "",
-                        deliveryMethod = "",
-                        idSender = "67276a79" +
-                                "" +
-                                "" +
-                                "a0b1c2534dca6e62",
-                        listProducts = _products.value,
-                        note = savedStateHandle.get<String>("note") ?: "",
-                        packageName = savedStateHandle.get<String>("packageName") ?: "",
+                idSender.collect { idSender ->
+                    wareHouseRepository.addPendingExportPackages(
+                        pendingExportPackage = ExportPackagePendingDto(
+                            customerId = customerId,
+                            deliveryMethod = "",
+                            idSender = idSender,
+                            listProducts = listExportProducts,
+                            note = note,
+                            packageName = packageName,
+                        )
                     )
-                )
+                }
             } catch (e: Exception) {
                 println("HUHU $e")
             }
         }
     }
 
-
-    fun updateProduct(productId: String, quantity: String) {
-        _products.value =
-            _products.value + ExportProductDto(productId = productId, quantity = quantity.toInt())
-    }
 
     val searchProductUiState: StateFlow<SearchProductUiState> =
         searchProductResult()

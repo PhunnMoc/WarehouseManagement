@@ -8,9 +8,9 @@ import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.asResult
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
-import com.example.warehousemanagement.domain.model.StatusPackage
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
+import com.example.warehousemanagement.ui.feature.importPackage.FormImportProductData
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_GENRE_QUERY_NAME
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_STORAGE_LOCATION_QUERY_NAME
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_SUPPLIER_QUERY
@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val IMPORT_PACKAGE_ID_QUERY_NAME = "id"
 
 @HiltViewModel
 class FormImportPackageViewModel @Inject constructor(
@@ -36,19 +37,24 @@ class FormImportPackageViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
-    private val _products = MutableStateFlow<List<Product>>(emptyList())
-    val products: StateFlow<List<Product>> = _products
 
-    fun addPackage(date: String) {
+    val idImportPackages: String = savedStateHandle.get<String>(KEY_ID) ?: ""
+    fun updatePackage(
+        date: String,
+        note: String,
+        packageName: String,
+        listProducts: List<Product>,
+    ) {
         viewModelScope.launch {
             try {
-                wareHouseRepository.createImportPackage(
-                    importPackage = ImportPackages(
-                        idImportPackages = "",
+                wareHouseRepository.updatePendingImportPackage(
+                    id = idImportPackages,
+                    updatedImportPackage = ImportPackages(
+                        idImportPackages = idImportPackages,
                         importDate = date,
-                        listProducts = products.value,
-                        note = savedStateHandle.get<String>("note") ?: "",
-                        packageName = savedStateHandle.get<String>("packageName") ?: "",
+                        listProducts = listProducts,
+                        note = note,
+                        packageName = packageName,
                         receiver = ReceiverResponse(
                             _id = preferencesRepository.getUserId().stateIn(this).value,
                             null,
@@ -58,29 +64,41 @@ class FormImportPackageViewModel @Inject constructor(
                         status = "PENDING",
                     )
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
 
             }
         }
     }
 
+    fun addPackage(
+        date: String,
+        note: String,
+        packageName: String,
+        listProducts: List<Product>,
+    ) {
+        viewModelScope.launch {
+            try {
+                wareHouseRepository.createImportPackage(
+                    importPackage = ImportPackages(
+                        idImportPackages = "",
+                        importDate = date,
+                        listProducts = listProducts,
+                        note = note,
+                        packageName = packageName,
+                        receiver = ReceiverResponse(
+                            _id = preferencesRepository.getUserId().stateIn(this).value,
+                            null,
+                            null,
+                            null
+                        ),
+                        status = "PENDING",
+                    )
+                )
+            } catch (_: Exception) {
 
-    fun addProduct(product: Product) {
-        _products.value = _products.value + product
-    }
-
-    fun updateProduct(index: Int, product: Product) {
-        _products.value = _products.value.toMutableList().apply {
-            set(index, product)
+            }
         }
     }
-
-    fun removeProduct(index: Int) {
-        _products.value = _products.value.toMutableList().apply {
-            removeAt(index)
-        }
-    }
-
 
     val searchGenreUiState: StateFlow<SearchGenreUiState> =
         searchGenreResult()
@@ -160,3 +178,4 @@ class FormImportPackageViewModel @Inject constructor(
     }
 
 }
+

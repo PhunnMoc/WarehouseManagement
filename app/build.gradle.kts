@@ -113,6 +113,10 @@ dependencies {
     implementation ("io.ktor:ktor-client-websockets:1.6.4")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 
+    implementation ("org.apache.poi:poi:5.2.3")
+    implementation ("org.apache.poi:poi-ooxml:5.2.3")
+
+
 }
 kapt {
     correctErrorTypes = true

@@ -25,7 +25,13 @@ class DetailImportViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
-    val detailImportPackageUiState: StateFlow<DetailImportUiState> = getAllImportPackage().stateIn(
+    val detailPendingImportPackageUiState: StateFlow<DetailImportUiState> = getPendingImportPackage().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = DetailImportUiState.Loading
+    )
+
+    val detailDoneImportPackageUiState: StateFlow<DetailImportUiState> = getDoneImportPackage().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = DetailImportUiState.Loading
@@ -39,12 +45,25 @@ class DetailImportViewModel @Inject constructor(
         initialValue = User("", "", "", null)
     )
 
-
-    private fun getAllImportPackage(): Flow<DetailImportUiState> =
+    private fun getPendingImportPackage(): Flow<DetailImportUiState> =
         savedStateHandle.getStateFlow(KEY_ID, "")
             .map {
-                print("IRIS $it")
                 wareHouseRepository.getPendingImportPackageById(id = it)
+            }.asResult()
+            .map { detailImportPackages ->
+                when (detailImportPackages) {
+                    is Result.Success -> {
+                        DetailImportUiState.Success(detailImportPackage = detailImportPackages.data)
+                    }
+
+                    is Result.Error -> DetailImportUiState.Error
+                    is Result.Loading -> DetailImportUiState.Loading
+                }
+            }
+    private fun getDoneImportPackage(): Flow<DetailImportUiState> =
+        savedStateHandle.getStateFlow(KEY_ID, "")
+            .map {
+                wareHouseRepository.getDoneImportPackageById(id = it)
             }.asResult()
             .map { detailImportPackages ->
                 when (detailImportPackages) {

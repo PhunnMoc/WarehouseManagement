@@ -9,10 +9,14 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import com.example.warehousemanagement.util.generateQRCode
 
 @Composable
-fun QRCodeScreen(id: String) {
+fun QRCodeScreen(
+    id: String,
+    modifier: Modifier = Modifier
+) {
     val qrBitmap = generateQRCode(id)
     if (qrBitmap != null) {
         Image(
+            modifier = modifier,
             painter = BitmapPainter(qrBitmap.asImageBitmap()),
             contentDescription = "QR Code"
         )

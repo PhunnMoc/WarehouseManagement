@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
@@ -45,7 +44,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.DialogWithInput
-import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.ImportPackageViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -55,23 +53,25 @@ import com.example.warehousemanagement.ui.theme.QuickSand
 @Composable
 fun ImportPackageScreen(
     modifier: Modifier = Modifier,
-    onClickAddProduct: (String, String) -> Unit,
+    onClickAddProduct: () -> Unit,
     onClickAddProductByExcel: () -> Unit,
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
-    onNavigationDetailImportPackage: (String) -> Unit,
+    onNavigationDetailPendingImportPackage: (String) -> Unit,
+    onNavigationDetailDoneImportPackage: (String) -> Unit,
+    onNavigationEditImportPackages: (String) -> Unit,
     importPackageViewModel: ImportPackageViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     var isExpanded by remember { mutableStateOf(false) }
-    var isShowDialog by remember { mutableStateOf(false) }
     var isFilter by remember {
         mutableStateOf(false)
     }
 
     val roleUiState by importPackageViewModel.roleUiState.collectAsStateWithLifecycle()
-    Scaffold(containerColor = colorResource(id = R.color.background_white),
+    Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        containerColor = colorResource(id = R.color.line_light_gray),
         floatingActionButton = {
             if (roleUiState) {
                 Box(
@@ -104,7 +104,9 @@ fun ImportPackageScreen(
                                 }
                                 Spacer(modifier = Modifier.width(8.dp))
                                 FloatingActionButton(
-                                    onClick = { isShowDialog = true },
+                                    onClick = {
+                                        onClickAddProduct()
+                                    },
                                     containerColor = colorResource(id = R.color.background_gray)
                                 ) {
                                     Icon(Icons.Default.Add, contentDescription = "Action 1")
@@ -178,24 +180,12 @@ fun ImportPackageScreen(
 //                        onClickSearch()
 //                    }
 //                )
-           //     FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
+                //     FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
-            TabBarImport(onClickDetail = onNavigationDetailImportPackage)
-
-        }
-        if (isShowDialog) {
-            DialogWithInput(
-                title = stringResource(id = R.string.create_new_ip),
-                message = stringResource(id = R.string.package_name_title),
-                confirmText = "Create",
-                cancelText = "Cancel",
-                onConfirm = { packageName, note ->
-                    isShowDialog = false
-                    onClickAddProduct(packageName, note)
-                },
-                onCancel = {
-                    isShowDialog = false
-                },
+            TabBarImport(
+                onNavigationEditImportPackages = onNavigationEditImportPackages,
+                onClickDetailPending = onNavigationDetailPendingImportPackage,
+                onClickDetailDone = onNavigationDetailDoneImportPackage,
             )
         }
     }
@@ -204,7 +194,9 @@ fun ImportPackageScreen(
 
 @Composable
 fun TabBarImport(
-    onClickDetail: (String) -> Unit,
+    onClickDetailPending: (String) -> Unit,
+    onClickDetailDone: (String) -> Unit,
+    onNavigationEditImportPackages: (String) -> Unit,
 ) {
     val tabs = listOf(
         stringResource(id = R.string.pending_import_title),
@@ -237,13 +229,14 @@ fun TabBarImport(
         when (selectedTabIndex) {
             0 -> {
                 PendingImportPackage(
-                    onNavigationDetailImportPackages = onClickDetail,
+                    onNavigationEditImportPackages = onNavigationEditImportPackages,
+                    onNavigationDetailImportPackages = onClickDetailPending,
                 )
             }
 
             1 -> {
                 DoneImportPackage(
-                    onNavigationDetailImportPackages = onClickDetail,
+                    onNavigationDetailImportPackages = onClickDetailDone,
                 )
             }
         }

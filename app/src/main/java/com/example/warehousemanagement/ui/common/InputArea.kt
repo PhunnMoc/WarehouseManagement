@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.warehousemanagement.ui.theme.QuickSand
+import com.example.warehousemanagement.ui.theme.customTextFieldColors
 
 @Composable
 fun InputArea(
@@ -25,16 +27,18 @@ fun InputArea(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label) },
+        label = {
+            Text(
+                fontFamily = QuickSand,
+                text = label
+            )
+        },
         modifier = modifier
             .fillMaxWidth()
-            .height(200.dp), // Adjust the height for the input area
+            .height(100.dp), // Adjust the height for the input area
         shape = RoundedCornerShape(10.dp), // Rounded corners
         textStyle = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = Color.Gray
-        ),
+        colors = customTextFieldColors(),
         maxLines = Int.MAX_VALUE, // Allow unlimited lines
         singleLine = false, // Multiline input
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Default) // Default IME options

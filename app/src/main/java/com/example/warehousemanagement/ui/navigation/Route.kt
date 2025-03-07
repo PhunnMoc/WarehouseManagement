@@ -43,7 +43,11 @@ sealed class Routes {
     data class Product(val id: String) : Routes()
 
     @Serializable
-    data class AddImportPackages(val packageName: String, val note: String) : Routes()
+    object AddImportPackages : Routes()
+    @Serializable
+    data class EditImportPackages(
+        val id  :String,
+    ) : Routes()
 
     @Serializable
     data class AddExportPackages(
@@ -80,7 +84,10 @@ sealed class Routes {
     object ImportPackage : Routes()
 
     @Serializable
-    data class DetailImportPackage(val id: String) : Routes()
+    data class DetailPendingImportPackage(val id: String) : Routes()
+
+    @Serializable
+    data class DetailDoneImportPackage(val id: String) : Routes()
 
     @Serializable
     data class DetailExportPackage(val id: String) : Routes()

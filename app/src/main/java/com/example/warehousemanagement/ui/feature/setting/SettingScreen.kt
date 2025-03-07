@@ -56,6 +56,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
@@ -64,6 +65,7 @@ import com.example.warehousemanagement.ui.feature.importPackage.UploadImageButto
 import com.example.warehousemanagement.ui.feature.setting.viewModel.InformationUiState
 import com.example.warehousemanagement.ui.feature.setting.viewModel.SettingViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.customTextFieldColors
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,16 +90,13 @@ fun SettingScreen(
         topBar = {
             HeaderOfScreen(
                 mainTitleText = "",
-                startContent = {
-                    Image(painter = painterResource(id = R.drawable.icons8_back),
-                        contentDescription = "Back",
+                endContent = {
+                    Text(
                         modifier = Modifier
-                            .size(25.dp)
-                            .clickable {
-                                //  onNavigationBack()
-                            })
+                            .clickable { }
+                            .padding(10.dp),
+                        text = "Save")
                 },
-                endContent = { Text(text = "Save") },
                 scrollBehavior = scrollBehavior
             )
         }) { innerPadding ->
@@ -128,6 +127,7 @@ fun SettingScreen(
 
                     Box {
                         UploadImageButton(
+                            isShowPic = false,
                             modifier = Modifier
                                 .zIndex(1f)
                                 .align(BiasAlignment(horizontalBias = 1f, verticalBias = 1f)),
@@ -160,28 +160,32 @@ fun SettingScreen(
                             onValueChange = { firstName = it },
                             label = { Text("First Name") },
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            colors = customTextFieldColors(),
                         )
                         OutlinedTextField(
                             value = lastName,
                             onValueChange = { lastName = it },
                             label = { Text("Last Name") },
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            colors = customTextFieldColors(),
                         )
                         OutlinedTextField(
                             value = email,
                             onValueChange = { email = it },
                             label = { Text("Email") },
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            colors = customTextFieldColors(),
                         )
                         OutlinedTextField(
                             value = image,
                             onValueChange = { image = it },
                             label = { Text("URL Image") },
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
+                            colors = customTextFieldColors(),
                         )
                         OutlinedTextField(
                             value = temp.user.information?.role ?: "No role available",
@@ -189,7 +193,8 @@ fun SettingScreen(
                             label = { Text("Role") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
-                            enabled = false // Disables editing, but retains the OutlinedTextField style
+                            enabled = false,
+                            colors = customTextFieldColors(),
                         )
                     }
 

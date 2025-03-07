@@ -39,6 +39,8 @@ interface WareHouseRepository {
 
     suspend fun getPendingImportPackages(): List<ImportPackages>
     suspend fun getPendingImportPackageById(id: String): ImportPackages
+
+    suspend fun getDoneImportPackageById(id: String): ImportPackages
     suspend fun getImportPackageById(id: String): ImportPackages
     suspend fun updateImportPackage(
         id: String,
@@ -50,12 +52,17 @@ interface WareHouseRepository {
         storageLocationIds: Map<String, String>
     )
 
+    suspend fun updatePendingImportPackage(
+        id: String,
+        updatedImportPackage: ImportPackages,
+    )
+
     suspend fun getPendingExportPackages(): List<ExportPackages>
     suspend fun addPendingExportPackages(pendingExportPackage: ExportPackagePendingDto)
     suspend fun getDoneImportPackages(): List<ImportPackages>
 
     suspend fun getExportPackageById(id: String): ExportPackages
-    suspend fun approveExportPackage(id: String)
+    suspend fun approveExportPackage(id: String, status: String)
     suspend fun getDoneExportPackages(): List<ExportPackages>
     suspend fun createImportPackage(importPackage: ImportPackages)//: ImportPackages
 
@@ -73,6 +80,7 @@ interface WareHouseRepository {
     /// Login
     suspend fun login(username: String, password: String): Map<String, String>
     suspend fun getUserDetails(id: String): User
+    suspend fun updateUserDetail(id: String, user: User)
     suspend fun getAllUserDetails(): List<User>
     suspend fun getAllNotificationDetails(): List<Notification>
     suspend fun addNewCustomer(customer: Customer)//: String

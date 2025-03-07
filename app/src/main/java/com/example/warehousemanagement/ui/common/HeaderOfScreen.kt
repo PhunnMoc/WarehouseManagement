@@ -36,6 +36,7 @@ import com.example.warehousemanagement.ui.theme.QuickSand
 fun HeaderOfScreen(
     modifier: Modifier = Modifier,
     mainTitleText: String,
+    containerColor : Color = Color.White,
     startContent: @Composable() (() -> Unit)? = null,
     endContent: @Composable() (() -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
@@ -44,7 +45,7 @@ fun HeaderOfScreen(
         scrollBehavior = scrollBehavior,
         modifier = modifier,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White, // Màu nền của TopAppBar
+            containerColor = containerColor, // Màu nền của TopAppBar
             titleContentColor = colorResource(id = R.color.icon_tint_gray) // Màu tiêu đề
         ),
         title = {

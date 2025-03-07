@@ -226,7 +226,6 @@ fun ExportPackageResponse.convertToModel(): ExportPackages? {
         exportDate = exportDate,
         customer = customer?.convertToModel()!!,
         status = statusDone ?:"PENDING",
-        deliveryMethod = deliveryMethod ?: "",
         note = note,
         sender = sender.convertToModel()!!,
     )

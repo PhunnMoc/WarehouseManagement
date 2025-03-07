@@ -9,7 +9,6 @@ data class ExportPackages(
     val exportDate: String,
     val customer: Customer,
     val status: String,//StatusPackage = StatusPackage.PENDING,
-    val deliveryMethod: String,
     val note: String? = null,
     val sender: User,
 )

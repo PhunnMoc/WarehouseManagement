@@ -120,6 +120,10 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getPendingImportPackageById(id = id).body()?.convertToModel()!!
     }
 
+    override suspend fun getDoneImportPackageById(id: String): ImportPackages {
+        return retrofit.getDoneImportPackageById(id = id).body()?.convertToModel()!!
+    }
+
     override suspend fun getImportPackageById(id: String): ImportPackages {
         return retrofit.getImportPackageById(id = id).body()?.convertToModel()!!
     }
@@ -136,9 +140,19 @@ class WareHouseRepositoryImpl @Inject constructor(
         id: String,
         storageLocationIds: Map<String, String>
     ) {
-        retrofit.updateProductsInImportPackage(
+        retrofit.updateProductsLocationInImportPackage(
             id = id,
             storageLocationIds = storageLocationIds
+        )
+    }
+
+    override suspend fun updatePendingImportPackage(
+        id: String,
+        updatedImportPackage: ImportPackages,
+    ) {
+        retrofit.updatePendingImportPackage(
+            id = id,
+            updatedImportPackage = updatedImportPackage,
         )
     }
 
@@ -160,8 +174,8 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getExportPackageById(id = id).body()?.convertToModel()!!
     }
 
-    override suspend fun approveExportPackage(id: String){
-        return retrofit.approveExportPackage(id)
+    override suspend fun approveExportPackage(id: String, status: String) {
+        return retrofit.approveExportPackage(id, status)
     }
 
     override suspend fun getDoneExportPackages(): List<ExportPackages> {
@@ -187,6 +201,11 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun getUserDetails(id: String): User {
         return retrofit.getUserDetails(id = id).body()?.convertToModel()!!
+    }
+
+    override suspend fun updateUserDetail(id: String, user: User) {
+        return retrofit.updateUser(id = id,
+            updated = user)
     }
 
     override suspend fun getAllUserDetails(): List<User> {

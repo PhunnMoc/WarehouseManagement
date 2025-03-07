@@ -59,6 +59,7 @@ fun TabBarCreateFormImport(
         when (selectedTabIndex) {
             0 -> {
                 PendingImportPackage(
+                    onNavigationEditImportPackages = {},
                     onNavigationDetailImportPackages = onClickDetail,
                 )
             }

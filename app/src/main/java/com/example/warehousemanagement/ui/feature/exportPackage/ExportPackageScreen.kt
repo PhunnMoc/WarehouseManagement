@@ -74,6 +74,7 @@ import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.ExportPackageViewMode
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchCustomerUiState
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -199,7 +200,7 @@ fun ExportPackageScreen(
 //                        onClickSearch()
 //                    }
 //                )
-                FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
+ //               FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
             TabBarExport(onNavigationDetailExportPackage = onNavigationDetailExportPackage)
         }
@@ -234,14 +235,21 @@ fun TabBarExport(onNavigationDetailExportPackage: (String) -> Unit) {
             selectedTabIndex = selectedTabIndex,
             modifier = Modifier.fillMaxWidth(),
             backgroundColor = Color.White,
-            contentColor = colorResource(id = R.color.background_theme)
+            contentColor = colorResource(id = R.color.text_color_black),
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(selected = selectedTabIndex == index,
                     onClick = { selectedTabIndex = index },
-                    text = { Text(text = title) })
+                    text = {
+                        Text(
+                            text = title,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = QuickSand
+                        )
+                    })
             }
         }
+
 
         when (selectedTabIndex) {
             0 -> {

@@ -39,6 +39,7 @@ fun DoneImportPackage(
                         importPackage = importPackage,
                         onCardClick = {},
                         onLongPress = onNavigationDetailImportPackages,
+                        onEditPendingPackage = {},
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

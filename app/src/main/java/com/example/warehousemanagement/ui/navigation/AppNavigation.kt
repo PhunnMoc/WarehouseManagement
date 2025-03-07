@@ -51,8 +51,10 @@ import com.example.warehousemanagement.ui.feature.genre.FormAddOrEditGenreForm
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
 import com.example.warehousemanagement.ui.feature.home.WorkerScreen
-import com.example.warehousemanagement.ui.feature.importPackage.DetailImportPackage
+import com.example.warehousemanagement.ui.feature.importPackage.DetailDoneImportPackage
+import com.example.warehousemanagement.ui.feature.importPackage.DetailPendingImportPackage
 import com.example.warehousemanagement.ui.feature.importPackage.FormAddOrEditProductForm
+import com.example.warehousemanagement.ui.feature.importPackage.FormEditImportProduct
 import com.example.warehousemanagement.ui.feature.importPackage.ImportPackageScreen
 import com.example.warehousemanagement.ui.feature.importPackage.SetStorageLocationPendingProduct
 import com.example.warehousemanagement.ui.feature.login.LoginScreen
@@ -294,7 +296,13 @@ fun AppNavigation(
                 }
 
                 composable<Routes.AddImportPackages> {
-                    FormAddOrEditProductForm(onSubmit = {},
+                    FormAddOrEditProductForm(
+                        onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) },
+                        onBackClick = { navigationController.navigate(Routes.ImportPackage) })
+                    isShowNavigation = false
+                }
+                composable<Routes.EditImportPackages> {
+                    FormEditImportProduct(
                         onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) },
                         onBackClick = { navigationController.navigate(Routes.ImportPackage) })
                     isShowNavigation = false
@@ -401,27 +409,40 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.ImportPackage> {
-                    ImportPackageScreen(onClickAddProduct = { packageName, note ->
-                        navigationController.navigate(
-                            Routes.AddImportPackages(
-                                packageName = packageName,
-                                note = note,
-                            )
-                        )
-                    },
+                    ImportPackageScreen(
+                        onClickAddProduct = { navigationController.navigate(Routes.AddImportPackages) },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onBackClick = { navigationController.navigate(startDestination) },
                         onClickSearch = { /*TODO*/ },
-                        onNavigationDetailImportPackage = { id ->
+                        onNavigationDetailPendingImportPackage = { id ->
                             navigationController.navigate(
-                                Routes.DetailImportPackage(id = id)
+                                Routes.DetailPendingImportPackage(id = id)
                             )
-                        })
+                        },
+                        onNavigationDetailDoneImportPackage = { id ->
+                            navigationController.navigate(
+                                Routes.DetailDoneImportPackage(id = id)
+                            )
+                        },
+                        onNavigationEditImportPackages = {
+                            navigationController.navigate(
+                                Routes.EditImportPackages(id = it)
+                            )
+                        }
+                    )
                     isShowNavigation = false
                 }
 
-                composable<Routes.DetailImportPackage> {
-                    DetailImportPackage(onBack = { navigationController.popBackStack() },
+                composable<Routes.DetailPendingImportPackage> {
+                    DetailPendingImportPackage(onBack = { navigationController.popBackStack() },
+                        navigateToSetStorageLocationScreen = { id ->
+                            navigationController.navigate(
+                                Routes.SetStorageImportPackage(id = id)
+                            )
+                        })
+                }
+                composable<Routes.DetailDoneImportPackage> {
+                    DetailDoneImportPackage(onBack = { navigationController.popBackStack() },
                         navigateToSetStorageLocationScreen = { id ->
                             navigationController.navigate(
                                 Routes.SetStorageImportPackage(id = id)
@@ -446,13 +467,14 @@ fun AppNavigation(
                 }
 
                 composable<Routes.ExportPackage> {
-                    ExportPackageScreen(onClickAddExportForm = { packageName, note, customerId ->
-                        navigationController.navigate(
-                            Routes.AddExportPackages(
-                                note = note, packageName = packageName, customerId = customerId,
+                    ExportPackageScreen(
+                        onClickAddExportForm = { packageName, note, customerId ->
+                            navigationController.navigate(
+                                Routes.AddExportPackages(
+                                    note = note, packageName = packageName, customerId = customerId,
+                                )
                             )
-                        )
-                    },
+                        },
                         onNavigationDetailExportPackage = { id ->
                             navigationController.navigate(
                                 Routes.DetailExportPackage(id = id)
@@ -460,7 +482,8 @@ fun AppNavigation(
                         },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onBackClick = { navigationController.navigate(startDestination) },
-                        onClickSearch = { /*TODO*/ },)
+                        onClickSearch = { /*TODO*/ },
+                    )
                     isShowNavigation = false
                 }
 
