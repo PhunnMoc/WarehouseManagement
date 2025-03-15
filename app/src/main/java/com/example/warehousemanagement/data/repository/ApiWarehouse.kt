@@ -129,10 +129,9 @@ interface ApiWarehouse {
     suspend fun getExportPackageById(
         @Path("id") id: String
     ): Response<ExportPackageResponse>
-    @PUT("export-packages/approve/{id}")
+    @PUT("export-packages/approve/{packageId}")
     suspend fun approveExportPackage(
-        @Path("id") id: String,
-        @Query("status") status: String,
+        @Path("packageId") packageId: String,
     )
 
     @GET("/import-packages/done")

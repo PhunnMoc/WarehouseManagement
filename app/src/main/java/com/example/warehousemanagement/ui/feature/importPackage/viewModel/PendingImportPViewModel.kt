@@ -15,27 +15,27 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-@HiltViewModel
-class PendingImportPViewModel @Inject constructor(
-    private val wareHouseRepository: WareHouseRepository,
-    private val savedStateHandle: SavedStateHandle,
-) : ViewModel() {
-    val importPackageUiState: StateFlow<ImportPackageUiState> = getAllImportPackage().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = ImportPackageUiState.Loading
-    )
-
-    private fun getAllImportPackage(): Flow<ImportPackageUiState> =
-        flow { emit(wareHouseRepository.getPendingImportPackages()) }.asResult()
-            .map { importPackages ->
-                when (importPackages) {
-                    is Result.Success -> {
-                        ImportPackageUiState.Success(importPackages = importPackages.data.reversed())
-                    }
-
-                    is Result.Error -> ImportPackageUiState.Error
-                    is Result.Loading -> ImportPackageUiState.Loading
-                }
-            }
-}
+//@HiltViewModel
+//class PendingImportPViewModel @Inject constructor(
+//    private val wareHouseRepository: WareHouseRepository,
+//    private val savedStateHandle: SavedStateHandle,
+//) : ViewModel() {
+//    val importPackageUiState: StateFlow<ImportPackageUiState> = getAllImportPackage().stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.WhileSubscribed(5_000),
+//        initialValue = ImportPackageUiState.Loading
+//    )
+//
+//    private fun getAllImportPackage(): Flow<ImportPackageUiState> =
+//        flow { emit(wareHouseRepository.getPendingImportPackages()) }.asResult()
+//            .map { importPackages ->
+//                when (importPackages) {
+//                    is Result.Success -> {
+//                        ImportPackageUiState.Success(importPackages = importPackages.data.reversed())
+//                    }
+//
+//                    is Result.Error -> ImportPackageUiState.Error
+//                    is Result.Loading -> ImportPackageUiState.Loading
+//                }
+//            }
+//}

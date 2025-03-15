@@ -83,6 +83,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun FormAddExportedProduct(
     onNavigationBack: () -> Unit,
+    onNavigationHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FormAddExportedProductViewModel = hiltViewModel()
 ) {
@@ -136,7 +137,7 @@ fun FormAddExportedProduct(
                                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                             customerId = customer?.idCustomer ?: "hehe"
                         )
-                        onNavigationBack()
+                        onNavigationHome()
                     })
             }
         }

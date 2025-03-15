@@ -6,5 +6,6 @@ data class ExportPackagePendingDto(
     val idSender: String,
     val listProducts: List<ExportProductDto>,
     val note: String,
-    val packageName: String
+    val packageName: String,
+    val exportDate: String,
 )

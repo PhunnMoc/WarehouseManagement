@@ -57,12 +57,11 @@ class DetailExportViewModel @Inject constructor(
                 }
             }
 
-    fun updateExportPackage(status: String) {
+    fun updateExportPackage() {
         val id = savedStateHandle.get<String>(KEY_ID)
         viewModelScope.launch {
             wareHouseRepository.approveExportPackage(
                 id = id ?: "",
-                status = status,
             )
         }
     }

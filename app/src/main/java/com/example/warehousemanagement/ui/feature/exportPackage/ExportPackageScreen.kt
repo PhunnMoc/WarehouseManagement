@@ -71,6 +71,7 @@ import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.ExportPackageUiState
 import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.ExportPackageViewMode
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchCustomerUiState
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -93,6 +94,10 @@ fun ExportPackageScreen(
     var isFilter by remember {
         mutableStateOf(false)
     }
+
+    val exportPackagePendingUiState by viewModel.exportPackagePendingUiState.collectAsStateWithLifecycle()
+    val exportPackageDoneUiState by viewModel.exportPackageDoneUiState.collectAsStateWithLifecycle()
+
     val customerUiState by viewModel.customerUiState.collectAsStateWithLifecycle()
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -200,9 +205,13 @@ fun ExportPackageScreen(
 //                        onClickSearch()
 //                    }
 //                )
- //               FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
+                //               FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
-            TabBarExport(onNavigationDetailExportPackage = onNavigationDetailExportPackage)
+            TabBarExport(
+                exportPackagePendingUiState = exportPackagePendingUiState,
+                exportPackageDoneUiState = exportPackageDoneUiState,
+                onNavigationDetailExportPackage = onNavigationDetailExportPackage
+            )
         }
         if (isShowDialog) {
             DialogAddExportPackage(title = stringResource(id = R.string.create_new_ip),
@@ -223,14 +232,22 @@ fun ExportPackageScreen(
 }
 
 @Composable
-fun TabBarExport(onNavigationDetailExportPackage: (String) -> Unit) {
+fun TabBarExport(
+    onNavigationDetailExportPackage: (String) -> Unit,
+    exportPackagePendingUiState: ExportPackageUiState,
+    exportPackageDoneUiState: ExportPackageUiState,
+) {
     val tabs = listOf(
         stringResource(id = R.string.pending_import_title),
         stringResource(id = R.string.done_import_title)
     ) // Danh sách các tab
     var selectedTabIndex by remember { mutableStateOf(0) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.line_light_gray))
+    ) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
             modifier = Modifier.fillMaxWidth(),
@@ -254,12 +271,14 @@ fun TabBarExport(onNavigationDetailExportPackage: (String) -> Unit) {
         when (selectedTabIndex) {
             0 -> {
                 PendingExportPackage(
+                    exportPackagePendingUiState = exportPackagePendingUiState,
                     onNavigationDetailExportPackages = onNavigationDetailExportPackage,
                 )
             }
 
             1 -> {
                 DoneExportPackage(
+                    exportPackageDoneUiState = exportPackageDoneUiState,
                     onNavigationDetailExportPackages = onNavigationDetailExportPackage,
                 )
             }

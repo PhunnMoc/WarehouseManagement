@@ -62,7 +62,7 @@ interface WareHouseRepository {
     suspend fun getDoneImportPackages(): List<ImportPackages>
 
     suspend fun getExportPackageById(id: String): ExportPackages
-    suspend fun approveExportPackage(id: String, status: String)
+    suspend fun approveExportPackage(id: String)
     suspend fun getDoneExportPackages(): List<ExportPackages>
     suspend fun createImportPackage(importPackage: ImportPackages)//: ImportPackages
 

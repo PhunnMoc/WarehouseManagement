@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -79,7 +78,6 @@ import com.example.warehousemanagement.ui.theme.QuickSand
 @Composable
 fun DetailExportPackage(
     viewModel: DetailExportViewModel = hiltViewModel(),
-    navigateToSetStorageLocationScreen: (String) -> Unit,
     onBack: () -> Unit,
 ) {
     CompositionLocalProvider(LocalTextStyle provides TextStyle(fontFamily = QuickSand)) {
@@ -92,7 +90,6 @@ fun DetailExportPackage(
                 ExportPackage(
                     user = currentUser,
                     exportPackage = detail.detailExportPackage,
-                    navigateToSetStorageLocationScreen = navigateToSetStorageLocationScreen,
                     onBack = onBack,
                     onEditClick = { productId ->
                         //    editingProduct = importPackage.listProducts.find { it.id == productId }
@@ -109,10 +106,9 @@ fun DetailExportPackage(
 fun ExportPackage(
     user: User,
     exportPackage: ExportPackages,
-    navigateToSetStorageLocationScreen: (String) -> Unit,
     onEditClick: (String) -> Unit,
     onBack: () -> Unit,
-    onUpdateExportPackage: (String) -> Unit,
+    onUpdateExportPackage: () -> Unit,
     modifier: Modifier = Modifier,
     isPending: Boolean = true,
 ) {
@@ -162,8 +158,7 @@ fun ExportPackage(
                     Spacer(modifier = Modifier.width(5.dp))
                     BigButton(
                         onClick = {
-                            onUpdateExportPackage("approved")
-                            navigateToSetStorageLocationScreen(exportPackage.idExportPackages)
+                            onUpdateExportPackage()
                         },
                         enabled = true,
                         modifier = Modifier
@@ -275,8 +270,8 @@ fun ExportPackage(
                                 text = "Check carefully the purchase price, selling price, and quantity of products before moving on to the next step because these products will be saved in the database.",
                                 fontSize = 10.sp,
                             )
-                            exportPackage.listProduct.forEach { product ->
-                                ExportProductItemDetail(exportProduct = product)
+                            exportPackage.listProduct.forEach { productWithQuantity ->
+                                ExportProductItemDetail(exportProduct = productWithQuantity)
                             }
 
                         }
@@ -291,7 +286,7 @@ fun ExportPackage(
 @Composable
 fun ExportProductItemDetail(
     modifier: Modifier = Modifier,
-    exportProduct: Product,
+    exportProduct: Map.Entry<Product, Int>,
 ) {
     var isCompactView by remember { mutableStateOf(false) }
     Row {
@@ -315,13 +310,13 @@ fun ExportProductItemDetail(
             // Animation cho nội dung hiển thị
             Column {
                 AnimatedVisibility(visible = !isCompactView) {
-                    ExpandedExportView(product = exportProduct)
+                    ExpandedExportView(productWithQuantity = exportProduct)
                 }
                 if (isCompactView) {
                     Text(
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
-                        text = exportProduct.productName,
+                        text = exportProduct.key.productName,
                         modifier = Modifier.padding(vertical = 5.dp)
                     )
                 }
@@ -332,11 +327,11 @@ fun ExportProductItemDetail(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ExpandedExportView(product: Product) {
+fun ExpandedExportView(productWithQuantity: Map.Entry<Product, Int>) {
     Column {
         Row(verticalAlignment = Alignment.Top) {
             Image(
-                painter = rememberAsyncImagePainter(model = product.image),
+                painter = rememberAsyncImagePainter(model = productWithQuantity.key.image),
                 contentDescription = "Product Image",
                 modifier = Modifier
                     .size(100.dp)
@@ -347,7 +342,7 @@ fun ExpandedExportView(product: Product) {
             )
             Column(modifier = Modifier.weight(1f, false)) {
                 Text(
-                    text = "${product.genre?.genreName}",
+                    text = "${productWithQuantity.key.genre?.genreName}",
                     fontWeight = FontWeight.W600,
                     fontSize = 10.sp,
                     color = colorResource(id = R.color.background_theme),
@@ -355,21 +350,21 @@ fun ExpandedExportView(product: Product) {
                 Text(
                     fontWeight = FontWeight.W600,
                     fontSize = 15.sp,
-                    text = product.productName,
+                    text = productWithQuantity.key.productName,
                     modifier = Modifier.padding(vertical = 5.dp)
                 )
                 Text(
-                    text = "${product.description}",
+                    text = productWithQuantity.key.description,
                 )
                 Text(
                     fontSize = 10.sp,
                     color = colorResource(id = R.color.text_color_light_gray),
-                    text = "Supplier: ${product.supplier?.name}",
+                    text = "Supplier: ${productWithQuantity.key.supplier?.name}",
                 )
                 Text(
                     fontSize = 10.sp,
                     color = colorResource(id = R.color.text_color_light_gray),
-                    text = "Contact: ${product.supplier?.email}"
+                    text = "Contact: ${productWithQuantity.key.supplier?.email}"
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -389,7 +384,7 @@ fun ExpandedExportView(product: Product) {
                     )
                     .padding(Dimens.PADDING_10_DP), verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Selling Price: \$${product.sellingPrice}")
+                Text(text = "Selling Price: \$${productWithQuantity.key.sellingPrice}")
 
             }
             Row(
@@ -405,7 +400,7 @@ fun ExpandedExportView(product: Product) {
                     .padding(Dimens.PADDING_10_DP), verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Export Quantity: ${product.quantity}",
+                    text = "Export Quantity: ${productWithQuantity.value}",
                 )
             }
         }

@@ -10,6 +10,7 @@ import com.example.warehousemanagement.data.network.dto.ReceiverResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
+import com.example.warehousemanagement.data.network.dto.convertToResponse
 import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
@@ -222,10 +223,10 @@ fun ExportPackageResponse.convertToModel(): ExportPackages? {
     return ExportPackages(
         idExportPackages = id,
         packageName = packageName ?: "Package Name",
-        listProduct = listProducts.mapNotNull { it.convertToModel() },
+        listProduct = listProducts.convertToResponse(),
         exportDate = exportDate,
         customer = customer?.convertToModel()!!,
-        status = statusDone ?:"PENDING",
+        status = statusDone ?: "PENDING",
         note = note,
         sender = sender.convertToModel()!!,
     )

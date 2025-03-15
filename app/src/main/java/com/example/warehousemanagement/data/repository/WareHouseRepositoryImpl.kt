@@ -174,8 +174,8 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getExportPackageById(id = id).body()?.convertToModel()!!
     }
 
-    override suspend fun approveExportPackage(id: String, status: String) {
-        return retrofit.approveExportPackage(id, status)
+    override suspend fun approveExportPackage(id: String) {
+        return retrofit.approveExportPackage(id)
     }
 
     override suspend fun getDoneExportPackages(): List<ExportPackages> {

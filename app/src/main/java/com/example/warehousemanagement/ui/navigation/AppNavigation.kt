@@ -310,7 +310,7 @@ fun AppNavigation(
 
                 composable<Routes.AddExportPackages> {
                     FormAddExportedProduct(
-                        // onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) },
+                        onNavigationHome = { navigationController.navigate(Routes.HomeAdmin) },
                         onNavigationBack = { navigationController.navigate(Routes.ExportPackage) })
                     isShowNavigation = false
                 }
@@ -452,11 +452,7 @@ fun AppNavigation(
                 composable<Routes.DetailExportPackage> {
                     DetailExportPackage(
                         onBack = { navigationController.popBackStack() },
-                        navigateToSetStorageLocationScreen = { id ->
-                            navigationController.navigate(
-                                Routes.SetStorageImportPackage(id = id)
-                            )
-                        })
+                    )
                 }
                 composable<Routes.SetStorageImportPackage> {
                     SetStorageLocationPendingProduct(navigateToImportPackageScreen = {

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -47,7 +48,7 @@ class ExportPackageViewMode @Inject constructor(
                         customer.data
                     }
 
-                    is Result.Loading ->  null
+                    is Result.Loading -> null
                     is Result.Error -> null
                 }
             }
@@ -62,4 +63,44 @@ class ExportPackageViewMode @Inject constructor(
             savedStateHandle[SEARCH_CUSTOMER_ID] = query
         }
     }
+
+    val exportPackagePendingUiState: StateFlow<ExportPackageUiState> =
+        getAllExportPendingPackage().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ExportPackageUiState.Loading
+        )
+
+    private fun getAllExportPendingPackage(): Flow<ExportPackageUiState> =
+        flow { emit(wareHouseRepository.getPendingExportPackages()) }.asResult()
+            .map { exportPackages ->
+                when (exportPackages) {
+                    is Result.Success -> {
+                        ExportPackageUiState.Success(exportPackages = exportPackages.data)
+                    }
+
+                    is Result.Error -> ExportPackageUiState.Error
+                    is Result.Loading -> ExportPackageUiState.Loading
+                }
+            }
+
+    val exportPackageDoneUiState: StateFlow<ExportPackageUiState> =
+        getAllExportDonePackage().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ExportPackageUiState.Loading
+        )
+
+    private fun getAllExportDonePackage(): Flow<ExportPackageUiState> =
+        flow { emit(wareHouseRepository.getDoneExportPackages()) }.asResult()
+            .map { exportPackages ->
+                when (exportPackages) {
+                    is Result.Success -> {
+                        ExportPackageUiState.Success(exportPackages = exportPackages.data)
+                    }
+
+                    is Result.Error -> ExportPackageUiState.Error
+                    is Result.Loading -> ExportPackageUiState.Loading
+                }
+            }
 }

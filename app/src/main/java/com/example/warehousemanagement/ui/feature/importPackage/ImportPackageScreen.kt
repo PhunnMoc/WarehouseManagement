@@ -45,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.DialogWithInput
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.feature.importPackage.viewModel.ImportPackageUiState
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.ImportPackageViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
@@ -69,6 +70,8 @@ fun ImportPackageScreen(
     }
 
     val roleUiState by importPackageViewModel.roleUiState.collectAsStateWithLifecycle()
+    val importPackagePendingUiState by importPackageViewModel.importPackagePendingUiState.collectAsStateWithLifecycle()
+    val importPackageDoneDoneUiState by importPackageViewModel.importPackageDoneDoneUiState.collectAsStateWithLifecycle()
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = colorResource(id = R.color.line_light_gray),
@@ -183,6 +186,8 @@ fun ImportPackageScreen(
                 //     FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
             TabBarImport(
+                importPackagePendingUiState = importPackagePendingUiState,
+                importPackageDoneDoneUiState = importPackageDoneDoneUiState,
                 onNavigationEditImportPackages = onNavigationEditImportPackages,
                 onClickDetailPending = onNavigationDetailPendingImportPackage,
                 onClickDetailDone = onNavigationDetailDoneImportPackage,
@@ -194,6 +199,8 @@ fun ImportPackageScreen(
 
 @Composable
 fun TabBarImport(
+    importPackageDoneDoneUiState: ImportPackageUiState,
+    importPackagePendingUiState: ImportPackageUiState,
     onClickDetailPending: (String) -> Unit,
     onClickDetailDone: (String) -> Unit,
     onNavigationEditImportPackages: (String) -> Unit,
@@ -204,7 +211,11 @@ fun TabBarImport(
     ) // Danh sách các tab
     var selectedTabIndex by remember { mutableStateOf(0) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorResource(id = R.color.line_light_gray))
+    ) {
         // TabRow để hiển thị các tab
         TabRow(
             selectedTabIndex = selectedTabIndex,
@@ -225,10 +236,10 @@ fun TabBarImport(
             }
         }
 
-        // Hiển thị nội dung của tab tương ứng
         when (selectedTabIndex) {
             0 -> {
                 PendingImportPackage(
+                    importPackagePendingUiState = importPackagePendingUiState,
                     onNavigationEditImportPackages = onNavigationEditImportPackages,
                     onNavigationDetailImportPackages = onClickDetailPending,
                 )
@@ -236,6 +247,7 @@ fun TabBarImport(
 
             1 -> {
                 DoneImportPackage(
+                    importPackageDoneDoneUiState = importPackageDoneDoneUiState,
                     onNavigationDetailImportPackages = onClickDetailDone,
                 )
             }

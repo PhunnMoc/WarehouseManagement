@@ -3,6 +3,7 @@ package com.example.warehousemanagement.ui.common
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -70,16 +71,11 @@ fun ExportPackageCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        color = if (exportPackage.status=="APPROVED") colorResource(id = R.color.background_done) else colorResource(
-                            id = R.color.background_pending
-
-
-
-
-
-                        )
-                    )
+//                    .background(
+//                        color = if (exportPackage.status=="APPROVED") colorResource(id = R.color.background_done) else colorResource(
+//                            id = R.color.background_pending
+//                        )
+//                    )
                     .padding(Dimens.PADDING_10_DP),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -89,18 +85,25 @@ fun ExportPackageCard(
                     text = "Package ID: ${exportPackage.idExportPackages}",
                     fontWeight = FontWeight.Bold
                 )
+                Image(
+                    modifier = Modifier
+                        .size(20.dp)
+                        .clickable {
+                            // onEditPendingPackage(importPackage.idImportPackages)
+                        },
+                    painter = painterResource(id = R.drawable.icons8_edit),
+                    contentDescription = "Delete"
+                )
             }
             Divider()
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.package_ic),
-                    contentDescription = "Product Image",
-                    contentScale = ContentScale.Crop,
+                QRCodeScreen(
                     modifier = Modifier
                         .padding(Dimens.PADDING_10_DP)
-                        .size(64.dp)
+                        .size(64.dp),
+                    id = exportPackage.idExportPackages,
                 )
                 Column(
                     modifier = Modifier.padding(Dimens.PADDING_10_DP)
@@ -113,17 +116,18 @@ fun ExportPackageCard(
                         color = colorResource(id = R.color.text_color_light_black)
                     )
                     Text(
-                        fontFamily = QuickSand,
                         text = "Status: ${exportPackage.status}",
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
-//                        color = if (exportPackage.status) colorResource(id = R.color.background_done) else colorResource(
-//                            id = R.color.background_pending
-//                        )
+                        color = if (exportPackage.status == "APPROVED" || exportPackage.status == "DECLINE") colorResource(
+                            id = R.color.background_done
+                        ) else colorResource(
+                            id = R.color.background_pending
+                        ),
+                        fontFamily = QuickSand,
                     )
                 }
             }
-
 
             if (isExpanded) {
                 Column(

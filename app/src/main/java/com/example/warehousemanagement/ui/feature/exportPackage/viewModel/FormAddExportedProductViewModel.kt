@@ -57,6 +57,7 @@ class FormAddExportedProductViewModel @Inject constructor(
                             listProducts = listExportProducts,
                             note = note,
                             packageName = packageName,
+                            exportDate = date,
                         )
                     )
                 }

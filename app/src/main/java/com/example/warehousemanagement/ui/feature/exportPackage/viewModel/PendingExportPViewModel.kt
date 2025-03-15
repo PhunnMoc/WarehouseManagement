@@ -21,7 +21,7 @@ class PendingExportPViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    val exportPackageUiState: StateFlow<ExportPackageUiState> = getAllExportPackage().stateIn(
+     val exportPackageUiState: StateFlow<ExportPackageUiState> = getAllExportPackage().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ExportPackageUiState.Loading
