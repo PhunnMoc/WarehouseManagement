@@ -53,6 +53,6 @@ fun TextField(labelName: String) {
 @Composable
 fun TextFieldPreview() {
     WarehouseManagementTheme {
-        TextField("Product name")
+        TextField("Product customerName")
     }
 }

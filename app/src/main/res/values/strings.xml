@@ -2,7 +2,7 @@
 <resources>
     <!-- Main Title-->
     <string name="screen_home_admin_main_title">ADMIN</string>
-    <string name="screen_home_employee_main_title">EMPLOYEE</string>
+    <string name="screen_home_employee_main_title">WORKER</string>
     <string name="screen_notification_main_title">NOTIFICATION</string>
     <string name="screen_product_main_title">PRODUCT</string>
     <string name="screen_report_main_title">REPORT</string>
@@ -13,6 +13,23 @@
     <string name="screen_customer_main_title">CUSTOMER</string>
     <string name="screen_setting_main_title">SETTING</string>
     <string name="screen_genre_main_title">GENRE</string>
+    <string name="screen_search_main_title">SEARCH</string>
+    <string name="filter_tile_genre">Genre</string>
+    <string name="filter_tile_rating">Rating</string>
+    <string name="filter_tile_customer">Customer</string>
+    <string name="filter_tile_supplier">Supplier</string>
+    <string name="filter_tile_sort">Sort</string>
+    <string name="filter_tile">Field</string>
+    <string name="filter_tile_sellingPrice">Selling Price</string>
+    <string name="filter_tile_storage_location">Filter by Storage location</string>
+    <string name="filter_field_product_name">Product Name</string>
+    <string name="filter_field_quantity">Quantity</string>
+    <string name="filter_field_import_price">Import Price</string>
+    <string name="filter_field_selling_price">Selling Price</string>
+    <string name="filter_field_name_supplier">Supplier Name</string>
+    <string name="filter_field_name_customer">Customer Name</string>
+    <string name="filter_field_email">Email</string>
+    <string name="filter_field_ratings">Rating</string>
     <!--________________________________________________-->
 
     <!-- Subtitle -->
@@ -35,5 +52,29 @@
     <string name="func_add_items_by_excel">All items by excel</string>
     <string name="place_holder_search_bar_product">Search by name or id</string>
     <string name="app_name">Warehouse Management</string>
+    <string name="filter_title">Filter</string>
+    <string name="product_name_string">Product name</string>
+    <string name="product_id">Product ID</string>
+    <string name="customer_id">Customer ID</string>
+    <string name="supplier_name_string">Supplier name</string>
+    <string name="customer_name_string">Customer name</string>
+    <string name="email_string">Email</string>
+    <string name="min_price">Min price</string>
+    <string name="max_price">Max price</string>
+    <string name="quantity_title">Quantity</string>
+    <string name="import_price_title">Import Price</string>
+    <string name="selling_price_title">Selling Price</string>
+    <string name="street_string">Street</string>
+    <string name="district_string">District</string>
+    <string name="city_string">City</string>
+    <string name="phone_string">Phone</string>
+    <string name="supplier_ratings_string">Ratings</string>
+    <string name="postal_code_string">Postal Code</string>
+    <string name="pending_import_title">Pending IP</string>
+    <string name="done_import_title">Done IP</string>
+    <string name="create_new_ip">Create new Import Package</string>
+    <string name="package_name_title">Name of package</string>
+    <string name="see_more">See more</string>
+    <string name="see_less">See less</string>
     <!--________________________________________________-->
 </resources>

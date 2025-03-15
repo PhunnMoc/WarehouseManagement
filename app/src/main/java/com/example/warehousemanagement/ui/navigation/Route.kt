@@ -1,14 +1,14 @@
 package com.example.warehousemanagement.ui.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.example.warehousemanagement.R
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Routes {
+    @Serializable
+    object Login : Routes()
+
+
     @Serializable
     object HomeAdmin : Routes()
 
@@ -22,13 +22,114 @@ sealed class Routes {
     object Setting : Routes()
 
     @Serializable
+    object Notification : Routes()
+
+    @Serializable
+    object QRCodeScanner : Routes()
+
+    /////
+
+    @Serializable
     object StorageLocation : Routes()
 
+    @Serializable
+    data class StorageLocationDetail(val idStorageLocation: String) : Routes()
+
+    //Product
     @Serializable
     object Products : Routes()
 
     @Serializable
-    data class Product(val idProduct: String) : Routes()
+    data class Product(val id: String) : Routes()
+
+    @Serializable
+    object AddImportPackages : Routes()
+    @Serializable
+    data class EditImportPackages(
+        val id  :String,
+    ) : Routes()
+
+    @Serializable
+    data class AddExportPackages(
+        val packageName: String,
+        val note: String,
+        val customerId: String
+    ) : Routes()
+
+    @Serializable
+    object AddProductByExcel : Routes()
+
+    @Serializable
+    object SearchProduct : Routes()
+
+
+    @Serializable
+    object SearchStorageLocation : Routes()
+
+    ///
+    @Serializable
+    object Genres : Routes()
+
+    @Serializable
+    data class Genre(val idGenre: String) : Routes()
+
+    @Serializable
+    object AddGenres : Routes()
+
+    @Serializable
+    object SearchGenre : Routes()
+
+    ///
+    @Serializable
+    object ImportPackage : Routes()
+
+    @Serializable
+    data class DetailPendingImportPackage(val id: String) : Routes()
+
+    @Serializable
+    data class DetailDoneImportPackage(val id: String) : Routes()
+
+    @Serializable
+    data class DetailExportPackage(val id: String) : Routes()
+
+    @Serializable
+    data class SetStorageImportPackage(val id: String) : Routes()
+
+    @Serializable
+    object ExportPackage : Routes()
+
+    ///
+    @Serializable
+    object Suppliers : Routes()
+
+    @Serializable
+    data class Supplier(val idSupplier: String) : Routes()
+
+    @Serializable
+    object SearchSupplier : Routes()
+
+    @Serializable
+    object AddSuppliers : Routes()
+
+    @Serializable
+    object Customers : Routes()
+
+    @Serializable
+    data class Customer(val id: String) : Routes()
+
+    @Serializable
+    object SearchCustomer : Routes()
+
+
+    @Serializable
+    object AddCustomers : Routes()
+
+    @Serializable
+    object ManagerUsers : Routes()
+
+    @Serializable
+    data class UserDetail(val id: String) : Routes()
+
 }
 
 enum class TopLevelDestinations(
@@ -40,6 +141,11 @@ enum class TopLevelDestinations(
         label = "Home",
         icon = R.drawable.icons8_home__1_,
         route = Routes.HomeAdmin,
+    ),
+    HomeWorker(
+        label = "Home",
+        icon = R.drawable.icons8_home__1_,
+        route = Routes.HomeWorker,
     ),
     Analyze(
         label = "Analyze",

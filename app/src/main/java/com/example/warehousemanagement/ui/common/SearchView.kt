@@ -94,7 +94,7 @@ fun CustomSearchBar(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip( shape = RoundedCornerShape(size = 30.dp))
+                        .clip(shape = RoundedCornerShape(size = 30.dp))
                         .border(
                             width = 1.dp,
                             color = colorResource(id = R.color.line_light_gray),
@@ -235,7 +235,10 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
 
 @Preview(showBackground = true)
 @Composable
-fun SearchBarPreview() {
+fun SearchBarPreview(
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier,
+) {
     var text by remember {
         mutableStateOf("")
     }
@@ -247,12 +250,14 @@ fun SearchBarPreview() {
         }
     }
     CustomSearchBar(
+        modifier = modifier,
         query = text,
         onQueryChange = {
             text = it
         },
+        enabled = enabled,
         onSearch = {},
-        active = true,
+        active = enabled,
         onActiveChange = {},
         placeHolder = "Search for me",
         trailingIcon = {

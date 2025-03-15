@@ -45,28 +45,25 @@ fun ItemFunction(
 ) {
     Column(
         modifier = modifier
-            .clickable(onClick = onClick)
             .padding(10.dp)
             .shadow(
-                elevation = 20.dp,
-                spotColor = colorResource(id = R.color.background_gray),
+                elevation = 5.dp,
+                spotColor = colorResource(id = R.color.text_color_light_black),
                 shape = RoundedCornerShape(10.dp)
             )
-            .background(color = color),
+            .background(color = color)
+            .clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
             modifier = Modifier
                 .size(70.dp)
                 .padding(5.dp)
-                .background(
-                    shape = RoundedCornerShape(10.dp),
-                    color = colorResource(id = R.color.background_light_theme)
-                )
                 .wrapContentSize(),
         ) {
             Image(
-                modifier = modifier.padding(Dimens.PADDING_10_DP),
+                modifier = modifier.padding(Dimens.PADDING_10_DP)
+                    .size(50.dp),
                 painter = painterResource(id = iconResource), // Use the passed resource id
                 contentDescription = contentDescription ?: functionName
             )

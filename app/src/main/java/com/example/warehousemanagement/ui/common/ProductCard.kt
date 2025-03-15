@@ -4,16 +4,13 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.TextButton
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.warehousemanagement.domain.model.Product
-import com.example.warehousemanagement.test.product1
 import com.example.warehousemanagement.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,12 +33,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
+import coil.compose.rememberAsyncImagePainter
 import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun ProductCard(
-    modifier: Modifier = Modifier, product: Product, // Add this parameter
-    qrCodeIconRes: Int, onCardClick: () -> Unit// Image resource id for the QR code icon
+    modifier: Modifier = Modifier,
+    product: Product, // Add this parameter
+    onCardClick: () -> Unit,// Image resource id for the QR code icon
+    onLongPress: (String) -> Unit,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
@@ -61,8 +60,7 @@ fun ProductCard(
                     isExpanded = !isExpanded
                     onCardClick()
                 }, onLongPress = {
-                    // Xử lý sự kiện nhấn giữ
-                    showDialog = true
+                    onLongPress(product.idProduct)
                 })
             },
 
@@ -84,11 +82,7 @@ fun ProductCard(
                 Text(
                     text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold
                 )
-                Image(
-                    painter = painterResource(id = qrCodeIconRes),
-                    contentDescription = "QR Code Icon",
-                    modifier = Modifier.size(30.dp)
-                )
+                QRCodeScreen(id = product.idProduct)
 
             }
             Divider()
@@ -96,14 +90,25 @@ fun ProductCard(
                 modifier = Modifier.padding(Dimens.PADDING_5_DP),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_importpackage),
-                    contentDescription = "Product Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                )
+                if (product.image.isNotBlank()) {
+                    Image(
+                        painter = rememberAsyncImagePainter(model = product.image),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .width(64.dp)
+                            .height(64.dp)
+                            .padding(top = 8.dp)
+                    )
+                } else {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_importpackage),
+                        contentDescription = "Product Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                    )
+                }
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -130,7 +135,7 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Product name:", weight = 3f)
+                        TableCell(text = "Product customerName:", weight = 3f)
                         TableCell(text = product.productName, weight = 7f)
                     }
                     Row(
@@ -154,8 +159,8 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Supplier ID:", weight = 3f)
-                        TableCell(text = product.supplierId, weight = 7f)
+                        TableCell(text = "Supplier customerName:", weight = 3f)
+                        product.supplier?.let { TableCell(text = it.name, weight = 7f) }
                     }
                     Row(
                         modifier = Modifier
@@ -163,7 +168,7 @@ fun ProductCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "In Stock:", weight = 3f)
-                        TableCell(text = if (product.isInStock) "Yes" else "No", weight = 7f)
+                        TableCell(text = if (product.inStock) "Yes" else "No", weight = 7f)
                     }
 
                     Row(
@@ -179,8 +184,8 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Genre ID:", weight = 3f)
-                        TableCell(text = product.genreId, weight = 7f)
+                        TableCell(text = "Genre customerName:", weight = 3f)
+                        product.genre?.let { TableCell(text = it.genreName, weight = 7f) }
                     }
                     Row(
                         modifier = Modifier
@@ -195,8 +200,8 @@ fun ProductCard(
                             .wrapContentHeight()
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
-                        TableCell(text = "Location ID:", weight = 3f)
-                        TableCell(text = product.storageLocationId, weight = 7f)
+                        TableCell(text = "Location customerName:", weight = 3f)
+                        product.storageLocation?.let { TableCell(text = it.storageLocationName, weight = 7f) }
                     }
                     Row(
                         modifier = Modifier
@@ -238,11 +243,12 @@ fun ProductCard(
 
 @Composable
 fun RowScope.TableCell(
+    modifier: Modifier = Modifier,
     text: String, weight: Float
 ) {
     Text(
         text = text,
-        Modifier
+        modifier
             .fillMaxHeight()
             .border(0.5.dp, Color.Gray)
             .weight(weight)
@@ -254,7 +260,7 @@ fun RowScope.TableCell(
 @Preview(showBackground = true)
 @Composable
 fun PreviewProductCard() {
-    ProductCard(product = product1,
-        qrCodeIconRes = R.drawable.ic_qr_code,
-        onCardClick = { /* Handle card click here */ })
+//    ProductCard(product = product1,
+//        qrCodeIconRes = R.drawable.ic_qr_code,
+//        onCardClick = { /* Handle card click here */ })
 }

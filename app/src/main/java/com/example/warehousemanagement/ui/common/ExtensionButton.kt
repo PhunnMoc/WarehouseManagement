@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.theme.Dimens
+import com.example.warehousemanagement.ui.theme.QuickSand
 import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 
 
@@ -63,25 +64,28 @@ fun FilterAndSortButtons(
 @Composable
 fun CustomIconButton(
     text: String,
-    icon: Painter,
+    icon: Painter? = null,
     onClick: () -> Unit
 ) {
     Button(
         onClick = onClick, // Action when button is clicked
         colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.background_white)),
         modifier = Modifier
-           // .clip(CircleShape)
+            // .clip(CircleShape)
             .shadow(elevation = Dimens.PADDING_2_DP, shape = CircleShape)
             .height(40.dp)
     ) {
-        Icon(
-            painter = icon,
-            contentDescription = null, // Icon description for accessibility
-            tint = colorResource(id = R.color.text_color_dark_gray),
-            modifier = Modifier.size(20.dp)
-        )
+        if (icon != null) {
+            Icon(
+                painter = icon,
+                contentDescription = null, // Icon description for accessibility
+                tint = colorResource(id = R.color.text_color_dark_gray),
+                modifier = Modifier.size(20.dp)
+            )
+        }
         Spacer(modifier = Modifier.width(8.dp))
         Text(
+            fontFamily = QuickSand,
             text = text,
             fontSize = 10.sp,
             color = colorResource(id = R.color.text_color_dark_gray)
