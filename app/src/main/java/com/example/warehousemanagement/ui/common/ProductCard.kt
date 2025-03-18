@@ -60,7 +60,7 @@ fun ProductCard(
                     isExpanded = !isExpanded
                     onCardClick()
                 }, onLongPress = {
-                    onLongPress(product.idProduct)
+                    onLongPress(product.id)
                 })
             },
 
@@ -80,9 +80,9 @@ fun ProductCard(
             ) {
 
                 Text(
-                    text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold
+                    text = "ID: ${product.id}", fontWeight = FontWeight.Bold
                 )
-                QRCodeScreen(id = product.idProduct)
+                QRCodeScreen(id = product.id)
 
             }
             Divider()
@@ -177,7 +177,7 @@ fun ProductCard(
                             .height(intrinsicSize = IntrinsicSize.Max)
                     ) {
                         TableCell(text = "Product ID:", weight = 3f)
-                        TableCell(text = product.idProduct, weight = 7f)
+                        TableCell(text = product.id, weight = 7f)
                     }
                     Row(
                         modifier = Modifier

@@ -151,7 +151,7 @@ fun ImportPackage(
                     BigButton(
                         onClick = {
                             onUpdateImportPackage("approved")
-                            navigateToSetStorageLocationScreen(importPackage.idImportPackages)
+                            navigateToSetStorageLocationScreen(importPackage.id)
                         },
                         enabled = true,
                         modifier = Modifier
@@ -222,7 +222,7 @@ fun ImportPackage(
                                 modifier = Modifier
                                     .border(
                                         width = 2.dp,
-                                        color = if (importPackage.status == "APPROVED") colorResource(
+                                        color = if (importPackage.statusDone == "APPROVED") colorResource(
                                             id = R.color.background_done
                                         ) else colorResource(
                                             id = R.color.background_pending
@@ -234,7 +234,7 @@ fun ImportPackage(
                             ) {
                                 Text(
                                     fontFamily = QuickSand,
-                                    text = "Status: ${importPackage.status}",
+                                    text = "Status: ${importPackage.statusDone}",
                                 )
                             }
                         }

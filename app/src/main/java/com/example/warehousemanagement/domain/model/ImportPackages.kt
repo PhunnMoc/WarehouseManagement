@@ -1,9 +1,6 @@
 package com.example.warehousemanagement.domain.model
 
-import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.ReceiverResponse
-import com.example.warehousemanagement.data.network.dto.SupplierResponse
-import java.util.Date
 
 data class ImportPackages(
 //    val idImportPackages: String,
@@ -11,15 +8,15 @@ data class ImportPackages(
 //    val importDate: Date,
 //    val listProduct: List<Product>,
 //    val supplier: SupplierResponse,
-//    val status: StatusPackage = StatusPackage.PENDING,
+//    val statusDone: StatusPackage = StatusPackage.PENDING,
 //    val note: String,
 //    val statusDone: Boolean,
 //    val receiver: ReceiverResponse,
-    val idImportPackages: String,
+    val id: String,
     val importDate: String,
     val listProducts: List<Product>,
     val note: String,
     val packageName: String,
     val receiver: ReceiverResponse,
-    val status: String,
+    val statusDone: String,
 )

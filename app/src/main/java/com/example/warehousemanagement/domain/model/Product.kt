@@ -1,12 +1,9 @@
 package com.example.warehousemanagement.domain.model
 
-import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
-import com.example.warehousemanagement.data.network.dto.SupplierResponse
-
 data class Product(
+    val id: String,
     val description: String,
     val genre: Genre?,
-    val idProduct: String,
     val image: String,
     val importPrice: Int,
     val inStock: Boolean,

@@ -24,7 +24,7 @@ import com.example.warehousemanagement.domain.model.User
 fun ProductResponse.convertToModel(): Product {
 
     return Product(
-        idProduct = id ?: "",
+        id = id ?: "",
         description = description ?: "",
         genre = genre?.convertToModel(),
         image = image ?: "",
@@ -42,7 +42,7 @@ fun ProductResponse.convertToModel(): Product {
 
 fun Product.convertToResponse(): ProductResponse {
     return ProductResponse(
-        id = idProduct,
+        id = id,
         description = description,
         genre = genre?.convertToResponse(),
         image = image,
@@ -169,11 +169,11 @@ fun ImportPackageResponseItem.convertToModel(): ImportPackages? {
         return null
     }
     return ImportPackages(
-        idImportPackages = id,
+        id = id,
         packageName = packageName,
         importDate = importDate,
         listProducts = listProducts!!.mapNotNull { it.convertToModel() },
-        status = statusDone ?: "",
+        statusDone = statusDone ?: "",
         note = note ?: "",
         receiver = receiver,
     )
@@ -181,13 +181,13 @@ fun ImportPackageResponseItem.convertToModel(): ImportPackages? {
 
 fun ImportPackages.convertToResponse(): ImportPackageResponseItem {
     return ImportPackageResponseItem(
-        id = idImportPackages,
+        id = id,
         importDate = importDate,
         listProducts = listProducts.map { it.convertToResponse() },
         note = note,
         packageName = packageName,
         receiver = receiver,
-        statusDone = status,
+        statusDone = statusDone,
     )
 }
 

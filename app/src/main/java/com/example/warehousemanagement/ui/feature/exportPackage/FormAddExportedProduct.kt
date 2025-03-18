@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.OutlinedTextField
@@ -58,7 +57,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.data.network.dto.ExportProductDto
 import com.example.warehousemanagement.domain.model.Customer
-import com.example.warehousemanagement.domain.model.Genre
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
@@ -66,7 +64,6 @@ import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.InputArea
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
-import com.example.warehousemanagement.ui.feature.customer.viewModel.CustomerViewModel
 import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.FormAddExportedProductViewModel
 import com.example.warehousemanagement.ui.feature.importPackage.TotalImportPackage
 import com.example.warehousemanagement.ui.feature.search.CustomerItem
@@ -532,7 +529,7 @@ class FormExportProductData() {
 
     fun toExportProductDto(): ExportProductDto {
         return ExportProductDto(
-            productId = product?.idProduct ?: "",
+            productId = product?.id ?: "",
             quantity = quantity.toInt(),
         )
     }

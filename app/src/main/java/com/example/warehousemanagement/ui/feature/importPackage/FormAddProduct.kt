@@ -543,6 +543,7 @@ fun FormImportProduct(
 }
 
 class FormImportProductData() {
+    var id by mutableStateOf("")
     var name by mutableStateOf("")
     var genreName by mutableStateOf("")
     var genre by mutableStateOf<Genre?>(null)
@@ -556,6 +557,7 @@ class FormImportProductData() {
     val date by mutableStateOf(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
 
     fun copy(
+        id: String = this.id,
         name: String = this.name,
         genreName: String = this.genreName,
         genre: Genre? = this.genre,
@@ -568,6 +570,7 @@ class FormImportProductData() {
         description: String = this.description
     ): FormImportProductData {
         return FormImportProductData().apply {
+            this.id = id
             this.name = name
             this.genreName = genreName
             this.genre = genre
@@ -584,6 +587,7 @@ class FormImportProductData() {
 
     // Reset dữ liệu nhập
     fun clear() {
+        id = ""
         name = ""
         genreName = ""
         genre = null
@@ -598,9 +602,9 @@ class FormImportProductData() {
 
     fun toProduct(): Product {
         return Product(
+            id = this.id,
             description = this.description,
             genre = this.genre,
-            idProduct = "", // Tạo ID ngẫu nhiên (hoặc sửa lại theo yêu cầu)
             image = this.imageUrl,
             importPrice = this.importPrice.toIntOrNull()
                 ?: 0, // Chuyển đổi String -> Int, nếu lỗi thì mặc định là 0
@@ -627,15 +631,18 @@ class FormImportProductData() {
 fun List<Product>.toFormImportProductDataList(): List<FormImportProductData> {
     return this.map {
         FormImportProductData().apply {
+            id = it.id
             name = it.productName
             genre = it.genre
+            genreName = it.genre?.genreName ?: ""
             supplier = it.supplier
+            supplierName = it.supplier?.name ?: ""
             quantity = it.quantity.toString()
             importPrice = it.importPrice.toString()
             exportPrice = it.sellingPrice.toString()
             imageUrl = it.image
+            description = it.description
         }
-
     }
 }
 

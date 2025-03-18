@@ -72,7 +72,7 @@ fun ExportPackageCard(
                 modifier = Modifier
                     .fillMaxWidth()
 //                    .background(
-//                        color = if (exportPackage.status=="APPROVED") colorResource(id = R.color.background_done) else colorResource(
+//                        color = if (exportPackage.statusDone=="APPROVED") colorResource(id = R.color.background_done) else colorResource(
 //                            id = R.color.background_pending
 //                        )
 //                    )

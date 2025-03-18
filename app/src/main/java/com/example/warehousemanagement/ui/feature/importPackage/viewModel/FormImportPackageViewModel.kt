@@ -10,7 +10,6 @@ import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
-import com.example.warehousemanagement.ui.feature.importPackage.FormImportProductData
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_GENRE_QUERY_NAME
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_STORAGE_LOCATION_QUERY_NAME
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_SUPPLIER_QUERY
@@ -20,7 +19,6 @@ import com.example.warehousemanagement.ui.feature.search.viewModel.SearchSupplie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
@@ -50,7 +48,7 @@ class FormImportPackageViewModel @Inject constructor(
                 wareHouseRepository.updatePendingImportPackage(
                     id = idImportPackages,
                     updatedImportPackage = ImportPackages(
-                        idImportPackages = idImportPackages,
+                        id = idImportPackages,
                         importDate = date,
                         listProducts = listProducts,
                         note = note,
@@ -61,7 +59,7 @@ class FormImportPackageViewModel @Inject constructor(
                             null,
                             null
                         ),
-                        status = "PENDING",
+                        statusDone = "PENDING",
                     )
                 )
             } catch (_: Exception) {
@@ -80,7 +78,7 @@ class FormImportPackageViewModel @Inject constructor(
             try {
                 wareHouseRepository.createImportPackage(
                     importPackage = ImportPackages(
-                        idImportPackages = "",
+                        id = "",
                         importDate = date,
                         listProducts = listProducts,
                         note = note,
@@ -91,7 +89,7 @@ class FormImportPackageViewModel @Inject constructor(
                             null,
                             null
                         ),
-                        status = "PENDING",
+                        statusDone = "PENDING",
                     )
                 )
             } catch (_: Exception) {

@@ -91,7 +91,7 @@ fun DetailProduct(
                 ) {
 
                     OutlinedTextField(
-                        value = detailproduct.product.idProduct,
+                        value = detailproduct.product.id,
                         enabled = false,
                         onValueChange = {},
                         label = { Text(text = stringResource(id = R.string.product_id)) },

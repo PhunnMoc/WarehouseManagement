@@ -13,9 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
@@ -25,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -43,7 +39,6 @@ import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductUiState
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductViewModel
-import com.example.warehousemanagement.ui.theme.Dimens
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,7 +110,7 @@ fun SearchProductScreen(
                         items(searchResult.listSuggestionProduct) { product ->
                             ProductItem(
                                 modifier = Modifier.clickable {
-                                    onClickDetailProduct(product.idProduct)
+                                    onClickDetailProduct(product.id)
                                 },
                                 product = product
                             )
@@ -138,7 +133,7 @@ fun ProductItem(
             .fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = "ID: ${product.idProduct}", fontWeight = FontWeight.Bold)
+            Text(text = "ID: ${product.id}", fontWeight = FontWeight.Bold)
             Text(text = "Name: ${product.productName}")
             Text(text = "Genre: ${product.genre?.genreName}")
             Text(text = "Price: ${product.sellingPrice}")

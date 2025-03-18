@@ -15,24 +15,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,7 +61,7 @@ fun ImportPackageCard(
                     isExpanded = !isExpanded
                     onCardClick()
                 }, onLongPress = {
-                    onLongPress(importPackage.idImportPackages)
+                    onLongPress(importPackage.id)
                 })
             },
     ) {
@@ -77,7 +72,7 @@ fun ImportPackageCard(
                 modifier = Modifier
                     .fillMaxWidth()
 //                    .background(
-//                        color = if (importPackage.status == "APPROVED" || importPackage.status == "DECLINE") colorResource(
+//                        color = if (importPackage.statusDone == "APPROVED" || importPackage.statusDone == "DECLINE") colorResource(
 //                            id = R.color.background_done
 //                        ) else colorResource(
 //                            id = R.color.background_pending
@@ -88,7 +83,7 @@ fun ImportPackageCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Package ID: ${importPackage.idImportPackages}",
+                    text = "Package ID: ${importPackage.id}",
                     fontWeight = FontWeight.Bold,
                     fontFamily = QuickSand,
                 )
@@ -96,7 +91,7 @@ fun ImportPackageCard(
                 Image(
                     modifier = Modifier
                         .size(20.dp)
-                        .clickable { onEditPendingPackage(importPackage.idImportPackages) },
+                        .clickable { onEditPendingPackage(importPackage.id) },
                     painter = painterResource(id = R.drawable.icons8_edit),
                     contentDescription = "Delete"
                 )
@@ -117,7 +112,7 @@ fun ImportPackageCard(
                     modifier = Modifier
                         .padding(Dimens.PADDING_10_DP)
                         .size(64.dp),
-                    id = importPackage.idImportPackages
+                    id = importPackage.id
                 )
                 Column(
                     modifier = Modifier.padding(Dimens.PADDING_10_DP)
@@ -130,10 +125,10 @@ fun ImportPackageCard(
                         fontFamily = QuickSand,
                     )
                     Text(
-                        text = "Status: ${importPackage.status}",
+                        text = "Status: ${importPackage.statusDone}",
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
-                        color = if (importPackage.status == "APPROVED" || importPackage.status == "DECLINE") colorResource(
+                        color = if (importPackage.statusDone == "APPROVED" || importPackage.statusDone == "DECLINE") colorResource(
                             id = R.color.background_done
                         ) else colorResource(
                             id = R.color.background_pending

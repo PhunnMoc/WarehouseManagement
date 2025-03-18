@@ -66,6 +66,7 @@ import com.example.warehousemanagement.ui.theme.Dimens
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomFormAddOrEditProductForm(
     modifier: Modifier = Modifier,

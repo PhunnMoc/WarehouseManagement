@@ -2,25 +2,17 @@ package com.example.warehousemanagement.ui.feature.importPackage
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.Text
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,13 +26,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,18 +39,11 @@ import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.feature.filter.FilterByGenreId
-import com.example.warehousemanagement.ui.feature.filter.FilterBySellingPrice
 import com.example.warehousemanagement.ui.feature.filter.FilterByStorageLocationId
-import com.example.warehousemanagement.ui.feature.filter.FilterBySupplierId
-import com.example.warehousemanagement.ui.feature.genre.viewModel.GenreUiState
-import com.example.warehousemanagement.ui.feature.importPackage.viewModel.DetailImportUiState
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.SetStorageLocationProductUiState
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.SetStorageLocationProductViewModel
 import com.example.warehousemanagement.ui.feature.storage.viewModel.StorageLocationUiState
 import com.example.warehousemanagement.ui.feature.storage.viewModel.StorageLocationViewModel
-import com.example.warehousemanagement.ui.feature.supplier.viewModel.SupplierUIState
-import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -144,11 +126,11 @@ fun SetStorageLocationPendingProduct(
                                     BigButton(
                                         enabled = true,
                                         onClick = {
-                                            currentId = product.idProduct
+                                            currentId = product.id
                                             isShowBottomSheet = true
                                         },
                                         labelname = "Storage Location " + "${
-                                            mapProductAndStorage[product.idProduct]
+                                            mapProductAndStorage[product.id]
                                         }"
                                     )
                                 }

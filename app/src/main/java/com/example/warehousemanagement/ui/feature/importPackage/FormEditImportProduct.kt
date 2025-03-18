@@ -66,7 +66,6 @@ fun FormEditImportProduct(
 
             var productList by remember { mutableStateOf(detail.detailImportPackage.listProducts.toFormImportProductDataList()) }
 
-
             var packageName by remember { mutableStateOf(detail.detailImportPackage.packageName) }
             var packageDescription by remember { mutableStateOf(detail.detailImportPackage.note) }
             var shouldEnableSubmitButton by remember { mutableStateOf(false) }

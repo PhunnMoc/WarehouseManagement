@@ -102,7 +102,7 @@ interface ApiWarehouse {
     @PUT("/import-packages/{id}")
     suspend fun updateImportPackage(
         @Path("id") id: String,
-        @Query("status") status: String,
+        @Query("statusDone") status: String,
     )
 
     @PUT("/import-packages/{id}/update-products")
@@ -114,7 +114,7 @@ interface ApiWarehouse {
     @PUT("/import-packages/pending/{id}/update")
     suspend fun updatePendingImportPackage(
         @Path("id") id: String,
-        @Body updatedImportPackage: ImportPackages,
+        @Body updatedImportPackage: ImportPackageResponseItem,
     )
 
     @GET("/export-packages/pending")

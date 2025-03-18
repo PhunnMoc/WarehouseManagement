@@ -152,7 +152,7 @@ class WareHouseRepositoryImpl @Inject constructor(
     ) {
         retrofit.updatePendingImportPackage(
             id = id,
-            updatedImportPackage = updatedImportPackage,
+            updatedImportPackage = updatedImportPackage.convertToResponse(),
         )
     }
 
