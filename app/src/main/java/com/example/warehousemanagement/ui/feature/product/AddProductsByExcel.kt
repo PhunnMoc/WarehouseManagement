@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
-import com.example.warehousemanagement.ui.feature.camera.rememberPermissionState
 import com.example.warehousemanagement.ui.theme.Dimens
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -42,7 +41,9 @@ fun AddProductsByExcel(
 ) {
     var fileName by rememberSaveable { mutableStateOf("") }
 
-    Scaffold(topBar = {
+    Scaffold(
+        topBar = {
+
     }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -131,9 +132,9 @@ fun FilePickerScreen() {
 }
 fun readExcelFile(inputStream: InputStream) {
     val workbook = HSSFWorkbook(inputStream)
-    val sheet = workbook.getSheetAt(0) // Lấy sheet đầu tiên
+    val sheet = workbook.getSheetAt(0)
 
-    // Duyệt qua các dòng và cột
+
     for (row in sheet) {
         for (cell in row) {
             println("Cell value: ${cell.toString()}")
@@ -144,10 +145,9 @@ fun readExcelFile(inputStream: InputStream) {
 }
 
 fun readFileFromUri(context: Context, uri: Uri): InputStream? {
-    // Sử dụng ContentResolver để lấy InputStream từ URI
+
     val contentResolver = context.contentResolver
 
-    // Đảm bảo rằng URI có quyền truy cập
     if (DocumentsContract.isDocumentUri(context, uri)) {
         try {
             return contentResolver.openInputStream(uri)

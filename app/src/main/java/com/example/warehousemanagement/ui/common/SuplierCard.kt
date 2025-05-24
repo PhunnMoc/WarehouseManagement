@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,8 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun SuplierCard(
+    roleUiState: Boolean,
+    onEditSupplier: (String) -> Unit,
     modifier: Modifier = Modifier,
     supplier: Supplier, // Add this parameter
     onCardClick: () -> Unit,// Image resource id for the QR code icon
@@ -89,6 +92,15 @@ fun SuplierCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = "Supplier ID: " + supplier.idSupplier)
+                if (roleUiState) {
+                    Image(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onEditSupplier(supplier.idSupplier) },
+                        painter = painterResource(id = R.drawable.icons8_edit),
+                        contentDescription = "Delete"
+                    )
+                }
             }
             Divider()
             Row(

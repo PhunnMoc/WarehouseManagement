@@ -60,6 +60,7 @@ fun CustomersScreen(
     onClickAddCustomer: () -> Unit,
     onBackClick: () -> Unit,
     onNavigationDetailCustomer: (String) -> Unit,
+    onNavigateToEditCustomerScreen: (String) -> Unit,
     onClickSearch: () -> Unit,
     viewModel: CustomerViewModel = hiltViewModel()
 ) {
@@ -151,8 +152,6 @@ fun CustomersScreen(
                         onClickSearch()
                     }
                 )
-
-                FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
             //Spacer(modifier = Modifier.height(16.dp))
@@ -167,6 +166,8 @@ fun CustomersScreen(
                                 customer = customer,
                                 onCardClick = {},
                                 onLongPress = onNavigationDetailCustomer,
+                                roleUiState=roleUiState,
+                                onEditCustomer= onNavigateToEditCustomerScreen,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }

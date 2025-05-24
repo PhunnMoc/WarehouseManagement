@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.asResult
+import com.example.warehousemanagement.domain.model.Customer
+import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_SUPPLIER_QUERY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,4 +47,13 @@ class DetailSupplierViewModel @Inject constructor(
                     is Result.Loading -> DetailSupplierUiState.Loading
                 }
             }
+
+    fun updateNewSupplier(supplier: Supplier) {
+        viewModelScope.launch {
+            wareHouseRepository.updateSupplier(
+                id = supplier.idSupplier,
+                supplier = supplier,
+            )
+        }
+    }
 }

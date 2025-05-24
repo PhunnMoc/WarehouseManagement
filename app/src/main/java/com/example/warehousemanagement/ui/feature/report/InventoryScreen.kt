@@ -58,38 +58,36 @@ fun InventoryScreen(
                 )
             })
 
-
-            Column(
+            LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                DonutChart(data = viewData) { selected ->
-                    AnimatedContent(targetState = selected, label = "") {
-                        val amount = it?.amount ?: viewData.totalAmount
-                        val text = it?.title ?: "Total"
+                item {
+                    DonutChart(data = viewData) { selected ->
+                        AnimatedContent(targetState = selected, label = "") {
+                            val amount = it?.amount ?: viewData.totalAmount
+                            val text = it?.title ?: "Total"
 
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(text = "$${amount.toMoneyFormat(true)}")
-                            Text(text = text, fontFamily = QuickSand)
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(text = "$${amount.toMoneyFormat(true)}")
+                                Text(text = text, fontFamily = QuickSand)
+                            }
                         }
                     }
                 }
-
-                LazyColumn{
-                    itemsIndexed(genres.listGenre) {index,it->
-                        CardGenre(
-                            genre = it,
-                            moneyInStock = viewData.items[index].amount
-                        )
-                    }
+                itemsIndexed(genres.listGenre) { index, it ->
+//                        CardGenre(
+//                            genre = it,
+//                            moneyInStock = viewData.items[index].amount
+//                        )
                 }
-
             }
+
         }
     }
-
 }
+
+
 

@@ -36,15 +36,16 @@ import com.example.warehousemanagement.ui.common.DialogView
 import com.example.warehousemanagement.ui.theme.QuickSand
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CardGenre(
-    genre: Genre,
+    id: String,
+    genreName: String,
     moneyInStock: Float,
+    modifier: Modifier = Modifier,
 ) {
     Card(shape = RoundedCornerShape(10.dp),
-        elevation = 10.dp,
-        modifier = Modifier
+        elevation = 2.dp,
+        modifier = modifier
             .fillMaxWidth()
             .clickable { }) {
         Row(
@@ -62,11 +63,11 @@ fun CardGenre(
                     fontWeight = FontWeight.W600,
                     fontSize = 16.sp,
                     color = colorResource(id = R.color.text_color_light_black),
-                    text = genre.genreName,
+                    text = genreName,
                 )
                 Text(
                     fontFamily = QuickSand,
-                    text = genre.idGenre,
+                    text = id,
                     color = colorResource(id = R.color.text_color_light_gray)
                 )
             }

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -34,6 +35,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,7 +58,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.domain.model.Information
+import com.example.warehousemanagement.domain.model.Role
 import com.example.warehousemanagement.domain.model.User
+import com.example.warehousemanagement.domain.model.convertToRole
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
@@ -74,32 +79,16 @@ fun SettingScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingViewModel = hiltViewModel(),
 ) {
-    val user by viewModel.informationUiState.collectAsStateWithLifecycle()
+    val user by viewModel.informationUiState.collectAsState()
+    var isEditing by remember { mutableStateOf(false) }
+    var enable by remember { mutableStateOf(false) }
 
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var image by remember { mutableStateOf("") }
-
-    var isExpanded by remember { mutableStateOf(false) }
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            HeaderOfScreen(
-                mainTitleText = "",
-                endContent = {
-                    Text(
-                        modifier = Modifier
-                            .clickable { }
-                            .padding(10.dp),
-                        text = "Save")
-                },
-                scrollBehavior = scrollBehavior
-            )
-        }) { innerPadding ->
+       ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -119,11 +108,52 @@ fun SettingScreen(
                 }
 
                 is InformationUiState.Success -> {
-                    // Set initial values of text fields with user data
-                    firstName = temp.user.information?.firstName ?: ""
-                    lastName = temp.user.information?.lastName ?: ""
-                    email = temp.user.information?.email ?: ""
-                    image = temp.user.information?.picture ?: ""
+
+                    var firstName by remember {
+                        mutableStateOf(
+                            temp.user.information?.firstName ?:""
+                        )
+                    }
+                    var lastName by remember {
+                        mutableStateOf(
+                            temp.user.information?.lastName ?:""
+                        )
+                    }
+                    var email by remember { mutableStateOf(temp.user.information?.email ?:"" ) }
+                    var image by remember { mutableStateOf(temp.user.information?.picture ?: "") }
+                    HeaderOfScreen(
+                        modifier = Modifier.fillMaxWidth(),
+                        mainTitleText = "",
+                        endContent = {
+                            IconButton(onClick = {
+                                isEditing = !isEditing
+                                if (isEditing) {
+                                    enable = true
+                                } else {
+                                    enable = false
+                                    viewModel.updateInformation(
+                                            id = temp.user.idUser,
+                                        user = temp.user.copy(information = Information(
+                                            idInformation = temp.user.idUser,
+                                            firstName=firstName,
+                                            lastName=lastName,
+                                            email= email,
+                                            role = temp.user.information?.role ?:Role.USER,
+                                            picture = image,
+                                        ))
+                                        )
+                                    }
+                            }) {
+                                Icon(
+                                    modifier = Modifier.size(25.dp),
+                                    painter = painterResource(if (isEditing) R.drawable.save else R.drawable.icons8_edit),
+                                    contentDescription = if (isEditing) "Save" else "Edit",
+                                    tint = Color(0xFF4A5568)
+                                )
+                            }
+                        },
+                        scrollBehavior = scrollBehavior
+                    )
 
                     Box {
                         UploadImageButton(
@@ -161,6 +191,7 @@ fun SettingScreen(
                             label = { Text("First Name") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
+                            enabled = enable,
                             colors = customTextFieldColors(),
                         )
                         OutlinedTextField(
@@ -169,6 +200,7 @@ fun SettingScreen(
                             label = { Text("Last Name") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
+                            enabled = enable,
                             colors = customTextFieldColors(),
                         )
                         OutlinedTextField(
@@ -177,18 +209,11 @@ fun SettingScreen(
                             label = { Text("Email") },
                             modifier = Modifier.fillMaxWidth(),
                             singleLine = true,
+                            enabled = enable,
                             colors = customTextFieldColors(),
                         )
                         OutlinedTextField(
-                            value = image,
-                            onValueChange = { image = it },
-                            label = { Text("URL Image") },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            colors = customTextFieldColors(),
-                        )
-                        OutlinedTextField(
-                            value = temp.user.information?.role ?: "No role available",
+                            value = temp.user.information?.role?.value ?:"",
                             onValueChange = {},
                             label = { Text("Role") },
                             modifier = Modifier.fillMaxWidth(),

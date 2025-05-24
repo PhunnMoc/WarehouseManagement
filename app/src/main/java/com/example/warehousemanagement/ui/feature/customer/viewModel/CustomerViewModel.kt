@@ -46,4 +46,10 @@ class CustomerViewModel @Inject constructor(
                 is Result.Loading -> CustomerUIState.Loading
             }
         }
+
+    fun updateCustomer(
+        id:String,
+    ){
+
+    }
 }

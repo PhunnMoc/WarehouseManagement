@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.data.network.dto
 
 import com.example.warehousemanagement.data.mapper.convertToModel
+import com.example.warehousemanagement.data.mapper.convertToResponse
 import com.example.warehousemanagement.domain.model.Product
 
 data class ExportProductDto(
@@ -19,4 +20,13 @@ fun List<ExportProductResponse>.convertToResponse(): Map<Product, Int> {
         map[it.product.convertToModel()] = it.quantity
     }
     return map
+}
+
+fun Map<Product, Int>.convertToResponse(): List<ExportProductResponse> {
+    return this.map {
+        ExportProductResponse(
+            product = it.key.convertToResponse(),
+            quantity = it.value
+        )
+    }
 }

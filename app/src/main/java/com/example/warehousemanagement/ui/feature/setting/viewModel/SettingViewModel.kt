@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.WebSocketManager
 import com.example.warehousemanagement.data.util.asResult
+import com.example.warehousemanagement.domain.model.Information
 import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
@@ -51,15 +52,11 @@ class SettingViewModel @Inject constructor(
             }
 
     fun updateInformation(
-        updatedUser: User,
+        id: String,
+        user: User,
     ) {
-//        preferencesRepository.getUserId()
-//            .map { wareHouseRepository.updateUserDetail(id = it, user = User(
-//                idUser = it,
-//                username = ,
-//                passwordHash = ,
-//                I
-//            )) }
+        viewModelScope.launch { wareHouseRepository.updateUserDetail(id = id, user = user) }
+        getInformation()
     }
 
     fun logout() {

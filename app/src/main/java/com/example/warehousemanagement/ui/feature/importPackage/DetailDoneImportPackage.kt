@@ -32,7 +32,8 @@ fun DetailDoneImportPackage(
                     importPackage = detail.detailImportPackage,
                     navigateToSetStorageLocationScreen = navigateToSetStorageLocationScreen,
                     onBack = onBack,
-                    onUpdateImportPackage = viewModel::updateImportPackage
+                    onUpdateImportPackage = viewModel::updateImportPackage,
+                    openObjectCounting = {},
                 )
             }
         }

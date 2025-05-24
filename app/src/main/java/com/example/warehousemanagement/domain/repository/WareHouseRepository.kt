@@ -1,6 +1,11 @@
 package com.example.warehousemanagement.domain.repository
 
+import com.example.warehousemanagement.data.network.dto.CostByMonthResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
+import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
+import com.example.warehousemanagement.data.network.dto.MonthlyCostResponse
+import com.example.warehousemanagement.data.network.dto.MonthlyRevenueResponse
+import com.example.warehousemanagement.data.network.dto.RevenueByMonthResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
@@ -57,6 +62,11 @@ interface WareHouseRepository {
         updatedImportPackage: ImportPackages,
     )
 
+    suspend fun updatePendingExportPackage(
+        id: String,
+        updatedExportPackage: ExportPackages,
+    )
+
     suspend fun getPendingExportPackages(): List<ExportPackages>
     suspend fun addPendingExportPackages(pendingExportPackage: ExportPackagePendingDto)
     suspend fun getDoneImportPackages(): List<ImportPackages>
@@ -70,6 +80,7 @@ interface WareHouseRepository {
 
     suspend fun getSearchedSupplierByName(query: String): List<Supplier>
     suspend fun getSupplierById(idSupplier: String): Supplier
+    suspend fun updateSupplier(id: String, supplier: Supplier)
     suspend fun getAllSupplierDetails(): List<Supplier>
 
     suspend fun getAllCustomers(): List<Customer>
@@ -81,11 +92,49 @@ interface WareHouseRepository {
     suspend fun login(username: String, password: String): Map<String, String>
     suspend fun getUserDetails(id: String): User
     suspend fun updateUserDetail(id: String, user: User)
+    suspend fun addNewUser(user: User)
     suspend fun getAllUserDetails(): List<User>
     suspend fun getAllNotificationDetails(): List<Notification>
     suspend fun addNewCustomer(customer: Customer)//: String
+    suspend fun updateNewCustomer(
+        id: String,
+        customer: Customer
+    )//: String
+
     suspend fun searchSuppliersByName(nameString: String): List<Supplier>
     suspend fun searchCustomersByName(nameString: String): List<Customer>
 
     suspend fun getStockSummaryByLocation(): List<StorageLocationSummary>
+    suspend fun getGenreByRangeSummaryImport(
+        startDate: Long,
+        endDate: Long,
+        limit: Int,
+    ): List<GenreByRangeSummaryResponse>
+
+    suspend fun getGenreByRangeSummaryExport(
+        startDate: Long,
+        endDate: Long,
+        limit: Int,
+    ): List<GenreByRangeSummaryResponse>
+
+    suspend fun getMonthlyRevenue(
+        year: Int,
+    ): List<MonthlyRevenueResponse>
+
+    suspend fun getDetailMonthlyRevenue(
+        year: Int,
+        month: Int,
+    ): List<RevenueByMonthResponse>
+    suspend fun getDetailMonthlyCost(
+        year: Int,
+        month: Int,
+    ): List<CostByMonthResponse>
+
+    suspend fun getMonthlyCost(
+        year: Int,
+    ): List<MonthlyCostResponse>
+
+    suspend fun getAnswerChatBox(
+        question: String,
+    ): String
 }

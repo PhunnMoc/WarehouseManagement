@@ -1,16 +1,22 @@
 package com.example.warehousemanagement.data.repository
 
+import androidx.room.Delete
+import com.example.warehousemanagement.data.network.dto.CostByMonthResponse
 import com.example.warehousemanagement.data.network.dto.CustomerResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
+import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
+import com.example.warehousemanagement.data.network.dto.MonthlyCostResponse
+import com.example.warehousemanagement.data.network.dto.MonthlyRevenueResponse
 import com.example.warehousemanagement.data.network.dto.ProductResponse
+import com.example.warehousemanagement.data.network.dto.RevenueByMonthResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
+import com.example.warehousemanagement.data.network.dto.SupplierRequest
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
-import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Notification
 import com.example.warehousemanagement.domain.model.User
 import retrofit2.Response
@@ -78,7 +84,7 @@ interface ApiWarehouse {
 
     @POST("/supplier") // Adjust the endpoint based on your backend configuration
     suspend fun addNewSupplier(
-        @Body supplier: SupplierResponse
+        @Body supplier: SupplierRequest
     )
 
     @GET("/import-packages/pending")
@@ -102,7 +108,7 @@ interface ApiWarehouse {
     @PUT("/import-packages/{id}")
     suspend fun updateImportPackage(
         @Path("id") id: String,
-        @Query("statusDone") status: String,
+        @Query("status") status: String,
     )
 
     @PUT("/import-packages/{id}/update-products")
@@ -117,6 +123,12 @@ interface ApiWarehouse {
         @Body updatedImportPackage: ImportPackageResponseItem,
     )
 
+    @PUT("/export-packages/pending/{id}/update")
+    suspend fun updatePendingExportPackage(
+        @Path("id") id: String,
+        @Body updatedExportPackage: ExportPackageResponse,
+    )
+
     @GET("/export-packages/pending")
     suspend fun getPendingExportPackages(): Response<List<ExportPackageResponse>>
 
@@ -129,6 +141,7 @@ interface ApiWarehouse {
     suspend fun getExportPackageById(
         @Path("id") id: String
     ): Response<ExportPackageResponse>
+
     @PUT("export-packages/approve/{packageId}")
     suspend fun approveExportPackage(
         @Path("packageId") packageId: String,
@@ -147,6 +160,12 @@ interface ApiWarehouse {
 
     @GET("/supplier/{id}")
     suspend fun getSupplierDetails(@Path("id") id: String): Response<SupplierResponse>
+
+    @PUT("/supplier/{id}")
+    suspend fun editSupplier(
+        @Path("id") id: String,
+        @Body supplier: SupplierResponse,
+    )
 
     @GET("/supplier/search")
     suspend fun getSearchedSuppliersDetails(
@@ -168,6 +187,12 @@ interface ApiWarehouse {
 
     @POST("/customer") // Adjust the endpoint based on your backend configuration
     suspend fun addNewCustomer(
+        @Body customer: CustomerResponse
+    )
+
+    @PUT("/customer/{id}") // Adjust the endpoint based on your backend configuration
+    suspend fun editCustomer(
+        @Path("id") id: String,
         @Body customer: CustomerResponse
     )
 
@@ -197,10 +222,54 @@ interface ApiWarehouse {
         @Body updated: User,
     )
 
+    @POST("/user")
+    suspend fun addNewUser(
+        @Body updated: User,
+    )
+
     @GET("/notification")
     suspend fun getAllNotificationDetails(): Response<List<Notification>>
 
 
     @GET("/statistic/in-stock")
     suspend fun getStockSummaryByLocation(): Response<List<StorageLocationSummary>>
+
+    @GET("/statistic/top-genres-imported")
+    suspend fun getTopGenreByRangeImport(
+        @Query("startDate") startDate: Long,
+        @Query("endDate") endDate: Long,
+        @Query("limit") limit: Int,
+    ): Response<List<GenreByRangeSummaryResponse>>
+
+    @GET("/statistic/top-genres-exported")
+    suspend fun getTopGenreByRangeExport(
+        @Query("startDate") startDate: Long,
+        @Query("endDate") endDate: Long,
+        @Query("limit") limit: Int,
+    ): Response<List<GenreByRangeSummaryResponse>>
+
+    @GET("/statistic/monthly-revenue/{year}")
+    suspend fun getMonthlyRevenue(
+        @Path("year") year: Int,
+    ): Response<List<MonthlyRevenueResponse>>
+
+    @GET("/statistic/monthly-revenue/{year}/{month}")
+    suspend fun getDetailMonthlyRevenue(
+        @Path("year") year: Int,
+        @Path("month") month: Int,
+    ): Response<List<RevenueByMonthResponse>>
+
+    @GET("/statistic/monthly-cost/{year}")
+    suspend fun getMonthlyCost(
+        @Path("year") year: Int,
+    ): Response<List<MonthlyCostResponse>>
+
+    @GET("/statistic/monthly-cost/{year}/{month}")
+    suspend fun getDetailMonthlyCost(
+        @Path("year") year: Int,
+        @Path("month") month: Int,
+    ): Response<List<CostByMonthResponse>>
+
+    @GET("/chatbot/query")
+    suspend fun getAnswerChatBox(@Query("question") question: String): Response<String>
 }

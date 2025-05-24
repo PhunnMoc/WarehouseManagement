@@ -4,6 +4,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,14 +51,16 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun CustomerCard(
+    roleUiState: Boolean,
     modifier: Modifier = Modifier, customer: Customer, // Add this parameter
     onCardClick: () -> Unit,
+    onEditCustomer: (String) -> Unit,
     onLongPress: (String) -> Unit,
-    ) {
+) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(customer){
+    LaunchedEffect(customer) {
         println("Iris Test ${customer.idCustomer}")
     }
     Card(
@@ -94,6 +97,15 @@ fun CustomerCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(text = "Customer ID: ${customer.idCustomer}")
+                if (roleUiState) {
+                    Image(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onEditCustomer(customer.idCustomer) },
+                        painter = painterResource(id = R.drawable.icons8_edit),
+                        contentDescription = "Delete"
+                    )
+                }
             }
             Divider()
             Row(

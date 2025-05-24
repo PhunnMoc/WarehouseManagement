@@ -20,6 +20,7 @@ fun DoneExportPackage(
     modifier: Modifier = Modifier,
     exportPackageDoneUiState: ExportPackageUiState,
     onNavigationDetailExportPackages: (String) -> Unit,
+    onEditPendingPackage: (String) -> Unit,
 ) {
 
     when (exportPackageDoneUiState) {
@@ -32,6 +33,7 @@ fun DoneExportPackage(
                         exportPackage = exportPackage,
                         onCardClick = {},
                         onLongPress = onNavigationDetailExportPackages,
+                        onEditPendingPackage = onEditPendingPackage,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

@@ -164,7 +164,7 @@ fun processImageProxy(
 }
 
 @Composable
-fun rememberPermissionState(permission: String): PermissionState {
+private fun rememberPermissionState(permission: String): PermissionState {
     val context = LocalContext.current
     return remember {
         PermissionState(

@@ -153,7 +153,7 @@ fun WorkerScreen(
                         .size(Dimens.SIZE_ICON_35_DP)
                         .padding(end = Dimens.PADDING_5_DP),
                 )
-                SearchBarWithSuggestion(listSuggestions)
+                SearchBarWithSuggestion()
             }
 
             Spacer(modifier = Modifier.weight(1f))

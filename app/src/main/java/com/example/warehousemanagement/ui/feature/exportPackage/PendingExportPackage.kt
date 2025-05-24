@@ -18,6 +18,7 @@ fun PendingExportPackage(
     modifier: Modifier = Modifier,
     exportPackagePendingUiState: ExportPackageUiState,
     onNavigationDetailExportPackages: (String) -> Unit,
+    onEditPendingPackage: (String) -> Unit,
 ) {
     when (exportPackagePendingUiState) {
         is ExportPackageUiState.Loading -> IndeterminateCircularIndicator()
@@ -29,6 +30,7 @@ fun PendingExportPackage(
                         exportPackage = exportPackage,
                         onCardClick = {},
                         onLongPress = onNavigationDetailExportPackages,
+                        onEditPendingPackage = onEditPendingPackage,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

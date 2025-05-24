@@ -7,6 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,13 +18,22 @@ class AddSupplierViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository
 ) : ViewModel() {
 
+    private val _message = MutableStateFlow<String?>(null)
+    val message: StateFlow<String?> = _message.asStateFlow()
+
     fun addNewSupplier(supplier: Supplier) {
-        try {
-            viewModelScope.launch {
-                val response = wareHouseRepository.addNewSupplier(supplier = supplier)
+        viewModelScope.launch {
+            runCatching {
+                wareHouseRepository.addNewSupplier(supplier = supplier)
+            }.onSuccess {
+                _message.value = "Adding a new Supplier successfully"
+            }.onFailure { e ->
+                _message.value = "Adding a new Supplier failed, please check again"
             }
-        } catch (e: Exception) {
-            println("Iriss $e")
         }
+    }
+
+    fun clearMessage() {
+        _message.value = null
     }
 }

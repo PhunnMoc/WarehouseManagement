@@ -19,10 +19,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        renderscriptTargetApi = 23
+        renderscriptSupportModeEnabled= true
+
         vectorDrawables {
             useSupportLibrary = true
         }
     }
+
+
 
     buildTypes {
         release {
@@ -42,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        mlModelBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.2"
@@ -71,6 +78,9 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx:21.0.1")
     implementation("com.google.firebase:firebase-storage:21.0.1")
     implementation("androidx.datastore:datastore-core-android:1.1.1")
+    implementation("org.tensorflow:tensorflow-lite-support:0.1.0")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.1.0")
+    implementation("androidx.privacysandbox.tools:tools-core:1.0.0-alpha12")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
@@ -116,6 +126,12 @@ dependencies {
     implementation ("org.apache.poi:poi:5.2.3")
     implementation ("org.apache.poi:poi-ooxml:5.2.3")
 
+    implementation ("org.tensorflow:tensorflow-lite-metadata:0.1.0")
+    implementation ("org.tensorflow:tensorflow-lite-support:0.3.0")
+
+    //System
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+    implementation ("com.google.accompanist:accompanist-permissions:0.19.0")
 
 }
 kapt {

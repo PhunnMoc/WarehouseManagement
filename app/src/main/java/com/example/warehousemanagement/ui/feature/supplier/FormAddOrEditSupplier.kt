@@ -21,8 +21,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,6 +39,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Supplier
@@ -51,9 +55,15 @@ fun FormAddOrEditSupplierForm(
     onBackClick: () -> Unit,
     viewModel: AddSupplierViewModel = hiltViewModel()
 ) {
-    //   val result by viewModel.result
     val context = LocalContext.current
+    val message by viewModel.message.collectAsStateWithLifecycle()
 
+    LaunchedEffect(message) {
+        message?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearMessage()
+        }
+    }
 
     var name by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
@@ -93,6 +103,7 @@ fun FormAddOrEditSupplierForm(
                 .padding(horizontal = Dimens.PADDING_10_DP),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+
             // Supplier customerName
             OutlinedTextField(
                 value = name,
@@ -192,9 +203,7 @@ fun FormAddOrEditSupplierForm(
                                 ratings = ratings,
                             )
                         )
-                        Toast.makeText(context, " added successfully!", Toast.LENGTH_SHORT).show()
                         onBackClick()
-                        // Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
                     })
             }
         }

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-val SEARCH_SUPPLIER_QUERY = "id"
+val SEARCH_SUPPLIER_QUERY = "idSupplier"
 
 @HiltViewModel
 class SearchSupplierViewModel @Inject constructor(

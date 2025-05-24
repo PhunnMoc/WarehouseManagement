@@ -57,12 +57,6 @@ fun DetailProduct(
         containerColor = Color.White,
         topBar = {
             HeaderOfScreen(
-                modifier = modifier.padding(
-                    top = Dimens.PADDING_20_DP,
-                    start = Dimens.PADDING_20_DP,
-                    end = Dimens.PADDING_20_DP,
-                    bottom = Dimens.PADDING_10_DP
-                ),
                 mainTitleText = stringResource(id = R.string.screen_product_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
@@ -109,48 +103,24 @@ fun DetailProduct(
                     )
 
                     //Genre
-//                    var expandedGenre by remember { mutableStateOf(false) }
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .wrapContentSize(Alignment.TopStart)
-//                    ) {
-//                        OutlinedTextField(
-//                            value = selectedOption,
-//                            onValueChange = {},
-//                            label = { Text("Genre") },
-//                            modifier = Modifier.fillMaxWidth(),
-//                            readOnly = true,
-//                            shape = RoundedCornerShape(Dimens.PADDING_10_DP)
-//                        )
-//                        IconButton(modifier = Modifier
-//                            .zIndex(1f)
-//                            .align(Alignment.BottomEnd),
-//                            onClick = { expandedGenre = true }) {
-//                            Icon(
-//                                painter = painterResource(id = R.drawable.ic_add_mini_button),
-//                                contentDescription = ""
-//                            )
-//                        }
-//                        DropdownMenu(
-//                            expanded = expandedGenre,
-//                            onDismissRequest = { expandedGenre = false },
-//                            modifier = Modifier
-//                                .padding(horizontal = Dimens.PADDING_10_DP)
-//                                .fillMaxWidth()
-//
-//                        ) {
-//                            options.forEach { option -> //TODO()
-//                                DropdownMenuItem(onClick = {
-//                                    selectedOption = option
-//                                    expandedGenre = false
-//                                }) {
-//                                    Text(option)
-//                                }
-//                            }
-//                            Text(text = "Add new Genre")
-//                        }
-//                    }
+                    OutlinedTextField(
+                        value = detailproduct.product.genre?.genreName ?: "",
+                        onValueChange = {},
+                        label = { Text("Genre") },
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = true,
+                        shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+                    )
+
+                    //Supplier
+                    OutlinedTextField(
+                        value = detailproduct.product.supplier?.name ?: "",
+                        onValueChange = {},
+                        label = { Text("Supplier") },
+                        modifier = Modifier.fillMaxWidth(),
+                        readOnly = true,
+                        shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+                    )
 
                     //Quantity
                     OutlinedTextField(
@@ -158,6 +128,17 @@ fun DetailProduct(
                         onValueChange = {},
                         enabled = false,
                         label = { Text(text = stringResource(id = R.string.quantity_title)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        shape = RoundedCornerShape(Dimens.PADDING_10_DP),
+                    )
+
+                    //Storage Location
+                    OutlinedTextField(
+                        value = detailproduct.product.storageLocation?.storageLocationName ?: "",
+                        onValueChange = {},
+                        enabled = false,
+                        label = { Text(text = "Storage Location") },
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         shape = RoundedCornerShape(Dimens.PADDING_10_DP),
@@ -185,92 +166,6 @@ fun DetailProduct(
                         shape = RoundedCornerShape(Dimens.PADDING_10_DP),
                     )
 
-                    //supplier
-//                    var expandedSupplier by remember { mutableStateOf(false) }
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .wrapContentSize(Alignment.TopStart)
-//                    ) {
-//                        OutlinedTextField(
-//                            value = selectedOption,
-//                            onValueChange = {},
-//                            label = { Text("Genre") },
-//                            modifier = Modifier.fillMaxWidth(),
-//                            readOnly = true,
-//                            shape = RoundedCornerShape(Dimens.PADDING_10_DP)
-//                        )
-//                        IconButton(modifier = Modifier
-//                            .zIndex(1f)
-//                            .align(Alignment.BottomEnd),
-//                            onClick = { expandedSupplier = true }) {
-//                            Icon(
-//                                painter = painterResource(id = R.drawable.ic_add_mini_button),
-//                                contentDescription = ""
-//                            )
-//                        }
-//                        DropdownMenu(
-//                            expanded = expandedSupplier,
-//                            onDismissRequest = { expandedSupplier = false },
-//                            modifier = Modifier
-//                                .padding(horizontal = Dimens.PADDING_10_DP)
-//                                .fillMaxWidth()
-//                        ) {
-//                            options.forEach { option -> //TODO()
-//                                DropdownMenuItem(onClick = {
-//                                    selectedOption = option
-//                                    expandedSupplier = false
-//                                }) {
-//                                    Text(option)
-//                                }
-//                            }
-//                            Text(text = "Add new Supplier")
-//                        }
-//                    }
-
-                    //storageLocationId
-//                    var expandedStorageLocation by remember { mutableStateOf(false) }
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .wrapContentSize(Alignment.TopStart)
-//                    ) {
-//                        OutlinedTextField(
-//                            value = selectedOption,
-//                            onValueChange = {},
-//                            label = { Text("Genre") },
-//                            modifier = Modifier.fillMaxWidth(),
-//                            readOnly = true,
-//                            shape = RoundedCornerShape(Dimens.PADDING_10_DP)
-//                        )
-//                        IconButton(modifier = Modifier
-//                            .zIndex(1f)
-//                            .align(Alignment.BottomEnd),
-//                            onClick = { expandedStorageLocation = true }) {
-//                            Icon(
-//                                painter = painterResource(id = R.drawable.ic_add_mini_button),
-//                                contentDescription = ""
-//                            )
-//                        }
-//                        DropdownMenu(
-//                            expanded = expandedStorageLocation,
-//                            onDismissRequest = { expandedStorageLocation = false },
-//                            modifier = Modifier
-//                                .padding(horizontal = Dimens.PADDING_10_DP)
-//                                .fillMaxWidth()
-//                        ) {
-//                            options.forEach { option -> //TODO()
-//                                DropdownMenuItem(onClick = {
-//                                    selectedOption = option
-//                                    expandedStorageLocation = false
-//                                }) {
-//                                    Text(option)
-//                                }
-//                            }
-//                        }
-//                    }
-
-
                     // DateTime Picker
                     OutlinedTextField(
                         value = detailproduct.product.lastUpdated.toString(),
@@ -287,7 +182,9 @@ fun DetailProduct(
                     )
 
                     //image
-                    UploadImageButton(onImageSelected = {})
+                    UploadImageButton(
+                        inputImageUrl = detailproduct.product.image,
+                        onImageSelected = {})
 
                     //  "inStock": true
                     Row(verticalAlignment = Alignment.CenterVertically) {

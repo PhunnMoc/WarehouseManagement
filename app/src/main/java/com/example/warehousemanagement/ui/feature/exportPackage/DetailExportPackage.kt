@@ -159,6 +159,7 @@ fun ExportPackage(
                     BigButton(
                         onClick = {
                             onUpdateExportPackage()
+                            onBack()
                         },
                         enabled = true,
                         modifier = Modifier

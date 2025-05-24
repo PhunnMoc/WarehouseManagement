@@ -13,10 +13,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.RadioButton
@@ -69,7 +73,8 @@ fun FilterProductScreen(
     val listStorageLocation by viewModelStorageLocation.storageLocationUiState.collectAsStateWithLifecycle()
     ModalBottomSheet(onDismissRequest = onDismiss) {
         Column(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -94,6 +99,7 @@ fun FilterProductScreen(
             Button(onClick = { /*TODO*/ }) {
                 Text(text = "Filter")
             }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
@@ -255,7 +261,7 @@ fun FilterByStorageLocationId(
             .padding(Dimens.PADDING_20_DP)
     ) {
         Text(
-            text = stringResource(id = R.string.filter_tile_supplier),
+            text = stringResource(id = R.string.filter_tile_storage_location),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Dimens.PADDING_5_DP),

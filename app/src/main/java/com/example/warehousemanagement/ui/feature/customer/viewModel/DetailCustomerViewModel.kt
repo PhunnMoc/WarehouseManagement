@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,4 +46,13 @@ class DetailCustomerViewModel @Inject constructor(
                     is Result.Loading -> DetailCustomerUiState.Loading
                 }
             }
+
+    fun updateCustomer(customer: Customer) {
+        viewModelScope.launch {
+            wareHouseRepository.updateNewCustomer(
+                id = customer.idCustomer,
+                customer = customer
+            )
+        }
+    }
 }

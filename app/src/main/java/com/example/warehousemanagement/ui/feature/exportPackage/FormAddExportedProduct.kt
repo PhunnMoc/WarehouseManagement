@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.ui.feature.exportPackage
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -35,6 +36,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -65,6 +68,7 @@ import com.example.warehousemanagement.ui.common.InputArea
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
 import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.FormAddExportedProductViewModel
+import com.example.warehousemanagement.ui.feature.importPackage.FormImportProductData
 import com.example.warehousemanagement.ui.feature.importPackage.TotalImportPackage
 import com.example.warehousemanagement.ui.feature.search.CustomerItem
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchCustomerUiState
@@ -80,11 +84,20 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun FormAddExportedProduct(
     onNavigationBack: () -> Unit,
-    onNavigationHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FormAddExportedProductViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val message by viewModel.message.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    // Hiển thị Toast khi có message
+    LaunchedEffect(message) {
+        message?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.clearMessage()
+        }
+    }
     var shouldEnableSubmitButton by remember { mutableStateOf(false) }
 
     var packageName by remember { mutableStateOf("") }
@@ -99,7 +112,7 @@ fun FormAddExportedProduct(
         topBar = {
             HeaderOfScreen(
                 containerColor = Color.Transparent,
-                mainTitleText = stringResource(id = R.string.screen_import_main_title),
+                mainTitleText = stringResource(id = R.string.screen_export_main_title),
                 startContent = {
                     Image(painter = painterResource(id = R.drawable.icons8_back),
                         contentDescription = "Back",
@@ -134,7 +147,7 @@ fun FormAddExportedProduct(
                                 .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                             customerId = customer?.idCustomer ?: "hehe"
                         )
-                        onNavigationHome()
+                        onNavigationBack()
                     })
             }
         }
@@ -188,7 +201,7 @@ fun FormExportProducts(
     onUpdatePackageName: (String) -> Unit,
     onUpdatePackageDescription: (String) -> Unit,
     customer: Customer?,
-    onUpdateCustomer: (Customer) -> Unit ,
+    onUpdateCustomer: (Customer) -> Unit,
 ) {
     val searchProduct by viewModel.searchProductUiState.collectAsStateWithLifecycle()
     val isAllFull = exportProductList.all { it.isFill() }
@@ -510,17 +523,20 @@ fun FormExportProduct(
 }
 
 class FormExportProductData() {
+    var id by mutableStateOf("")
     var productName by mutableStateOf("")
     var product by mutableStateOf<Product?>(null)
     var quantity by mutableStateOf("")
 
     // Tạo một bản sao mới
     fun copy(
+        id: String = this.id,
         product: Product? = this.product,
         productName: String = this.productName,
         quantity: String = this.quantity,
     ): FormExportProductData {
         return FormExportProductData().apply {
+            this.id = id
             this.product = product
             this.productName = productName
             this.quantity = quantity
@@ -538,6 +554,23 @@ class FormExportProductData() {
         return productName.isNotEmpty() &&
                 product != null &&
                 quantity.isNotEmpty()
+    }
+}
+
+fun Map<Product, Int>.toFormExportProductDataList(): List<FormExportProductData> {
+    return this.map { (product, quantity) ->
+        FormExportProductData().apply {
+            this.id = product.id
+            this.product = product
+            this.productName = product.productName
+            this.quantity = quantity.toString()
+        }
+    }
+}
+
+fun List<FormExportProductData>.convertToMap(): Map<Product, Int> {
+    return this.associate { formExportProductData ->
+        formExportProductData.product!! to formExportProductData.quantity.toInt()
     }
 }
 

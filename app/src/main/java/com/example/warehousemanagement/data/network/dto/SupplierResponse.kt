@@ -10,3 +10,10 @@ data class SupplierResponse(
     @SerialName("customerName") val name: String?,
     @SerialName("ratings") val ratings: Int?,
 )
+
+data class SupplierRequest(
+    @SerialName("addressResponse") val address: AddressResponse?,
+    @SerialName("email") val email: String?,
+    @SerialName("customerName") val name: String?,
+    @SerialName("ratings") val ratings: Int?,
+)

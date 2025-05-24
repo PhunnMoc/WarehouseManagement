@@ -5,6 +5,7 @@
     <string name="screen_home_employee_main_title">WORKER</string>
     <string name="screen_notification_main_title">NOTIFICATION</string>
     <string name="screen_product_main_title">PRODUCT</string>
+    <string name="screen_chat_box_title">CHAT BOX</string>
     <string name="screen_report_main_title">REPORT</string>
     <string name="screen_storage_location_main_title">STORAGE LOCATION</string>
     <string name="screen_import_main_title">IMPORT PACKAGES</string>
@@ -21,7 +22,7 @@
     <string name="filter_tile_sort">Sort</string>
     <string name="filter_tile">Field</string>
     <string name="filter_tile_sellingPrice">Selling Price</string>
-    <string name="filter_tile_storage_location">Filter by Storage location</string>
+    <string name="filter_tile_storage_location">Storage location</string>
     <string name="filter_field_product_name">Product Name</string>
     <string name="filter_field_quantity">Quantity</string>
     <string name="filter_field_import_price">Import Price</string>

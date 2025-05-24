@@ -45,6 +45,7 @@ fun ExportPackageCard(
     exportPackage: ExportPackages,
     onCardClick: () -> Unit,
     onLongPress: (String) -> Unit,
+    onEditPendingPackage: (String) -> Unit,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -89,7 +90,7 @@ fun ExportPackageCard(
                     modifier = Modifier
                         .size(20.dp)
                         .clickable {
-                            // onEditPendingPackage(importPackage.idImportPackages)
+                             onEditPendingPackage(exportPackage.idExportPackages)
                         },
                     painter = painterResource(id = R.drawable.icons8_edit),
                     contentDescription = "Delete"

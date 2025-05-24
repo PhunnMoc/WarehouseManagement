@@ -521,6 +521,8 @@ fun FormImportProduct(
                         }
                     }
                 }
+
+                else -> {}
             }
         }
 
@@ -824,11 +826,12 @@ fun UploadImageButton(
     modifier: Modifier = Modifier,
     isText: Boolean = true,
     isShowPic: Boolean = true,
-    onImageSelected: (String?) -> Unit
+    onImageSelected: (String?) -> Unit,
+    inputImageUrl: String = "",
 ) {
     val context = LocalContext.current
     var imageName by remember { mutableStateOf("") }
-    var imageUrl by remember { mutableStateOf("") }
+    var imageUrl by remember { mutableStateOf(inputImageUrl) }
 
     if (ContextCompat.checkSelfPermission(
             context, Manifest.permission.READ_EXTERNAL_STORAGE

@@ -55,7 +55,7 @@ class SetStorageLocationProductViewModel @Inject constructor(
         savedStateHandle.getStateFlow(KEY_ID, "")
             .map {
                 delay(2000)
-                wareHouseRepository.getImportPackageById(id = it)
+                wareHouseRepository.getDoneImportPackageById(id = it)
             }.asResult()
             .map { importPackage ->
                 when (importPackage) {

@@ -1,8 +1,14 @@
 package com.example.warehousemanagement.data.repository
 
 import com.example.warehousemanagement.data.mapper.convertToModel
+import com.example.warehousemanagement.data.mapper.convertToRequest
 import com.example.warehousemanagement.data.mapper.convertToResponse
+import com.example.warehousemanagement.data.network.dto.CostByMonthResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
+import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
+import com.example.warehousemanagement.data.network.dto.MonthlyCostResponse
+import com.example.warehousemanagement.data.network.dto.MonthlyRevenueResponse
+import com.example.warehousemanagement.data.network.dto.RevenueByMonthResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
@@ -77,6 +83,10 @@ class WareHouseRepositoryImpl @Inject constructor(
         return retrofit.getSupplierDetails(id = idSupplier).body()?.convertToModel()!!  //TODO()
     }
 
+    override suspend fun updateSupplier(id: String, supplier: Supplier) {
+        return retrofit.editSupplier(id = id, supplier = supplier.convertToResponse())
+    }
+
     override suspend fun getAllSupplierDetails(): List<Supplier> {
         TODO("Not yet implemented")
     }
@@ -109,6 +119,64 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun getStockSummaryByLocation(): List<StorageLocationSummary> {
         return retrofit.getStockSummaryByLocation().body() ?: listOf()
+    }
+
+    override suspend fun getGenreByRangeSummaryImport(
+        startDate: Long,
+        endDate: Long,
+        limit: Int,
+    ): List<GenreByRangeSummaryResponse> {
+        return retrofit.getTopGenreByRangeImport(
+            startDate = startDate,
+            endDate = endDate,
+            limit = limit,
+        ).body() ?: listOf()
+    }
+
+    override suspend fun getGenreByRangeSummaryExport(
+        startDate: Long,
+        endDate: Long,
+        limit: Int
+    ): List<GenreByRangeSummaryResponse> {
+        return retrofit.getTopGenreByRangeExport(
+            startDate = startDate,
+            endDate = endDate,
+            limit = limit,
+        ).body() ?: listOf()
+    }
+
+    override suspend fun getMonthlyRevenue(
+        year: Int,
+    ): List<MonthlyRevenueResponse> {
+        return retrofit.getMonthlyRevenue(
+            year = year,
+        ).body() ?: listOf()
+    }
+
+    override suspend fun getDetailMonthlyRevenue(
+        year: Int,
+        month: Int,
+    ): List<RevenueByMonthResponse> {
+        return retrofit.getDetailMonthlyRevenue(
+            year = year,
+            month = month,
+        ).body() ?: listOf()
+    }
+
+    override suspend fun getMonthlyCost(year: Int): List<MonthlyCostResponse> {
+        return retrofit.getMonthlyCost(
+            year = year,
+        ).body() ?: listOf()
+    }
+
+    override suspend fun getDetailMonthlyCost(
+        year: Int,
+        month: Int,
+    ): List<CostByMonthResponse> {
+        return retrofit.getDetailMonthlyCost(
+            year = year,
+            month = month,
+        ).body() ?: listOf()
     }
 
     override suspend fun getPendingImportPackages(): List<ImportPackages> {
@@ -156,6 +224,16 @@ class WareHouseRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun updatePendingExportPackage(
+        id: String,
+        updatedExportPackage: ExportPackages,
+    ) {
+        retrofit.updatePendingExportPackage(
+            id = id,
+            updatedExportPackage = updatedExportPackage.convertToResponse(),
+        )
+    }
+
     override suspend fun getPendingExportPackages(): List<ExportPackages> {
         return retrofit.getPendingExportPackages().body()?.mapNotNull { it.convertToModel() }
             ?: listOf()
@@ -188,11 +266,18 @@ class WareHouseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addNewSupplier(supplier: Supplier) {
-        return retrofit.addNewSupplier(supplier = supplier.convertToResponse())// ?: "Can't add"
+        return retrofit.addNewSupplier(supplier = supplier.convertToRequest())// ?: "Can't add"
     }
 
     override suspend fun addNewCustomer(customer: Customer) {
         return retrofit.addNewCustomer(customer = customer.convertToResponse())// ?: "Can't add"
+    }
+
+    override suspend fun updateNewCustomer(id: String, customer: Customer) {
+        return retrofit.editCustomer(
+            id = id,
+            customer = customer.convertToResponse()
+        )
     }
 
     override suspend fun login(username: String, password: String): Map<String, String> {
@@ -204,12 +289,21 @@ class WareHouseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserDetail(id: String, user: User) {
-        return retrofit.updateUser(id = id,
-            updated = user)
+        return retrofit.updateUser(
+            id = id,
+            updated = user
+        )
+    }
+
+    override suspend fun addNewUser(user: User) {
+        return retrofit.addNewUser(
+            updated = user
+        )
     }
 
     override suspend fun getAllUserDetails(): List<User> {
-        return retrofit.getAllUserDetails().body()?.mapNotNull { it.convertToModel() } ?: listOf()
+        return retrofit.getAllUserDetails().body()?.mapNotNull { it.convertToModel() }
+            ?: listOf()
     }
 
     override suspend fun getAllNotificationDetails(): List<Notification> {
@@ -218,5 +312,9 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun addNewGenre(genre: Genre) {
         return retrofit.addNewGenre(genre = genre.convertToResponse())// ?: "Can't add"
+    }
+
+    override suspend fun getAnswerChatBox(question: String): String {
+        return retrofit.getAnswerChatBox(question = question).body() ?: ""
     }
 }

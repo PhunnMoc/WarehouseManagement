@@ -185,7 +185,9 @@ fun SuggestionView(
 }
 
 @Composable
-fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
+fun SearchBarWithSuggestion(
+    onNavigateToChatbox: () -> Unit = {},
+) { //API
     var text by remember {  // text will be a flow saveHandle
         mutableStateOf("")
     }
@@ -227,9 +229,6 @@ fun SearchBarWithSuggestion(listSuggestions: List<String>) { //API
                 )
             }
         )
-        if (text.isNotEmpty()) {
-            SuggestionView(listSuggestions)
-        }
     }
 }
 
@@ -276,11 +275,4 @@ fun SearchBarPreview(
 fun SuggestionViewPreview() {
     val listSuggestions = listOf<String>("Phuong Trinh", "Bun cha Iris Trinh Area", "Product")
     SuggestionView(listSuggestions)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SearchBarWithSuggestionPreview() {
-    val listSuggestions = listOf<String>("Phuong Trinh", "Bun cha Iris Trinh Area", "Product")
-    SearchBarWithSuggestion(listSuggestions)
 }

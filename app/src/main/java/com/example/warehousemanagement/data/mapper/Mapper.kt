@@ -3,11 +3,14 @@ package com.example.warehousemanagement.data.mapper
 import com.example.warehousemanagement.data.network.dto.AddressResponse
 import com.example.warehousemanagement.data.network.dto.CustomerResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
+import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
+import com.example.warehousemanagement.data.network.dto.InformationResponse
 import com.example.warehousemanagement.data.network.dto.ProductResponse
 import com.example.warehousemanagement.data.network.dto.ReceiverResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
+import com.example.warehousemanagement.data.network.dto.SupplierRequest
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
 import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.data.network.dto.convertToResponse
@@ -15,11 +18,15 @@ import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
+import com.example.warehousemanagement.domain.model.GenreByRangeSummary
 import com.example.warehousemanagement.domain.model.ImportPackages
+import com.example.warehousemanagement.domain.model.Information
 import com.example.warehousemanagement.domain.model.Product
+import com.example.warehousemanagement.domain.model.Role
 import com.example.warehousemanagement.domain.model.StorageLocation
 import com.example.warehousemanagement.domain.model.Supplier
 import com.example.warehousemanagement.domain.model.User
+import com.example.warehousemanagement.domain.model.convertToRole
 
 fun ProductResponse.convertToModel(): Product {
 
@@ -118,6 +125,14 @@ fun Supplier.convertToResponse(): SupplierResponse {
         ratings = ratings,
     )
 }
+fun Supplier.convertToRequest(): SupplierRequest {
+    return SupplierRequest(
+        name = name,
+        email = email,
+        address = address.convertToResponse(),
+        ratings = ratings,
+    )
+}
 
 fun CustomerResponse.convertToModel(): Customer? {
     if (id == null || customerName == null || email == null || address == null) {
@@ -199,7 +214,16 @@ fun ReceiverResponse.convertToModel(): User? {
         idUser = _id,
         username = username ?: "",
         passwordHash = passwordHash ?: "",
-        information = information,
+        information = information.convertToResponse(),
+    )
+}
+
+fun User.convertToResponse(): ReceiverResponse {
+    return ReceiverResponse(
+        _id = idUser,
+        username = username ?: "",
+        passwordHash = passwordHash ?: "",
+        information = information.convertToResponse(),
     )
 }
 
@@ -211,7 +235,7 @@ fun UserResponse.convertToModel(): User? {
         idUser = _id,
         username = username ?: "",
         passwordHash = passwordHash ?: "",
-        information = information,
+        information = information.convertToResponse(),
     )
 }
 
@@ -229,5 +253,41 @@ fun ExportPackageResponse.convertToModel(): ExportPackages? {
         status = statusDone ?: "PENDING",
         note = note,
         sender = sender.convertToModel()!!,
+    )
+}
+
+fun ExportPackages.convertToResponse(): ExportPackageResponse {
+    return ExportPackageResponse(
+        id = idExportPackages,
+        exportDate = exportDate,
+        listProducts = listProduct.convertToResponse(),
+        note = note,
+        packageName = packageName,
+        statusDone = status,
+        sender = sender.convertToResponse(),
+        customer = customer.convertToResponse(),
+        deliveryMethod = "",
+    )
+}
+
+fun Information?.convertToResponse (): InformationResponse{
+    return InformationResponse(
+        email= this?.email,
+        firstName= this?.firstName,
+        idInformation= this?.idInformation,
+        lastName= this?.lastName,
+        picture= this?.picture,
+        role= this?.role?.name,
+    )
+}
+
+fun InformationResponse.convertToResponse (): Information{
+    return Information(
+        email=email?:"",
+        firstName=firstName?:"",
+        idInformation=idInformation?:"",
+        lastName=lastName?:"",
+        picture=picture,
+        role=role?.convertToRole()?: Role.USER,
     )
 }

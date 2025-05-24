@@ -73,6 +73,7 @@ fun DetailPendingImportPackage(
     viewModel: DetailImportViewModel = hiltViewModel(),
     navigateToSetStorageLocationScreen: (String) -> Unit,
     onBack: () -> Unit,
+    openObjectCounting: () -> Unit,
 ) {
     CompositionLocalProvider(LocalTextStyle provides TextStyle(fontFamily = QuickSand)) {
         val detailImportUiState by viewModel.detailPendingImportPackageUiState.collectAsStateWithLifecycle()
@@ -86,7 +87,8 @@ fun DetailPendingImportPackage(
                     importPackage = detail.detailImportPackage,
                     navigateToSetStorageLocationScreen = navigateToSetStorageLocationScreen,
                     onBack = onBack,
-                    onUpdateImportPackage = viewModel::updateImportPackage
+                    onUpdateImportPackage = viewModel::updateImportPackage,
+                    openObjectCounting = openObjectCounting,
                 )
             }
         }
@@ -96,13 +98,14 @@ fun DetailPendingImportPackage(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImportPackage(
-    isPending : Boolean = true,
+    isPending: Boolean = true,
     modifier: Modifier = Modifier,
     user: User,
     importPackage: ImportPackages,
     navigateToSetStorageLocationScreen: (String) -> Unit,
     onBack: () -> Unit,
     onUpdateImportPackage: (String) -> Unit,
+    openObjectCounting: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -127,7 +130,7 @@ fun ImportPackage(
             )
         },
         bottomBar = {
-            if(isPending){
+            if (isPending) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -263,7 +266,10 @@ fun ImportPackage(
                                 fontSize = 10.sp,
                             )
                             importPackage.listProducts.forEach { product ->
-                                ProductItemDetail(product = product)
+                                ProductItemDetail(
+                                    openObjectCounting = openObjectCounting,
+                                    product = product
+                                )
                             }
 
                         }
@@ -278,6 +284,7 @@ fun ImportPackage(
 fun ProductItemDetail(
     modifier: Modifier = Modifier,
     product: Product,
+    openObjectCounting: () -> Unit,
 ) {
     var isCompactView by remember { mutableStateOf(false) }
     Row {
@@ -299,11 +306,14 @@ fun ProductItemDetail(
             )
 
             // Animation cho nội dung hiển thị
-            Column{
+            Column {
                 AnimatedVisibility(visible = !isCompactView) {
-                    ExpandedImportView(product = product)
+                    ExpandedImportView(
+                        openObjectCounting = openObjectCounting,
+                        product = product
+                    )
                 }
-                if (isCompactView){
+                if (isCompactView) {
                     Text(
                         fontWeight = FontWeight.W600,
                         fontSize = 15.sp,
@@ -318,7 +328,10 @@ fun ProductItemDetail(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ExpandedImportView(product: Product) {
+fun ExpandedImportView(
+    openObjectCounting: () -> Unit,
+    product: Product
+) {
     Column {
         Row(verticalAlignment = Alignment.Top) {
             Image(
@@ -332,18 +345,29 @@ fun ExpandedImportView(product: Product) {
                 contentScale = ContentScale.Crop
             )
             Column(modifier = Modifier.weight(1f, false)) {
-                Text(
-                    text = "${product.genre?.genreName}",
-                    fontWeight = FontWeight.W600,
-                    fontSize = 10.sp,
-                    color = colorResource(id = R.color.background_theme),
-                )
-                Text(
-                    fontWeight = FontWeight.W600,
-                    fontSize = 15.sp,
-                    text = product.productName,
-                    modifier = Modifier.padding(vertical = 5.dp)
-                )
+                Row {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "${product.genre?.genreName}",
+                            fontWeight = FontWeight.W600,
+                            fontSize = 10.sp,
+                            color = colorResource(id = R.color.background_theme),
+                        )
+                        Text(
+                            fontWeight = FontWeight.W600,
+                            fontSize = 15.sp,
+                            text = product.productName,
+                            modifier = Modifier.padding(vertical = 5.dp)
+                        )
+                    }
+                    Image(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { openObjectCounting() },
+                        painter = painterResource(id = R.drawable.camera_tool),
+                        contentDescription = "Delete"
+                    )
+                }
                 Text(
                     text = "${product.description}",
                 )
@@ -360,6 +384,7 @@ fun ExpandedImportView(product: Product) {
 
                 Spacer(modifier = Modifier.height(8.dp))
             }
+
         }
 
         FlowRow {

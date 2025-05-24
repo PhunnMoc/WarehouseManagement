@@ -111,14 +111,9 @@ fun DetailSupplier(
                     )
 
                     // Ratings
-                    OutlinedTextField(
-                        value = detailSupplier.supplier.ratings.toString(),
-                        onValueChange = {},
-                        label = { Text("Ratings") },
-                        enabled = false,
+                    StarRatingUI(
                         modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+                        rating = detailSupplier.supplier.ratings ?: 0,
                     )
 
                     Spacer(modifier = Modifier.weight(1f))

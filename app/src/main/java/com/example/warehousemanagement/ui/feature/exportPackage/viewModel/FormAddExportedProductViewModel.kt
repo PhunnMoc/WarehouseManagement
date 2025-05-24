@@ -8,10 +8,14 @@ import com.example.warehousemanagement.data.network.dto.ExportProductDto
 import com.example.warehousemanagement.data.network.dto.ReceiverResponse
 import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.asResult
+import com.example.warehousemanagement.domain.model.Customer
+import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
+import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
+import com.example.warehousemanagement.ui.feature.importPackage.viewModel.KEY_ID
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_CUSTOMER_QUERY
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_PRODUCT_QUERY
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_PRODUCT_QUERY_NAME
@@ -35,10 +39,50 @@ import javax.inject.Inject
 class FormAddExportedProductViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
     private val savedStateHandle: SavedStateHandle,
-    private val preferencesRepository: PreferencesRepository,
+    val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
+    private val _message = MutableStateFlow<String?>(null)
+    val message: StateFlow<String?> = _message
+
     val idSender = preferencesRepository.getUserId()
+    val idExportPackages: String = savedStateHandle.get<String>(KEY_ID) ?: ""
+
+    fun updatePackage(
+        date: String,
+        note: String,
+        packageName: String,
+        listProducts: Map<Product, Int>,
+        customer: Customer,
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                wareHouseRepository.updatePendingExportPackage(
+                    id = idExportPackages,
+                    updatedExportPackage = ExportPackages(
+                        idExportPackages = idExportPackages,
+                        packageName = packageName,
+                        listProduct = listProducts,
+                        exportDate = date,
+                        customer = customer,
+                        status = "PENDING",
+                        note = note,
+                        sender = User(
+                            idUser = preferencesRepository.getUserId().stateIn(this).value,
+                            "",
+                            "",
+                            null,
+                        ),
+                    ),
+                )
+            }.onSuccess {
+                _message.value = "Updated successfully"
+            }.onFailure { e ->
+                _message.value = "Update failed, please check again"
+            }
+        }
+    }
+
     fun addPackage(
         date: String,
         note: String,
@@ -47,7 +91,7 @@ class FormAddExportedProductViewModel @Inject constructor(
         listExportProducts: List<ExportProductDto>,
     ) {
         viewModelScope.launch {
-            try {
+            runCatching {
                 idSender.collect { idSender ->
                     wareHouseRepository.addPendingExportPackages(
                         pendingExportPackage = ExportPackagePendingDto(
@@ -61,12 +105,17 @@ class FormAddExportedProductViewModel @Inject constructor(
                         )
                     )
                 }
-            } catch (e: Exception) {
-                println("HUHU $e")
+            }.onSuccess {
+                _message.value = "Added new package successfully"
+            }.onFailure { e ->
+                _message.value = "Add new package failed, please check again"
             }
         }
     }
 
+    fun clearMessage() {
+        _message.value = null
+    }
 
     val searchProductUiState: StateFlow<SearchProductUiState> =
         searchProductResult()

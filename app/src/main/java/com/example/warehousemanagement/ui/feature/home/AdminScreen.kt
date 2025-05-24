@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.ui.feature.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -17,6 +18,7 @@ import androidx.compose.ui.zIndex
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.FunctionContainer
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.common.SearchBarWithSuggestion
 import com.example.warehousemanagement.ui.common.WrapIcon
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -36,6 +38,7 @@ fun HalfIcon(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminScreen(
+    onNavigateToChatbox: () -> Unit,
     onNavigateToScranQrScreen: () -> Unit,
     onNavigateToProduct: () -> Unit,
     onNavigateToStorageLocation: () -> Unit,
@@ -87,7 +90,10 @@ fun AdminScreen(
                             .padding(end = Dimens.PADDING_5_DP),
                         onClickIcon = onNavigateToScranQrScreen,
                     )
-                    SearchBarWithSuggestion(listSuggestions)
+                    SearchBarPreview(
+                        enabled = false,
+                        modifier=Modifier.clickable { onNavigateToChatbox() }
+                    )
                 }
 
                 FunctionContainer(

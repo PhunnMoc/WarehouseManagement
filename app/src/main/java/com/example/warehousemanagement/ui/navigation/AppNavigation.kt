@@ -41,12 +41,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.ui.feature.camera.QRCodeScannerScreen
+import com.example.warehousemanagement.ui.feature.camera.objectDetect.DetectionScreen
 import com.example.warehousemanagement.ui.feature.customer.CustomersScreen
 import com.example.warehousemanagement.ui.feature.customer.DetailCustomer
 import com.example.warehousemanagement.ui.feature.customer.FormAddOrEditCustomerForm
 import com.example.warehousemanagement.ui.feature.exportPackage.DetailExportPackage
 import com.example.warehousemanagement.ui.feature.exportPackage.ExportPackageScreen
 import com.example.warehousemanagement.ui.feature.exportPackage.FormAddExportedProduct
+import com.example.warehousemanagement.ui.feature.exportPackage.FormEditExportProduct
 import com.example.warehousemanagement.ui.feature.genre.FormAddOrEditGenreForm
 import com.example.warehousemanagement.ui.feature.genre.GenreScreen
 import com.example.warehousemanagement.ui.feature.home.AdminScreen
@@ -78,17 +80,22 @@ import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 import com.example.warehousemanagement.ui.theme.size_icon_30
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.example.warehousemanagement.ui.feature.camera.objectDetect.YuvToRgbConverter
+import com.example.warehousemanagement.ui.feature.chatBox.ChatBoxScreen
+import com.example.warehousemanagement.ui.feature.customer.EditCustomerScreen
+import com.example.warehousemanagement.ui.feature.supplier.EditSupplierScreen
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import org.tensorflow.lite.Interpreter
+import java.util.concurrent.ExecutorService
 
 @Composable
 fun BottomBar(
     navController: NavHostController, modifier: Modifier = Modifier,
     homeRoute: Routes,
 ) {
-
 
     val iconNav = listOf(
         R.drawable.icons8_home__1_,
@@ -166,7 +173,11 @@ fun hiltEntryPoint(): AppEntryPoint {
 
 @Composable
 fun AppNavigation(
-    preferencesRepository: PreferencesRepository = hiltEntryPoint().preferencesRepository()
+    preferencesRepository: PreferencesRepository = hiltEntryPoint().preferencesRepository(),
+    cameraExecutor: ExecutorService,
+    yuvToRgbConverter: YuvToRgbConverter,
+    interpreter: Interpreter,
+    labels: List<String>
 ) {
     val systemUiController = rememberSystemUiController()
     systemUiController.setSystemBarsColor(
@@ -213,6 +224,7 @@ fun AppNavigation(
 
                 composable<Routes.HomeAdmin> {
                     AdminScreen(
+                        onNavigateToChatbox = { navigationController.navigate(Routes.ChatBox) },
                         onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
@@ -249,8 +261,26 @@ fun AppNavigation(
                     isShowNavigation = true
                 }
 
+                composable<Routes.ChatBox> {
+                    ChatBoxScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                    )
+                    isShowNavigation = false
+                }
+
                 composable<Routes.Analyze> {
-                    ReportScreen()
+                    ReportScreen(
+                        navigateToExportDetail = { id ->
+                            navigationController.navigate(
+                                Routes.EditExportPackages(id = id)
+                            )
+                        },
+                        navigateToImportDetail = { id ->
+                            navigationController.navigate(
+                                Routes.EditImportPackages(id = id)
+                            )
+                        }
+                    )
                     isShowNavigation = true
 
                 }
@@ -296,22 +326,32 @@ fun AppNavigation(
                 }
 
                 composable<Routes.AddImportPackages> {
-                    FormAddOrEditProductForm(
-                        onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) },
+                    FormAddOrEditProductForm(onNavigationToHome = {
+                        navigationController.navigate(
+                            Routes.HomeAdmin
+                        )
+                    },
                         onBackClick = { navigationController.navigate(Routes.ImportPackage) })
                     isShowNavigation = false
                 }
                 composable<Routes.EditImportPackages> {
-                    FormEditImportProduct(
-                        onNavigationToHome = { navigationController.navigate(Routes.HomeAdmin) },
+                    FormEditImportProduct(onNavigationToHome = {
+                        navigationController.navigate(
+                            Routes.HomeAdmin
+                        )
+                    },
                         onBackClick = { navigationController.navigate(Routes.ImportPackage) })
+                    isShowNavigation = false
+                }
+                composable<Routes.EditExportPackages> {
+                    FormEditExportProduct(
+                        onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
 
                 composable<Routes.AddExportPackages> {
                     FormAddExportedProduct(
-                        onNavigationHome = { navigationController.navigate(Routes.HomeAdmin) },
-                        onNavigationBack = { navigationController.navigate(Routes.ExportPackage) })
+                        onNavigationBack = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
 
@@ -409,8 +449,7 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.ImportPackage> {
-                    ImportPackageScreen(
-                        onClickAddProduct = { navigationController.navigate(Routes.AddImportPackages) },
+                    ImportPackageScreen(onClickAddProduct = { navigationController.navigate(Routes.AddImportPackages) },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onBackClick = { navigationController.navigate(startDestination) },
                         onClickSearch = { /*TODO*/ },
@@ -428,18 +467,20 @@ fun AppNavigation(
                             navigationController.navigate(
                                 Routes.EditImportPackages(id = it)
                             )
-                        }
-                    )
+                        })
                     isShowNavigation = false
                 }
 
                 composable<Routes.DetailPendingImportPackage> {
-                    DetailPendingImportPackage(onBack = { navigationController.popBackStack() },
+                    DetailPendingImportPackage(
+                        onBack = { navigationController.popBackStack() },
                         navigateToSetStorageLocationScreen = { id ->
                             navigationController.navigate(
                                 Routes.SetStorageImportPackage(id = id)
                             )
-                        })
+                        },
+                        openObjectCounting = { navigationController.navigate(Routes.Detection) },
+                    )
                 }
                 composable<Routes.DetailDoneImportPackage> {
                     DetailDoneImportPackage(onBack = { navigationController.popBackStack() },
@@ -463,14 +504,9 @@ fun AppNavigation(
                 }
 
                 composable<Routes.ExportPackage> {
-                    ExportPackageScreen(
-                        onClickAddExportForm = { packageName, note, customerId ->
-                            navigationController.navigate(
-                                Routes.AddExportPackages(
-                                    note = note, packageName = packageName, customerId = customerId,
-                                )
-                            )
-                        },
+                    ExportPackageScreen(onClickAddExportForm = {
+                        navigationController.navigate(Routes.AddExportPackages)
+                    },
                         onNavigationDetailExportPackage = { id ->
                             navigationController.navigate(
                                 Routes.DetailExportPackage(id = id)
@@ -478,8 +514,11 @@ fun AppNavigation(
                         },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onBackClick = { navigationController.navigate(startDestination) },
-                        onClickSearch = { /*TODO*/ },
-                    )
+                        onEditPendingPackage = {
+                            navigationController.navigate(
+                                Routes.EditExportPackages(id = it)
+                            )
+                        })
                     isShowNavigation = false
                 }
 
@@ -493,6 +532,13 @@ fun AppNavigation(
                                     idSupplier = id
                                 )
                             )
+                        },
+                        onNavigationEditSupplierScreen = { id ->
+                            navigationController.navigate(
+                                Routes.EditSupplier(
+                                    idSupplier = id,
+                                )
+                            )
                         })
 
                     isShowNavigation = false
@@ -504,6 +550,12 @@ fun AppNavigation(
                     )
                     isShowNavigation = false
 
+                }
+                composable<Routes.EditSupplier> { backStackEntry ->
+                    EditSupplierScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                    )
+                    isShowNavigation = false
                 }
 
                 composable<Routes.SearchSupplier> {
@@ -525,7 +577,8 @@ fun AppNavigation(
                     isShowNavigation = false
                 }
                 composable<Routes.Customers> {
-                    CustomersScreen(onBackClick = { navigationController.popBackStack() },
+                    CustomersScreen(
+                        onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { navigationController.navigate(Routes.SearchCustomer) },
                         onClickAddCustomer = { navigationController.navigate(Routes.AddCustomers) },
                         onNavigationDetailCustomer = { id ->
@@ -534,13 +587,26 @@ fun AppNavigation(
                                     id = id
                                 )
                             )
-                        })
+                        },
+                        onNavigateToEditCustomerScreen = { id ->
+                            navigationController.navigate(
+                                Routes.EditCustomer(
+                                    id = id
+                                )
+                            )
+                        },
+                    )
 
                     isShowNavigation = false
                 }
                 composable<Routes.SearchCustomer> {
                     SearchCustomerScreen(
-                        onBackClick = { navigationController.popBackStack() },
+                        onBackClick = {
+                            navigationController.popBackStack(
+                                route = Routes.SearchCustomer,
+                                inclusive = false,
+                            )
+                        },
                         onClickDetailCustomer = { id ->
                             navigationController.navigate(
                                 Routes.Customer(
@@ -558,7 +624,13 @@ fun AppNavigation(
                         onBackClick = { navigationController.popBackStack() },
                     )
                     isShowNavigation = false
-
+                }
+                composable<Routes.EditCustomer> { backStackEntry ->
+                    //  val product: Routes.Product = backStackEntry.toRoute()
+                    EditCustomerScreen(
+                        onBackClick = { navigationController.popBackStack() },
+                    )
+                    isShowNavigation = false
                 }
                 composable<Routes.AddCustomers> {
                     FormAddOrEditCustomerForm(onSubmit = {},
@@ -578,6 +650,14 @@ fun AppNavigation(
                 composable<Routes.UserDetail> {
                     UserDetailSreen(onNavigationBack = { navigationController.popBackStack() })
                     isShowNavigation = false
+                }
+                composable<Routes.Detection> {
+                    DetectionScreen(
+                        cameraExecutor = cameraExecutor,
+                        yuvToRgbConverter = yuvToRgbConverter,
+                        interpreter = interpreter,
+                        labels = labels
+                    )
                 }
             }
         }

@@ -43,6 +43,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,22 +82,18 @@ import com.example.warehousemanagement.ui.theme.QuickSand
 @Composable
 fun ExportPackageScreen(
     modifier: Modifier = Modifier,
-    onClickAddExportForm: (String, String, String) -> Unit,
+    onClickAddExportForm: () -> Unit,
     onClickAddProductByExcel: () -> Unit,
     onBackClick: () -> Unit,
-    onClickSearch: () -> Unit,
     onNavigationDetailExportPackage: (String) -> Unit,
+    onEditPendingPackage: (String) -> Unit,
     viewModel: ExportPackageViewMode = hiltViewModel(),
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     var isExpanded by remember { mutableStateOf(false) }
-    var isShowDialog by remember { mutableStateOf(false) }
-    var isFilter by remember {
-        mutableStateOf(false)
-    }
 
-    val exportPackagePendingUiState by viewModel.exportPackagePendingUiState.collectAsStateWithLifecycle()
-    val exportPackageDoneUiState by viewModel.exportPackageDoneUiState.collectAsStateWithLifecycle()
+    val exportPackagePendingUiState by viewModel.exportPackagePendingUiState.collectAsState()
+    val exportPackageDoneUiState by viewModel.exportPackageDoneUiState.collectAsState()
 
     val customerUiState by viewModel.customerUiState.collectAsStateWithLifecycle()
     Scaffold(containerColor = colorResource(id = R.color.background_white),
@@ -132,7 +129,7 @@ fun ExportPackageScreen(
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             FloatingActionButton(
-                                onClick = { isShowDialog = true },
+                                onClick = onClickAddExportForm,
                                 containerColor = colorResource(id = R.color.background_gray)
                             ) {
                                 Icon(Icons.Default.Add, contentDescription = "Action 1")
@@ -208,25 +205,11 @@ fun ExportPackageScreen(
                 //               FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
             TabBarExport(
+                onEditPendingPackage = onEditPendingPackage,
                 exportPackagePendingUiState = exportPackagePendingUiState,
                 exportPackageDoneUiState = exportPackageDoneUiState,
                 onNavigationDetailExportPackage = onNavigationDetailExportPackage
             )
-        }
-        if (isShowDialog) {
-            DialogAddExportPackage(title = stringResource(id = R.string.create_new_ip),
-                message = stringResource(id = R.string.package_name_title),
-                confirmText = "Create",
-                cancelText = "Cancel",
-                onConfirm = { packageName, note, customerId ->
-                    isShowDialog = false
-                    onClickAddExportForm(packageName, note, customerId)
-                },
-                customerUiState = customerUiState,
-                onChangCustomerIdQuery = { viewModel.onChangeCustomerIdQuery(it) },
-                onCancel = {
-                    isShowDialog = false
-                })
         }
     }
 }
@@ -234,6 +217,7 @@ fun ExportPackageScreen(
 @Composable
 fun TabBarExport(
     onNavigationDetailExportPackage: (String) -> Unit,
+    onEditPendingPackage: (String) -> Unit,
     exportPackagePendingUiState: ExportPackageUiState,
     exportPackageDoneUiState: ExportPackageUiState,
 ) {
@@ -271,6 +255,7 @@ fun TabBarExport(
         when (selectedTabIndex) {
             0 -> {
                 PendingExportPackage(
+                    onEditPendingPackage = onEditPendingPackage,
                     exportPackagePendingUiState = exportPackagePendingUiState,
                     onNavigationDetailExportPackages = onNavigationDetailExportPackage,
                 )
@@ -278,6 +263,7 @@ fun TabBarExport(
 
             1 -> {
                 DoneExportPackage(
+                    onEditPendingPackage = {},
                     exportPackageDoneUiState = exportPackageDoneUiState,
                     onNavigationDetailExportPackages = onNavigationDetailExportPackage,
                 )
@@ -360,7 +346,10 @@ fun DialogAddExportPackage(
                 if (customerUiState != null) {
                     CustomerCard(customer = customerUiState,
                         onCardClick = { /*TODO*/ },
-                        onLongPress = {})
+                        onLongPress = {},
+                        roleUiState = false,
+                        onEditCustomer = {}
+                    )
                 }
 
                 // Buttons

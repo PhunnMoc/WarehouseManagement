@@ -8,7 +8,6 @@ sealed class Routes {
     @Serializable
     object Login : Routes()
 
-
     @Serializable
     object HomeAdmin : Routes()
 
@@ -22,10 +21,16 @@ sealed class Routes {
     object Setting : Routes()
 
     @Serializable
+    object ChatBox : Routes()
+
+    @Serializable
     object Notification : Routes()
 
     @Serializable
     object QRCodeScanner : Routes()
+
+    @Serializable
+    object Detection : Routes()
 
     /////
 
@@ -44,17 +49,19 @@ sealed class Routes {
 
     @Serializable
     object AddImportPackages : Routes()
+
     @Serializable
     data class EditImportPackages(
-        val id  :String,
+        val id: String,
     ) : Routes()
 
     @Serializable
-    data class AddExportPackages(
-        val packageName: String,
-        val note: String,
-        val customerId: String
+    data class EditExportPackages(
+        val id: String,
     ) : Routes()
+
+    @Serializable
+    object AddExportPackages : Routes()
 
     @Serializable
     object AddProductByExcel : Routes()
@@ -106,6 +113,9 @@ sealed class Routes {
     data class Supplier(val idSupplier: String) : Routes()
 
     @Serializable
+    data class EditSupplier(val idSupplier: String) : Routes()
+
+    @Serializable
     object SearchSupplier : Routes()
 
     @Serializable
@@ -116,6 +126,9 @@ sealed class Routes {
 
     @Serializable
     data class Customer(val id: String) : Routes()
+
+    @Serializable
+    data class EditCustomer(val id: String) : Routes()
 
     @Serializable
     object SearchCustomer : Routes()

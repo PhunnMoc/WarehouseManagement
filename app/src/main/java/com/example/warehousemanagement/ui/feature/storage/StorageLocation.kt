@@ -186,7 +186,6 @@ fun StorageLocationScreen(
                 SearchBarPreview(enabled = false, modifier = Modifier.clickable {
                     onClickSearch()
                 })
-                FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
             when (val storageLocation = warehouseAreas) {

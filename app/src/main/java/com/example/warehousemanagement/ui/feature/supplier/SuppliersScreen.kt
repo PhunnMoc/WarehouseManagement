@@ -62,6 +62,7 @@ fun SuppliersScreen(
     onClickAddSupplier: () -> Unit,
     onClickSearch: () -> Unit,
     onNavigationDetailSupplier: (String) -> Unit,
+    onNavigationEditSupplierScreen: (String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: SupplierViewModel = hiltViewModel()
 ) {
@@ -154,7 +155,6 @@ fun SuppliersScreen(
                         onClickSearch()
                     }
                 )
-                FilterAndSortButtons(onFilterClick = { /*TODO*/ }) { /*TODO*/ }
             }
 
             //Spacer(modifier = Modifier.height(16.dp))
@@ -169,6 +169,8 @@ fun SuppliersScreen(
                                 supplier = supplier,
                                 onCardClick = {},
                                 onLongPress = onNavigationDetailSupplier,
+                                roleUiState = roleUiState,
+                                onEditSupplier = onNavigationEditSupplierScreen,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }

@@ -122,6 +122,7 @@ fun SetStorageLocationPendingProduct(
                                     ProductItemDetail(
                                         modifier = Modifier,
                                         product = product,
+                                        openObjectCounting = {},
                                     )
                                     BigButton(
                                         enabled = true,

@@ -174,7 +174,7 @@ fun UserDetailSreen(
                             singleLine = true
                         )
                         OutlinedTextField(
-                            value = temp.user.information?.role ?: "No role available",
+                            value = temp.user.information?.role?.value ?:"",
                             onValueChange = {},
                             label = { Text("Role") },
                             modifier = Modifier.fillMaxWidth(),
