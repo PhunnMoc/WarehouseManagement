@@ -95,8 +95,8 @@ import java.time.format.DateTimeFormatter
 fun FormAddOrEditProductForm(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onNavigationToHome: () -> Unit,
-    //onNavigateAddNewGenre: () -> Unit,
+    navigateToAddNewSupplier: () -> Unit,
+    navigateToAddNewGenre: () -> Unit,
     viewModel: FormImportPackageViewModel = hiltViewModel()
 ) {
 
@@ -123,7 +123,7 @@ fun FormAddOrEditProductForm(
                         modifier = Modifier
                             .size(25.dp)
                             .clickable {
-                                onNavigationToHome()
+                                onBackClick()
                             })
                 },
                 endContent = {},
@@ -181,6 +181,8 @@ fun FormAddOrEditProductForm(
                 onUpdatePackageDescription = {
                     packageDescription = it
                 },
+                navigateToAddNewSupplier = navigateToAddNewSupplier,
+                navigateToAddNewGenre = navigateToAddNewGenre,
             )
         }
     }
@@ -193,6 +195,8 @@ fun FormImportProduct(
     listSupplier: SearchSupplierUiState,
     listGenre: SearchGenreUiState,
     onRemove: () -> Unit,
+    navigateToAddNewGenre: () -> Unit,
+    navigateToAddNewSupplier: () -> Unit,
     onChangeSearchGenreQuery: (String) -> Unit,
     onChangeSearchSupplierQuery: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -363,7 +367,7 @@ fun FormImportProduct(
                                 text = "Add new Genre",
                                 modifier = Modifier
                                     .padding(top = Dimens.PADDING_10_DP)
-                                    .clickable { /* Handle Add New Genre */ },
+                                    .clickable { navigateToAddNewGenre() },
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -515,7 +519,7 @@ fun FormImportProduct(
                                 text = "Add new Supplier",
                                 modifier = Modifier
                                     .padding(top = Dimens.PADDING_10_DP)
-                                    .clickable { /* Handle Add New Genre */ },
+                                    .clickable { navigateToAddNewSupplier() },
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
@@ -659,6 +663,8 @@ fun FormImportProducts(
     onRemove: (Int) -> Unit,
     onProductChange: (FormImportProductData, Int) -> Unit,
     onAddOneMoreProduct: () -> Unit,
+    navigateToAddNewSupplier: () -> Unit,
+    navigateToAddNewGenre: () -> Unit,
     packageName: String,
     packageDescription: String,
     onUpdatePackageName: (String) -> Unit,
@@ -705,7 +711,9 @@ fun FormImportProducts(
                         onProductChange = { updatedProduct ->
                             onProductChange(updatedProduct, index)
                         },
-                        product = item
+                        product = item,
+                        navigateToAddNewGenre = navigateToAddNewGenre,
+                        navigateToAddNewSupplier = navigateToAddNewSupplier,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 

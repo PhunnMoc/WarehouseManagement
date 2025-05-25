@@ -51,6 +51,7 @@ import java.time.format.DateTimeFormatter
 fun FormEditExportProduct(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
+    navigateToAddNewCustomer: () -> Unit,
     viewModel: FormAddExportedProductViewModel = hiltViewModel(),
     viewModelDetail: DetailExportViewModel = hiltViewModel()
 ) {
@@ -158,6 +159,7 @@ fun FormEditExportProduct(
                         onUpdateCustomer = {
                             customer = it
                         },
+                        navigateToAddNewCustomer = navigateToAddNewCustomer,
                     )
                 }
             }

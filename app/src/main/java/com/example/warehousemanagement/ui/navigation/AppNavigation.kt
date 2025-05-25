@@ -326,31 +326,29 @@ fun AppNavigation(
                 }
 
                 composable<Routes.AddImportPackages> {
-                    FormAddOrEditProductForm(onNavigationToHome = {
-                        navigationController.navigate(
-                            Routes.HomeAdmin
-                        )
-                    },
-                        onBackClick = { navigationController.navigate(Routes.ImportPackage) })
+                    FormAddOrEditProductForm(
+                        navigateToAddNewGenre = { navigationController.navigate(Routes.AddGenres) },
+                        navigateToAddNewSupplier = { navigationController.navigate(Routes.AddSuppliers) },
+                        onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
                 composable<Routes.EditImportPackages> {
-                    FormEditImportProduct(onNavigationToHome = {
-                        navigationController.navigate(
-                            Routes.HomeAdmin
-                        )
-                    },
+                    FormEditImportProduct(
+                        navigateToAddNewGenre = { navigationController.navigate(Routes.AddGenres) },
+                        navigateToAddNewSupplier = { navigationController.navigate(Routes.AddSuppliers) },
                         onBackClick = { navigationController.navigate(Routes.ImportPackage) })
                     isShowNavigation = false
                 }
                 composable<Routes.EditExportPackages> {
                     FormEditExportProduct(
+                        navigateToAddNewCustomer = { navigationController.navigate(Routes.AddCustomers) },
                         onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
 
                 composable<Routes.AddExportPackages> {
                     FormAddExportedProduct(
+                        navigateToAddNewCustomer = { navigationController.navigate(Routes.AddCustomers) },
                         onNavigationBack = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
@@ -451,7 +449,7 @@ fun AppNavigation(
                 composable<Routes.ImportPackage> {
                     ImportPackageScreen(onClickAddProduct = { navigationController.navigate(Routes.AddImportPackages) },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
-                        onBackClick = { navigationController.navigate(startDestination) },
+                        onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { /*TODO*/ },
                         onNavigationDetailPendingImportPackage = { id ->
                             navigationController.navigate(
@@ -479,7 +477,14 @@ fun AppNavigation(
                                 Routes.SetStorageImportPackage(id = id)
                             )
                         },
-                        openObjectCounting = { navigationController.navigate(Routes.Detection) },
+                        openObjectCounting = { id, quantity ->
+                            navigationController.navigate(
+                                Routes.Detection(
+                                    id = id,
+                                    quantity = quantity,
+                                )
+                            )
+                        },
                     )
                 }
                 composable<Routes.DetailDoneImportPackage> {
@@ -656,7 +661,10 @@ fun AppNavigation(
                         cameraExecutor = cameraExecutor,
                         yuvToRgbConverter = yuvToRgbConverter,
                         interpreter = interpreter,
-                        labels = labels
+                        labels = labels,
+                        onBack = {
+                            navigationController.popBackStack()
+                        }
                     )
                 }
             }

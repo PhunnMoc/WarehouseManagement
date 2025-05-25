@@ -48,8 +48,8 @@ import java.time.format.DateTimeFormatter
 fun FormEditImportProduct(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
-    onNavigationToHome: () -> Unit,
-    //onNavigateAddNewGenre: () -> Unit,
+    navigateToAddNewSupplier: () -> Unit,
+    navigateToAddNewGenre: () -> Unit,
     viewModel: FormImportPackageViewModel = hiltViewModel(),
     viewModelDetail: DetailImportViewModel = hiltViewModel()
 ) {
@@ -110,7 +110,7 @@ fun FormEditImportProduct(
                                     date = LocalDate.now().atStartOfDay()
                                         .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                                 )
-                                onNavigationToHome()
+                                onBackClick()
                             })
                     }
                 }
@@ -144,6 +144,8 @@ fun FormEditImportProduct(
                         onUpdatePackageDescription = {
                             packageDescription = it
                         },
+                        navigateToAddNewSupplier = navigateToAddNewSupplier,
+                        navigateToAddNewGenre = navigateToAddNewGenre,
                     )
                 }
             }

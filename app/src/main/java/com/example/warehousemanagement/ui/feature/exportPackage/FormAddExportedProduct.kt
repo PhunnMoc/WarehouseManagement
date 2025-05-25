@@ -33,6 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -84,6 +85,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun FormAddExportedProduct(
     onNavigationBack: () -> Unit,
+    navigateToAddNewCustomer: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: FormAddExportedProductViewModel = hiltViewModel()
 ) {
@@ -182,6 +184,7 @@ fun FormAddExportedProduct(
                 onUpdateCustomer = {
                     customer = it
                 },
+                navigateToAddNewCustomer = navigateToAddNewCustomer,
             )
         }
     }
@@ -196,6 +199,7 @@ fun FormExportProducts(
     onRemove: (Int) -> Unit,
     onExportProductChange: (FormExportProductData, Int) -> Unit,
     onAddOneMoreExportProduct: () -> Unit,
+    navigateToAddNewCustomer: () -> Unit,
     packageName: String,
     packageDescription: String,
     onUpdatePackageName: (String) -> Unit,
@@ -222,6 +226,7 @@ fun FormExportProducts(
                 onUpdatePackageDescription = onUpdatePackageDescription,
                 customer = customer,
                 onUpdateCustomer = onUpdateCustomer,
+                navigateToAddNewCustomer = navigateToAddNewCustomer,
             )
         }
         item {
@@ -270,6 +275,7 @@ fun CardInfoExportPackage(
     packageName: String,
     packageDescription: String,
     onUpdateCustomer: (Customer) -> Unit = {},
+    navigateToAddNewCustomer: () -> Unit = {},
     onUpdatePackageName: (String) -> Unit = {},
     onUpdatePackageDescription: (String) -> Unit = {},
 ) {
@@ -332,7 +338,7 @@ fun CardInfoExportPackage(
             label = {
                 Text(
                     fontFamily = QuickSand,
-                    text = "Date"
+                    text = "Customer"
                 )
             },
             modifier = Modifier
@@ -366,7 +372,8 @@ fun CardInfoExportPackage(
             ChooseCustomerIdBottomSheet(
                 currentId = "",
                 onClickCustomer = { onUpdateCustomer(it) },
-                onDismiss = { shouldShowBottomSheet = false }
+                onDismiss = { shouldShowBottomSheet = false },
+                navigateToAddNewCustomer = navigateToAddNewCustomer,
             )
         }
     }
@@ -581,13 +588,22 @@ fun ChooseCustomerIdBottomSheet(
     onClickCustomer: (Customer) -> Unit,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
+    navigateToAddNewCustomer: () -> Unit,
     viewModelCustomer: SearchCustomerViewModel = hiltViewModel()
 ) {
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
     var searchCustomer by remember { mutableStateOf("") }
     val listCustomer by viewModelCustomer.searchCustomerUiState.collectAsStateWithLifecycle()
     var expandedCustomer by remember { mutableStateOf(false) }
     ModalBottomSheet(
-        modifier = modifier.height(500.dp),
+        containerColor = Color.White,
+        sheetState = sheetState,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp),
         onDismissRequest = onDismiss
     ) {
         OutlinedTextField(
@@ -597,12 +613,20 @@ fun ChooseCustomerIdBottomSheet(
                 viewModelCustomer.onChangeSearchQuery(searchCustomer)
                 expandedCustomer = true
             },
-            label = { Text("Product") },
+            label = { Text("Customer name") },
             colors = customTextFieldColors(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp),
             shape = RoundedCornerShape(Dimens.PADDING_10_DP)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "Add new Customer",
+            modifier = Modifier
+                .padding(Dimens.PADDING_10_DP)
+                .clickable { navigateToAddNewCustomer() },
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -626,5 +650,6 @@ fun ChooseCustomerIdBottomSheet(
                 }
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }

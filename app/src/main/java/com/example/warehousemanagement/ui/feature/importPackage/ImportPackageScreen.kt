@@ -27,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,8 +71,8 @@ fun ImportPackageScreen(
     }
 
     val roleUiState by importPackageViewModel.roleUiState.collectAsStateWithLifecycle()
-    val importPackagePendingUiState by importPackageViewModel.importPackagePendingUiState.collectAsStateWithLifecycle()
-    val importPackageDoneDoneUiState by importPackageViewModel.importPackageDoneDoneUiState.collectAsStateWithLifecycle()
+    val importPackagePendingUiState by importPackageViewModel.importPackagePendingUiState.collectAsState()
+    val importPackageDoneDoneUiState by importPackageViewModel.importPackageDoneDoneUiState.collectAsState()
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         containerColor = colorResource(id = R.color.line_light_gray),

@@ -33,7 +33,7 @@ fun DetailDoneImportPackage(
                     navigateToSetStorageLocationScreen = navigateToSetStorageLocationScreen,
                     onBack = onBack,
                     onUpdateImportPackage = viewModel::updateImportPackage,
-                    openObjectCounting = {},
+                    openObjectCounting = { a, b -> },
                 )
             }
         }

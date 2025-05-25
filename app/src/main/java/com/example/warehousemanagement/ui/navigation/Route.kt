@@ -30,7 +30,7 @@ sealed class Routes {
     object QRCodeScanner : Routes()
 
     @Serializable
-    object Detection : Routes()
+    data class Detection(val id: String, val quantity: Int) : Routes()
 
     /////
 

@@ -25,6 +25,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +51,8 @@ import androidx.compose.ui.zIndex
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleOwner
+import com.example.warehousemanagement.ui.common.BigButton
+import com.example.warehousemanagement.ui.common.MiniButton
 import com.example.warehousemanagement.ui.feature.camera.PermissionState
 import com.example.warehousemanagement.ui.feature.camera.objectDetect.views.DetectionViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -63,12 +67,23 @@ fun DetectionScreen(
     cameraExecutor: ExecutorService,
     yuvToRgbConverter: YuvToRgbConverter,
     interpreter: Interpreter,
-    labels: List<String>
+    onBack: () -> Unit,
+    labels: List<String>,
+    viewMode: DetectObjectViewMode = hiltViewModel(),
 ) {
+    val pendingProduct by viewMode.id.collectAsState()
+    val quantity by viewMode.quantity.collectAsState()
     val cameraPermissionState = rememberPermissionState(android.Manifest.permission.CAMERA)
     Column {
         if (cameraPermissionState.hasPermission) {
-            OpenCamera(cameraExecutor, yuvToRgbConverter, interpreter, labels)
+            OpenCamera(
+                pendingProduct = pendingProduct,
+                quantity = quantity,
+                cameraExecutor = cameraExecutor,
+                yuvToRgbConverter = yuvToRgbConverter, interpreter = interpreter,
+                labels = labels,
+                onBack = onBack,
+            )
         } else {
             // Yêu cầu quyền truy cập camera nếu chưa có
             Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
@@ -80,9 +95,12 @@ fun DetectionScreen(
 
 @Composable
 fun OpenCamera(
+    quantity: Int,
+    pendingProduct: String,
     cameraExecutor: ExecutorService,
     yuvToRgbConverter: YuvToRgbConverter,
     interpreter: Interpreter,
+    onBack: () -> Unit,
     labels: List<String>
 ) {
     val context = LocalContext.current
@@ -95,13 +113,19 @@ fun OpenCamera(
             cameraExecutor = cameraExecutor,
             yuvToRgbConverter = yuvToRgbConverter,
             interpreter = interpreter,
-            labels = labels
+            labels = labels,
+            onBack = onBack,
+            quantity = quantity,
+            pendingProduct = pendingProduct,
         )
     }
 }
 
 @Composable
 fun CameraPreview(
+    onBack: () -> Unit,
+    quantity: Int,
+    pendingProduct: String,
     context: Context,
     lifecycleOwner: LifecycleOwner,
     cameraExecutor: ExecutorService,
@@ -119,6 +143,7 @@ fun CameraPreview(
     val drawCanvas by remember { viewModel.isLoading }
     val detectionListObject by remember { viewModel.detectionList }
 
+
     val paint = Paint()
     val pathColorList = listOf(Color.Red, Color.Green, Color.Cyan, Color.Blue)
     val pathColorListInt = listOf(
@@ -134,12 +159,15 @@ fun CameraPreview(
         val boxConstraint = this
         val sizeWith = with(LocalDensity.current) { boxConstraint.maxWidth.toPx() }
         val sizeHeight = with(LocalDensity.current) { boxConstraint.maxHeight.toPx() }
-        Text(
-            modifier = Modifier.zIndex(1f),
-            color = Color.Red,
-            fontWeight = FontWeight.Bold,
-            text = detectionListObject.size.toString()
-        )
+        Column {
+            Text(
+                modifier = Modifier.zIndex(1f),
+                color = Color.Red,
+                fontWeight = FontWeight.Bold,
+                text = "Product: ${pendingProduct} \nDetected: ${detectionListObject.size.toString()} object - ${quantity.toString()} "
+            )
+            BigButton(labelname = "Confirm", onClick = onBack)
+        }
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { ctx ->

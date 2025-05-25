@@ -34,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,8 +74,9 @@ fun DetailPendingImportPackage(
     viewModel: DetailImportViewModel = hiltViewModel(),
     navigateToSetStorageLocationScreen: (String) -> Unit,
     onBack: () -> Unit,
-    openObjectCounting: () -> Unit,
+    openObjectCounting: (String, Int) -> Unit,
 ) {
+
     CompositionLocalProvider(LocalTextStyle provides TextStyle(fontFamily = QuickSand)) {
         val detailImportUiState by viewModel.detailPendingImportPackageUiState.collectAsStateWithLifecycle()
         val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
@@ -105,7 +107,7 @@ fun ImportPackage(
     navigateToSetStorageLocationScreen: (String) -> Unit,
     onBack: () -> Unit,
     onUpdateImportPackage: (String) -> Unit,
-    openObjectCounting: () -> Unit,
+    openObjectCounting: (String, Int) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -284,9 +286,10 @@ fun ImportPackage(
 fun ProductItemDetail(
     modifier: Modifier = Modifier,
     product: Product,
-    openObjectCounting: () -> Unit,
+    openObjectCounting: (String, Int) -> Unit,
 ) {
     var isCompactView by remember { mutableStateOf(false) }
+
     Row {
         Row(
             modifier = modifier
@@ -309,7 +312,12 @@ fun ProductItemDetail(
             Column {
                 AnimatedVisibility(visible = !isCompactView) {
                     ExpandedImportView(
-                        openObjectCounting = openObjectCounting,
+                        openObjectCounting = {
+                            openObjectCounting(
+                                product.productName,
+                                product.quantity
+                            )
+                        },
                         product = product
                     )
                 }
