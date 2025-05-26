@@ -57,7 +57,6 @@ class FormImportPackageViewModel @Inject constructor(
                             _id = preferencesRepository.getUserId().stateIn(this).value,
                             null,
                             null,
-                            null
                         ),
                         statusDone = "PENDING",
                     )
@@ -87,7 +86,6 @@ class FormImportPackageViewModel @Inject constructor(
                             _id = preferencesRepository.getUserId().stateIn(this).value,
                             null,
                             null,
-                            null
                         ),
                         statusDone = "PENDING",
                     )

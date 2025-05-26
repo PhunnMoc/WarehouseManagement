@@ -5,21 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.ExportProductDto
-import com.example.warehousemanagement.data.network.dto.ReceiverResponse
 import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.asResult
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
-import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Product
 import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.KEY_ID
-import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_CUSTOMER_QUERY
-import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_PRODUCT_QUERY
 import com.example.warehousemanagement.ui.feature.search.viewModel.SEARCH_PRODUCT_QUERY_NAME
-import com.example.warehousemanagement.ui.feature.search.viewModel.SearchCustomerUiState
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchProductUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -27,11 +22,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -69,7 +62,6 @@ class FormAddExportedProductViewModel @Inject constructor(
                         note = note,
                         sender = User(
                             idUser = preferencesRepository.getUserId().stateIn(this).value,
-                            "",
                             "",
                             null,
                         ),

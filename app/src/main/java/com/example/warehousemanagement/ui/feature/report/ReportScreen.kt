@@ -63,7 +63,7 @@ fun ReportScreen(
             modifier = Modifier.padding(padding),
             navController = navController, startDestination = "screen_a"
         ) {
-            composable("screen_a") { DashBoardReportScreen() }
+            composable("screen_a") { DashBoardReportScreen(scrollBehavior = scrollBehavior) }
             composable("screen_b") {
                 RevenueCostScreen(
                     scrollBehavior = scrollBehavior,

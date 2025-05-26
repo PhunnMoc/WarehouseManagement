@@ -139,6 +139,8 @@ sealed class Routes {
 
     @Serializable
     object ManagerUsers : Routes()
+    @Serializable
+    object AddNewUser : Routes()
 
     @Serializable
     data class UserDetail(val id: String) : Routes()

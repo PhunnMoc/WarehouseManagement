@@ -22,8 +22,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,7 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -50,7 +47,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
@@ -58,7 +54,6 @@ import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
-import com.example.warehousemanagement.ui.feature.importPackage.UploadImageButton
 import com.example.warehousemanagement.ui.feature.setting.viewModel.InformationUiState
 import com.example.warehousemanagement.ui.feature.setting.viewModel.SettingViewModel
 
@@ -174,7 +169,7 @@ fun UserDetailSreen(
                             singleLine = true
                         )
                         OutlinedTextField(
-                            value = temp.user.information?.role?.value ?:"",
+                            value = temp.user.information?.role?.value ?: "",
                             onValueChange = {},
                             label = { Text("Role") },
                             modifier = Modifier.fillMaxWidth(),
@@ -189,144 +184,32 @@ fun UserDetailSreen(
                             singleLine = true,
                             enabled = false // Disables editing, but retains the OutlinedTextField style
                         )
-                        var passwordVisible by remember { mutableStateOf(false) }
-                        OutlinedTextField(
-                            value = temp.user.passwordHash,
-                            onValueChange = {},
-                            label = { Text("Password") },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            enabled = false, // Chỉ hiển thị, không cho chỉnh sửa
-                            visualTransformation = if (passwordVisible)
-                                VisualTransformation.None
-                            else
-                                PasswordVisualTransformation(),
-                            trailingIcon = {
-                                val icon =
-                                    if (passwordVisible) Icons.Outlined.CheckCircle else Icons.Filled.CheckCircle
-                                Icon(
-                                    imageVector = icon,
-                                    contentDescription = if (passwordVisible) "Hide password" else "Show password",
-                                    modifier = Modifier.clickable {
-                                        passwordVisible = !passwordVisible
-                                    }
-                                )
-                            }
-                        )
+//                        var passwordVisible by remember { mutableStateOf(false) }
+//                        OutlinedTextField(
+//                            value = temp.user.passwordHash,
+//                            onValueChange = {},
+//                            label = { Text("Password") },
+//                            modifier = Modifier.fillMaxWidth(),
+//                            singleLine = true,
+//                            enabled = false, // Chỉ hiển thị, không cho chỉnh sửa
+//                            visualTransformation = if (passwordVisible)
+//                                VisualTransformation.None
+//                            else
+//                                PasswordVisualTransformation(),
+//                            trailingIcon = {
+//                                val icon =
+//                                    if (passwordVisible) Icons.Outlined.CheckCircle else Icons.Filled.CheckCircle
+//                                Icon(
+//                                    imageVector = icon,
+//                                    contentDescription = if (passwordVisible) "Hide password" else "Show password",
+//                                    modifier = Modifier.clickable {
+//                                        passwordVisible = !passwordVisible
+//                                    }
+//                                )
+//                            }
+//                        )
                     }
 
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun DialogAddAccount(
-    onConfirm: (String, String, String) -> Unit, // Action when the confirm button is clicked, passing the input text
-    onCancel: () -> Unit // Action when the cancel button is clicked
-) {
-    var inputText1 by rememberSaveable { mutableStateOf("") } // State for the input text
-    var inputText2 by rememberSaveable { mutableStateOf("") } // State for the input text
-    var inputText3 by rememberSaveable { mutableStateOf("") } // State for the input text
-
-    Dialog(onDismissRequest = onCancel) {
-        Surface(
-            shape = RoundedCornerShape(25.dp),
-            color = MaterialTheme.colorScheme.surface
-        ) {
-            Column(
-                modifier = Modifier.padding(32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Title
-                Text(
-                    text = "Create worker account",
-                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                    textAlign = TextAlign.Center,
-                    fontSize = 14.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Message
-                Text(
-                    text = "ROLE : WORKER",
-                    textAlign = TextAlign.Center,
-                    fontSize = 13.sp
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // TextField for input
-                OutlinedTextField(
-                    value = inputText1,
-                    onValueChange = { inputText1 = it },
-                    label = { Text(text = "First name") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                OutlinedTextField(
-                    value = inputText2,
-                    onValueChange = { inputText2 = it },
-                    label = { Text(text = "Last name") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                OutlinedTextField(
-                    value = inputText3,
-                    onValueChange = { inputText3 = it },
-                    label = { Text(text = "Email") },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                // Buttons
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    // Cancel Button
-                    androidx.compose.material.Button(
-                        onClick = onCancel,
-                        colors = androidx.compose.material.ButtonDefaults.buttonColors(
-                            backgroundColor = colorResource(id = R.color.background_gray)
-                        ),
-                        shape = RoundedCornerShape(50.dp),
-                        modifier = Modifier
-                            .width(95.2.dp)
-                            .height(38.6.dp)
-                    ) {
-                        Text(
-                            text = "Cancel",
-                            color = colorResource(id = R.color.text_color_black),
-                            fontSize = 9.sp
-                        )
-                    }
-
-                    // Confirm Button
-                    androidx.compose.material.Button(
-                        onClick = {
-                            onConfirm(
-                                inputText1,
-                                inputText2,
-                                inputText3
-                            ) // Pass the input text when confirming
-                        },
-                        colors = androidx.compose.material.ButtonDefaults.buttonColors(
-                            backgroundColor = colorResource(id = R.color.background_theme)
-                        ),
-                        shape = RoundedCornerShape(50.dp),
-                        modifier = Modifier
-                            .width(95.2.dp)
-                            .height(38.6.dp)
-                    ) {
-                        Text(
-                            text = "Create",
-                            color = colorResource(id = R.color.text_color_black),
-                            fontSize = 9.sp
-                        )
-                    }
                 }
             }
         }

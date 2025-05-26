@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -48,6 +49,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
+import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.feature.report.viewModel.OverviewUiState
 import kotlinx.coroutines.launch
 
 @Preview
@@ -91,7 +95,7 @@ data class Message(val content: String, val isSentByCurrentUser: Boolean)
 
 @Composable
 fun ChatScreen(
-    resultChatBox: String,
+    resultChatBox: ChatBoxUiState,
     sendChat: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -106,15 +110,32 @@ fun ChatScreen(
             // .background(Color.White)
             .padding(16.dp)
     ) {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxWidth(),
-            state = listState,
-            reverseLayout = false
+                .fillMaxWidth()
+                .wrapContentSize(),
         ) {
-            items(messages) { message ->
-                ChatMessageItem(message)
+            when (val result = resultChatBox) {
+                is ChatBoxUiState.Loading -> IndeterminateCircularIndicator()
+
+                is ChatBoxUiState.Error -> NothingText()
+                is ChatBoxUiState.Success -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        state = listState,
+                        reverseLayout = false
+                    ) {
+                        items(messages) { message ->
+                            ChatMessageItem(message)
+                        }
+                    }
+                    LaunchedEffect(result.message) {
+                        if (result.message.isNotEmpty()) {
+                            messages = messages + Message(result.message, false)
+                        }
+                    }
+                }
             }
         }
 
@@ -139,11 +160,7 @@ fun ChatScreen(
             )
 
             Spacer(modifier = Modifier.width(8.dp))
-            LaunchedEffect(resultChatBox) {
-                if (resultChatBox.isNotEmpty()) {
-                    messages = messages + Message(resultChatBox, false)
-                }
-            }
+
             Button(
                 onClick = {
                     sendChat(textInput.text)

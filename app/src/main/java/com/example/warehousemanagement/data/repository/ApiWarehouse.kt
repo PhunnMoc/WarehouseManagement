@@ -8,14 +8,19 @@ import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
 import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
+import com.example.warehousemanagement.data.network.dto.MessageChatBoxResponse
 import com.example.warehousemanagement.data.network.dto.MonthlyCostResponse
 import com.example.warehousemanagement.data.network.dto.MonthlyRevenueResponse
 import com.example.warehousemanagement.data.network.dto.ProductResponse
+import com.example.warehousemanagement.data.network.dto.ProfitByYearResponse
 import com.example.warehousemanagement.data.network.dto.RevenueByMonthResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
 import com.example.warehousemanagement.data.network.dto.SupplierRequest
 import com.example.warehousemanagement.data.network.dto.SupplierResponse
+import com.example.warehousemanagement.data.network.dto.TotalCostByYearResponse
+import com.example.warehousemanagement.data.network.dto.TotalRevenueByYearResponse
+import com.example.warehousemanagement.data.network.dto.UserRequest
 import com.example.warehousemanagement.data.network.dto.UserResponse
 import com.example.warehousemanagement.domain.model.Notification
 import com.example.warehousemanagement.domain.model.User
@@ -224,7 +229,7 @@ interface ApiWarehouse {
 
     @POST("/user")
     suspend fun addNewUser(
-        @Body updated: User,
+        @Body updated: UserRequest,
     )
 
     @GET("/notification")
@@ -233,6 +238,21 @@ interface ApiWarehouse {
 
     @GET("/statistic/in-stock")
     suspend fun getStockSummaryByLocation(): Response<List<StorageLocationSummary>>
+
+    @GET("/statistic/finance/{year}")
+    suspend fun getStaticProfitYear(
+        @Path("year") year: Int,
+    ): Response<ProfitByYearResponse>
+
+    @GET("statistic/monthly-revenue/{year}/total")
+    suspend fun getTotalRevenueByYear(
+        @Path("year") year: Int,
+    ): Response<TotalRevenueByYearResponse>
+
+    @GET("/statistic/monthly-cost/{year}/total")
+    suspend fun getTotalCostByYear(
+        @Path("year") year: Int,
+    ): Response<TotalCostByYearResponse>
 
     @GET("/statistic/top-genres-imported")
     suspend fun getTopGenreByRangeImport(
@@ -270,6 +290,9 @@ interface ApiWarehouse {
         @Path("month") month: Int,
     ): Response<List<CostByMonthResponse>>
 
-    @GET("/chatbot/query")
-    suspend fun getAnswerChatBox(@Query("question") question: String): Response<String>
+    @POST("/api/rag/ask")
+    suspend fun getAnswerChatBox(@Body message: MessageChatBoxResponse): Response<MessageChatBoxResponse>
+
+    @POST("/api/rag/index")
+    suspend fun syncDataChatBox()
 }

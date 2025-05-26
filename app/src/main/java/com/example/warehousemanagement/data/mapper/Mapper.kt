@@ -3,7 +3,6 @@ package com.example.warehousemanagement.data.mapper
 import com.example.warehousemanagement.data.network.dto.AddressResponse
 import com.example.warehousemanagement.data.network.dto.CustomerResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
-import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
 import com.example.warehousemanagement.data.network.dto.GenreResponse
 import com.example.warehousemanagement.data.network.dto.ImportPackageResponseItem
 import com.example.warehousemanagement.data.network.dto.InformationResponse
@@ -18,7 +17,6 @@ import com.example.warehousemanagement.domain.model.Address
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
-import com.example.warehousemanagement.domain.model.GenreByRangeSummary
 import com.example.warehousemanagement.domain.model.ImportPackages
 import com.example.warehousemanagement.domain.model.Information
 import com.example.warehousemanagement.domain.model.Product
@@ -213,7 +211,6 @@ fun ReceiverResponse.convertToModel(): User? {
     return User(
         idUser = _id,
         username = username ?: "",
-        passwordHash = passwordHash ?: "",
         information = information.convertToResponse(),
     )
 }
@@ -222,19 +219,17 @@ fun User.convertToResponse(): ReceiverResponse {
     return ReceiverResponse(
         _id = idUser,
         username = username ?: "",
-        passwordHash = passwordHash ?: "",
         information = information.convertToResponse(),
     )
 }
 
 fun UserResponse.convertToModel(): User? {
-    if (_id == null || username == null || passwordHash == null || information == null) {
+    if (_id == null || username == null || information == null) {
         return null
     }
     return User(
         idUser = _id,
         username = username ?: "",
-        passwordHash = passwordHash ?: "",
         information = information.convertToResponse(),
     )
 }

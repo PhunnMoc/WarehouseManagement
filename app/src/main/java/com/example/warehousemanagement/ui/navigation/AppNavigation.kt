@@ -84,6 +84,7 @@ import com.example.warehousemanagement.ui.feature.camera.objectDetect.YuvToRgbCo
 import com.example.warehousemanagement.ui.feature.chatBox.ChatBoxScreen
 import com.example.warehousemanagement.ui.feature.customer.EditCustomerScreen
 import com.example.warehousemanagement.ui.feature.supplier.EditSupplierScreen
+import com.example.warehousemanagement.ui.feature.user.AddNewUser
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -649,7 +650,13 @@ fun AppNavigation(
                                 id = id
                             )
                         )
-                    }, onNavigationBack = { navigationController.popBackStack() })
+                    }, onNavigationBack = { navigationController.popBackStack() },
+                        onNavigateToAddNewUser = { navigationController.navigate(Routes.AddNewUser) }
+                    )
+                    isShowNavigation = false
+                }
+                composable<Routes.AddNewUser> {
+                    AddNewUser(onNavigationBack = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
                 composable<Routes.UserDetail> {

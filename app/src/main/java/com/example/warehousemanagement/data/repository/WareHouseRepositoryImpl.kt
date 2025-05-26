@@ -6,10 +6,15 @@ import com.example.warehousemanagement.data.mapper.convertToResponse
 import com.example.warehousemanagement.data.network.dto.CostByMonthResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
+import com.example.warehousemanagement.data.network.dto.MessageChatBoxResponse
 import com.example.warehousemanagement.data.network.dto.MonthlyCostResponse
 import com.example.warehousemanagement.data.network.dto.MonthlyRevenueResponse
+import com.example.warehousemanagement.data.network.dto.ProfitByYearResponse
 import com.example.warehousemanagement.data.network.dto.RevenueByMonthResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
+import com.example.warehousemanagement.data.network.dto.TotalCostByYearResponse
+import com.example.warehousemanagement.data.network.dto.TotalRevenueByYearResponse
+import com.example.warehousemanagement.data.network.dto.UserRequest
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
@@ -119,6 +124,25 @@ class WareHouseRepositoryImpl @Inject constructor(
 
     override suspend fun getStockSummaryByLocation(): List<StorageLocationSummary> {
         return retrofit.getStockSummaryByLocation().body() ?: listOf()
+    }
+
+    override suspend fun getStaticProfitYear(year: Int): ProfitByYearResponse {
+        return retrofit.getStaticProfitYear(year = year).body()!!
+    }
+
+    override suspend fun getTotalRevenueByYear(year: Int): TotalRevenueByYearResponse {
+        return retrofit.getTotalRevenueByYear(year = year).body() ?: TotalRevenueByYearResponse(
+            0.0,
+            0
+        )
+    }
+
+    override suspend fun getTotalCostByYear(year: Int): TotalCostByYearResponse {
+        return retrofit.getTotalCostByYear(year = year).body() ?: TotalCostByYearResponse(
+            0.0,
+            0
+        )
+
     }
 
     override suspend fun getGenreByRangeSummaryImport(
@@ -295,7 +319,7 @@ class WareHouseRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun addNewUser(user: User) {
+    override suspend fun addNewUser(user: UserRequest) {
         return retrofit.addNewUser(
             updated = user
         )
@@ -315,6 +339,11 @@ class WareHouseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAnswerChatBox(question: String): String {
-        return retrofit.getAnswerChatBox(question = question).body() ?: ""
+        return retrofit.getAnswerChatBox(message = MessageChatBoxResponse(question)).body()?.message
+            ?: ""
+    }
+
+    override suspend fun syncDataChatBox() {
+        return retrofit.syncDataChatBox()
     }
 }

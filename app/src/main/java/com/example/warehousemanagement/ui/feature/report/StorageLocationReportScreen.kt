@@ -22,12 +22,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import com.example.warehousemanagement.data.network.dto.OverviewReportByMonth
 import com.example.warehousemanagement.ui.feature.report.lineChart.PerformanceChart
 import com.example.warehousemanagement.ui.theme.Dimens
 import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
-fun StorageLocationReportScreen() {
+fun StorageLocationReportScreen(
+    listOverview: List<OverviewReportByMonth>
+) {
+    val listRevenue = listOverview.map { it.revenue.toFloat() }
+    val listCost = listOverview.map { it.cost.toFloat() }
+    val max = maxOf(listRevenue.max(), listCost.max())
+    val min = minOf(listRevenue.min(), listCost.min())
     Card(
         modifier = Modifier.padding(10.dp),
         elevation = 5.dp
@@ -35,44 +42,19 @@ fun StorageLocationReportScreen() {
         Column {
             Box(modifier = Modifier.padding(5.dp)) {
                 PerformanceChart(
-                    list = listOf(
-                        10f,
-                        20f,
-                        3f,
-                        1f,
-                        10f,
-                        0f,
-                        5f,
-                        3f,
-                        1f,
-                        20f,
-                        10f,
-                        10f
-                    )
+                    max = max,
+                    min = min,
+                    list = listCost,
+                    lineColor = Color(0xFFFFC46B),
                 )
                 PerformanceChart(
-                    list = listOf(
-                        15f,
-                        16f,
-                        10f,
-                        30f,
-                        3f,
-                        0f,
-                        0f,
-                        8f,
-                        20f,
-                        15f,
-                        20f,
-                        20f
-                    )
+                    max = max,
+                    min = min,
+                    list = listRevenue,
+                    lineColor = Color(0xFF67BDF7),
                 )
 
             }
-            Text(
-                text = " Jan     Feb     Mar     Apr     May     June     July     Aug     Sep     Oct     Nov     Dec",
-                fontFamily = QuickSand,
-                fontSize = 10.sp
-            )
         }
 
     }

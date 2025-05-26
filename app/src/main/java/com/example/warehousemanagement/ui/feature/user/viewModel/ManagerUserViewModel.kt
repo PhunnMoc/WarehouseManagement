@@ -2,9 +2,10 @@ package com.example.warehousemanagement.ui.feature.user.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.warehousemanagement.data.network.dto.InformationRequest
+import com.example.warehousemanagement.data.network.dto.UserRequest
 import com.example.warehousemanagement.data.util.Result
 import com.example.warehousemanagement.data.util.asResult
-import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -41,8 +42,4 @@ class ManagerUserViewModel @Inject constructor(
                     is Result.Loading -> ManagerUserUiState.Loading
                 }
             }
-
-    fun addNewUser(user: User) {
-        viewModelScope.launch { wareHouseRepository.addNewUser(user) }
-    }
 }

@@ -8,7 +8,6 @@ import com.example.warehousemanagement.data.util.asResult
 import com.example.warehousemanagement.domain.model.User
 import com.example.warehousemanagement.domain.repository.PreferencesRepository
 import com.example.warehousemanagement.domain.repository.WareHouseRepository
-import com.example.warehousemanagement.ui.feature.importPackage.viewModel.DetailImportUiState
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.KEY_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +35,7 @@ class DetailExportViewModel @Inject constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = User("", "", "", null)
+        initialValue = User("", "", null)
     )
 
 

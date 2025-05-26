@@ -5,8 +5,12 @@ import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
 import com.example.warehousemanagement.data.network.dto.MonthlyCostResponse
 import com.example.warehousemanagement.data.network.dto.MonthlyRevenueResponse
+import com.example.warehousemanagement.data.network.dto.ProfitByYearResponse
 import com.example.warehousemanagement.data.network.dto.RevenueByMonthResponse
 import com.example.warehousemanagement.data.network.dto.StorageLocationSummary
+import com.example.warehousemanagement.data.network.dto.TotalCostByYearResponse
+import com.example.warehousemanagement.data.network.dto.TotalRevenueByYearResponse
+import com.example.warehousemanagement.data.network.dto.UserRequest
 import com.example.warehousemanagement.domain.model.Customer
 import com.example.warehousemanagement.domain.model.ExportPackages
 import com.example.warehousemanagement.domain.model.Genre
@@ -92,7 +96,7 @@ interface WareHouseRepository {
     suspend fun login(username: String, password: String): Map<String, String>
     suspend fun getUserDetails(id: String): User
     suspend fun updateUserDetail(id: String, user: User)
-    suspend fun addNewUser(user: User)
+    suspend fun addNewUser(user: UserRequest)
     suspend fun getAllUserDetails(): List<User>
     suspend fun getAllNotificationDetails(): List<Notification>
     suspend fun addNewCustomer(customer: Customer)//: String
@@ -105,6 +109,9 @@ interface WareHouseRepository {
     suspend fun searchCustomersByName(nameString: String): List<Customer>
 
     suspend fun getStockSummaryByLocation(): List<StorageLocationSummary>
+    suspend fun getStaticProfitYear(year: Int): ProfitByYearResponse
+    suspend fun getTotalRevenueByYear(year: Int): TotalRevenueByYearResponse
+    suspend fun getTotalCostByYear(year: Int): TotalCostByYearResponse
     suspend fun getGenreByRangeSummaryImport(
         startDate: Long,
         endDate: Long,
@@ -125,6 +132,7 @@ interface WareHouseRepository {
         year: Int,
         month: Int,
     ): List<RevenueByMonthResponse>
+
     suspend fun getDetailMonthlyCost(
         year: Int,
         month: Int,
@@ -137,4 +145,7 @@ interface WareHouseRepository {
     suspend fun getAnswerChatBox(
         question: String,
     ): String
+
+    suspend fun syncDataChatBox(
+    )
 }
