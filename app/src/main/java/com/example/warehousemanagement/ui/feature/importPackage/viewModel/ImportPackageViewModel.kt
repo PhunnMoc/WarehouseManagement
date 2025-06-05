@@ -30,7 +30,7 @@ class ImportPackageViewModel @Inject constructor(
     val importPackagePendingUiState: StateFlow<ImportPackageUiState> =
         getAllImportPackagePending().stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(10_000),
             initialValue = ImportPackageUiState.Loading
         )
 
@@ -50,7 +50,7 @@ class ImportPackageViewModel @Inject constructor(
     val importPackageDoneDoneUiState: StateFlow<ImportPackageUiState> =
         getAllImportPackageDone().stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.WhileSubscribed(10_000),
             initialValue = ImportPackageUiState.Loading
         )
 

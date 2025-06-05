@@ -44,8 +44,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.common.AIButton
 import com.example.warehousemanagement.ui.common.DialogWithInput
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
+import com.example.warehousemanagement.ui.feature.chatBox.QuestionForChatBox
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.ImportPackageUiState
 import com.example.warehousemanagement.ui.feature.importPackage.viewModel.ImportPackageViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -59,6 +61,7 @@ fun ImportPackageScreen(
     onClickAddProductByExcel: () -> Unit,
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
+    onNavigateToChatBox: (String) -> Unit,
     onNavigationDetailPendingImportPackage: (String) -> Unit,
     onNavigationDetailDoneImportPackage: (String) -> Unit,
     onNavigationEditImportPackages: (String) -> Unit,
@@ -118,31 +121,6 @@ fun ImportPackageScreen(
                             }
                         }
 
-                        AnimatedVisibility(visible = isExpanded) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(bottom = 8.dp, end = 16.dp)
-                            ) {
-                                // Thẻ Label cho nút FAB 2
-                                Box(
-                                    modifier = Modifier
-                                        .background(
-                                            Color.White, shape = RoundedCornerShape(8.dp)
-                                        )
-                                        .padding(horizontal = 8.dp, vertical = 4.dp)
-                                ) {
-                                    Text(text = "Add products by excel", color = Color.Black)
-                                }
-                                Spacer(modifier = Modifier.width(8.dp))
-                                FloatingActionButton(
-                                    onClick = { onClickAddProductByExcel() },
-                                    containerColor = colorResource(id = R.color.background_gray)
-                                ) {
-                                    Icon(Icons.Default.Add, contentDescription = "Action 2")
-                                }
-                            }
-                        }
-
                         FloatingActionButton(
                             modifier = Modifier.padding(bottom = 8.dp, end = 16.dp),
                             onClick = { isExpanded = !isExpanded },
@@ -169,7 +147,11 @@ fun ImportPackageScreen(
                                 onBackClick()
                             })
                 },
-                endContent = {},
+                endContent = {
+                    AIButton(
+                        onClick = { onNavigateToChatBox(QuestionForChatBox.ImportPackage) },
+                    )
+                },
                 scrollBehavior = scrollBehavior
             )
         }) { innerpadding ->
@@ -187,6 +169,7 @@ fun ImportPackageScreen(
                 //     FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
             TabBarImport(
+                roleUiState = roleUiState,
                 importPackagePendingUiState = importPackagePendingUiState,
                 importPackageDoneDoneUiState = importPackageDoneDoneUiState,
                 onNavigationEditImportPackages = onNavigationEditImportPackages,
@@ -200,6 +183,7 @@ fun ImportPackageScreen(
 
 @Composable
 fun TabBarImport(
+    roleUiState: Boolean,
     importPackageDoneDoneUiState: ImportPackageUiState,
     importPackagePendingUiState: ImportPackageUiState,
     onClickDetailPending: (String) -> Unit,
@@ -240,6 +224,7 @@ fun TabBarImport(
         when (selectedTabIndex) {
             0 -> {
                 PendingImportPackage(
+                    roleUiState = roleUiState,
                     importPackagePendingUiState = importPackagePendingUiState,
                     onNavigationEditImportPackages = onNavigationEditImportPackages,
                     onNavigationDetailImportPackages = onClickDetailPending,
@@ -248,6 +233,7 @@ fun TabBarImport(
 
             1 -> {
                 DoneImportPackage(
+                    roleUiState = roleUiState,
                     importPackageDoneDoneUiState = importPackageDoneDoneUiState,
                     onNavigationDetailImportPackages = onClickDetailDone,
                 )

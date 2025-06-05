@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.ui.feature.storage.viewModel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.util.Result
@@ -16,36 +17,30 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class StorageLocationViewModel @Inject constructor(
+class DetailStorageLocationViewmodel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
-    private val preferencesRepository: PreferencesRepository,
+    val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    val roleUiState: StateFlow<Boolean> =
-        preferencesRepository.getUserRole().map { it == "ADMIN" }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(500),
-            initialValue = false,
-        )
 
-    val storageLocationUiState: StateFlow<StorageLocationUiState> =
+    val detailStorageLocation: StateFlow<DetailStorageLocationUiState> =
         getAllStorageLocation()
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = StorageLocationUiState.Loading
+                initialValue = DetailStorageLocationUiState.Loading
             )
 
-    private fun getAllStorageLocation(): Flow<StorageLocationUiState> =
-        flow { emit(wareHouseRepository.getAllStoLocDetails()) }.asResult()
-            .map { listStorageLocation ->
-                when (listStorageLocation) {
+    private fun getAllStorageLocation(): Flow<DetailStorageLocationUiState> =
+        savedStateHandle.getStateFlow("id", "")
+            .map { wareHouseRepository.getProductsBelongStorage(it) }.asResult()
+            .map { detailStorageLocation ->
+                when (detailStorageLocation) {
                     is Result.Success -> {
-                        StorageLocationUiState.Success(listStorageLocation = listStorageLocation.data)
+                        DetailStorageLocationUiState.Success(detailStorageLocation = detailStorageLocation.data)
                     }
 
-                    is Result.Error -> StorageLocationUiState.Error
-                    is Result.Loading -> StorageLocationUiState.Loading
+                    is Result.Error -> DetailStorageLocationUiState.Error
+                    is Result.Loading -> DetailStorageLocationUiState.Loading
                 }
             }
-    
 }

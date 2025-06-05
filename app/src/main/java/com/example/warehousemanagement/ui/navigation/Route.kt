@@ -21,7 +21,7 @@ sealed class Routes {
     object Setting : Routes()
 
     @Serializable
-    object ChatBox : Routes()
+    data class ChatBox(val message: String) : Routes()
 
     @Serializable
     object Notification : Routes()
@@ -38,7 +38,7 @@ sealed class Routes {
     object StorageLocation : Routes()
 
     @Serializable
-    data class StorageLocationDetail(val idStorageLocation: String) : Routes()
+    data class DetailStorageLocation(val id: String) : Routes()
 
     //Product
     @Serializable
@@ -139,6 +139,7 @@ sealed class Routes {
 
     @Serializable
     object ManagerUsers : Routes()
+
     @Serializable
     object AddNewUser : Routes()
 

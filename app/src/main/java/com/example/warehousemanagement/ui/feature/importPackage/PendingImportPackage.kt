@@ -16,9 +16,10 @@ import com.example.warehousemanagement.ui.theme.Dimens
 @Composable
 fun PendingImportPackage(
     modifier: Modifier = Modifier,
-    importPackagePendingUiState : ImportPackageUiState,
+    importPackagePendingUiState: ImportPackageUiState,
     onNavigationDetailImportPackages: (String) -> Unit,
     onNavigationEditImportPackages: (String) -> Unit,
+    roleUiState: Boolean,
 ) {
 
     when (importPackagePendingUiState) {
@@ -32,6 +33,7 @@ fun PendingImportPackage(
                         onCardClick = {},
                         onLongPress = onNavigationDetailImportPackages,
                         onEditPendingPackage = onNavigationEditImportPackages,
+                        roleUiState = roleUiState,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

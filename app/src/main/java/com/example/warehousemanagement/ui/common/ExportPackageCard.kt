@@ -41,11 +41,12 @@ import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
 fun ExportPackageCard(
+    roleUiState: Boolean,
     modifier: Modifier = Modifier,
     exportPackage: ExportPackages,
     onCardClick: () -> Unit,
     onLongPress: (String) -> Unit,
-    onEditPendingPackage: (String) -> Unit,
+    onEditPendingPackage: ((String) -> Unit)? = null,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -72,11 +73,6 @@ fun ExportPackageCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-//                    .background(
-//                        color = if (exportPackage.statusDone=="APPROVED") colorResource(id = R.color.background_done) else colorResource(
-//                            id = R.color.background_pending
-//                        )
-//                    )
                     .padding(Dimens.PADDING_10_DP),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -86,15 +82,17 @@ fun ExportPackageCard(
                     text = "Package ID: ${exportPackage.idExportPackages}",
                     fontWeight = FontWeight.Bold
                 )
-                Image(
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable {
-                             onEditPendingPackage(exportPackage.idExportPackages)
-                        },
-                    painter = painterResource(id = R.drawable.icons8_edit),
-                    contentDescription = "Delete"
-                )
+                if (roleUiState && onEditPendingPackage != null) {
+                    Image(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                onEditPendingPackage(exportPackage.idExportPackages)
+                            },
+                        painter = painterResource(id = R.drawable.icons8_edit),
+                        contentDescription = "Delete"
+                    )
+                }
             }
             Divider()
             Row(

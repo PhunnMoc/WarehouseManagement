@@ -17,10 +17,10 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun DoneExportPackage(
+    roleUiState: Boolean,
     modifier: Modifier = Modifier,
     exportPackageDoneUiState: ExportPackageUiState,
     onNavigationDetailExportPackages: (String) -> Unit,
-    onEditPendingPackage: (String) -> Unit,
 ) {
 
     when (exportPackageDoneUiState) {
@@ -30,10 +30,10 @@ fun DoneExportPackage(
             LazyColumn(modifier = modifier.padding(Dimens.PADDING_10_DP)) {
                 items(exportPackageDoneUiState.exportPackages) { exportPackage ->
                     ExportPackageCard(
+                        roleUiState = roleUiState,
                         exportPackage = exportPackage,
                         onCardClick = {},
                         onLongPress = onNavigationDetailExportPackages,
-                        onEditPendingPackage = onEditPendingPackage,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

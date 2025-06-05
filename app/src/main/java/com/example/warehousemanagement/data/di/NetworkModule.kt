@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -30,12 +31,11 @@ val loggingInterceptor = HttpLoggingInterceptor().apply {
 
 val client = OkHttpClient.Builder()
     .addInterceptor(loggingInterceptor)
+    .connectTimeout(10,TimeUnit.SECONDS)
+    .writeTimeout(10, TimeUnit.SECONDS)
+    .readTimeout(30, TimeUnit.SECONDS)
     .build()
 
 object RetrofitHandle {
-    const val API_KEY: String =
-        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1MTQ5ZjdiOD192.168.0.143kyYzU1YzdjMTQwYTYwZTU1YTkyNWI0NiIsIm5iZiI6MTcyNDM4MDc5OC4zOTY2NDYsInN1YiI6IjY2YzJiOTQwYjE1ZTA5OWJhZjVkODY5YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Tb5FqU0m3HXATFo_n4Z31R_BVEy5g5v0OPvjszt20to"
-
-    // const val BASE_URL: String = "http://192.168.59.1:8081/"
-    const val BASE_URL: String = "http://192.168.1.233:8081/"
+    const val BASE_URL: String = "http://192.168.59.1:8081/"
 }

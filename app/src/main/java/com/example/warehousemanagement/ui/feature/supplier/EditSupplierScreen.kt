@@ -35,10 +35,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.common.AIButton
 import com.example.warehousemanagement.ui.common.BigButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.feature.chatBox.QuestionForChatBox
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.DetailSupplierUiState
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.DetailSupplierViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -68,7 +70,8 @@ fun EditSupplierScreen(
                                 onBackClick()
                             })
                 },
-                endContent = {},
+                endContent = {
+                },
                 scrollBehavior = scrollBehavior
 
             )

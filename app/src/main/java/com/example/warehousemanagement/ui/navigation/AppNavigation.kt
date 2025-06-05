@@ -83,6 +83,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.example.warehousemanagement.ui.feature.camera.objectDetect.YuvToRgbConverter
 import com.example.warehousemanagement.ui.feature.chatBox.ChatBoxScreen
 import com.example.warehousemanagement.ui.feature.customer.EditCustomerScreen
+import com.example.warehousemanagement.ui.feature.storage.ProductBelongStorageScreen
 import com.example.warehousemanagement.ui.feature.supplier.EditSupplierScreen
 import com.example.warehousemanagement.ui.feature.user.AddNewUser
 import dagger.hilt.EntryPoint
@@ -225,7 +226,7 @@ fun AppNavigation(
 
                 composable<Routes.HomeAdmin> {
                     AdminScreen(
-                        onNavigateToChatbox = { navigationController.navigate(Routes.ChatBox) },
+                        onNavigateToChatbox = { navigationController.navigate(Routes.ChatBox("")) },
                         onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
@@ -242,6 +243,7 @@ fun AppNavigation(
 
                 composable<Routes.HomeWorker> {
                     WorkerScreen(
+                        onNavigateToChatbox = { navigationController.navigate(Routes.ChatBox("")) },
                         onNavigateToScranQrScreen = { navigationController.navigate(Routes.QRCodeScanner) },
                         onNavigateToProduct = { navigationController.navigate(Routes.Products) },
                         onNavigateToStorageLocation = { navigationController.navigate(Routes.StorageLocation) },
@@ -271,6 +273,7 @@ fun AppNavigation(
 
                 composable<Routes.Analyze> {
                     ReportScreen(
+                        onNavigateToChatBox = { navigationController.navigate(Routes.ChatBox(it)) },
                         navigateToExportDetail = { id ->
                             navigationController.navigate(
                                 Routes.EditExportPackages(id = id)
@@ -305,6 +308,7 @@ fun AppNavigation(
 
                 composable<Routes.Products> {
                     ProductsScreen(onBackClick = { navigationController.popBackStack() },
+                        onNavigateToChatBox = { navigationController.navigate(Routes.ChatBox(it)) },
                         onClickSearch = { navigationController.navigate(Routes.SearchProduct) },
                         onNavigationDetailProduct = { id ->
                             navigationController.navigate(
@@ -379,10 +383,7 @@ fun AppNavigation(
                     SearchStorageLocation(
                         onBackClick = { navigationController.popBackStack() },
                         onClickDetailStorageLocation = { id ->
-                            TODO()
-//                            navigationController.navigate(
-//
-//                            )
+                            navigationController.navigate(Routes.DetailStorageLocation(id))
                         },
                     )
 
@@ -410,12 +411,22 @@ fun AppNavigation(
                         onNavigationBack = { navigationController.popBackStack() },
                         onNavigationDetail = { idStorage ->
                             navigationController.navigate(
-                                Routes.StorageLocationDetail(
-                                    idStorageLocation = idStorage
+                                Routes.DetailStorageLocation(
+                                    id = idStorage
                                 )
                             )
                         },
                         onClickSearch = { navigationController.navigate(Routes.SearchStorageLocation) },
+
+                        )
+                    isShowNavigation = false
+                }
+                composable<Routes.DetailStorageLocation> {
+                    ProductBelongStorageScreen(
+                        onNavigationBack = { navigationController.popBackStack() },
+                        onNavigationDetailProduct = {
+                            navigationController.navigate(Routes.Product(it))
+                        }
                     )
                     isShowNavigation = false
                 }
@@ -449,6 +460,7 @@ fun AppNavigation(
                 }
                 composable<Routes.ImportPackage> {
                     ImportPackageScreen(onClickAddProduct = { navigationController.navigate(Routes.AddImportPackages) },
+                        onNavigateToChatBox = { navigationController.navigate(Routes.ChatBox(it)) },
                         onClickAddProductByExcel = { navigationController.navigate(Routes.AddProductByExcel) },
                         onBackClick = { navigationController.popBackStack() },
                         onClickSearch = { /*TODO*/ },
@@ -513,6 +525,8 @@ fun AppNavigation(
                     ExportPackageScreen(onClickAddExportForm = {
                         navigationController.navigate(Routes.AddExportPackages)
                     },
+                        onNavigateToChatBox = { navigationController.navigate(Routes.ChatBox(it)) },
+
                         onNavigationDetailExportPackage = { id ->
                             navigationController.navigate(
                                 Routes.DetailExportPackage(id = id)
@@ -530,6 +544,7 @@ fun AppNavigation(
 
                 composable<Routes.Suppliers> {
                     SuppliersScreen(onBackClick = { navigationController.popBackStack() },
+                        onNavigateToChatBox = { navigationController.navigate(Routes.ChatBox(it)) },
                         onClickSearch = { navigationController.navigate(Routes.SearchSupplier) },
                         onClickAddSupplier = { navigationController.navigate(Routes.AddSuppliers) },
                         onNavigationDetailSupplier = { id ->
@@ -650,7 +665,9 @@ fun AppNavigation(
                                 id = id
                             )
                         )
-                    }, onNavigationBack = { navigationController.popBackStack() },
+                    },
+                        onNavigateToChatBox = { navigationController.navigate(Routes.ChatBox(it)) },
+                        onNavigationBack = { navigationController.popBackStack() },
                         onNavigateToAddNewUser = { navigationController.navigate(Routes.AddNewUser) }
                     )
                     isShowNavigation = false

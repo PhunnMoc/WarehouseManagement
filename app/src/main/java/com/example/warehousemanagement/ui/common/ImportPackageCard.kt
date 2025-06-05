@@ -40,11 +40,12 @@ import com.example.warehousemanagement.ui.theme.QuickSand
 
 @Composable
 fun ImportPackageCard(
+    roleUiState: Boolean,
     modifier: Modifier = Modifier,
     importPackage: ImportPackages,
     onCardClick: () -> Unit,
     onLongPress: (String) -> Unit,
-    onEditPendingPackage: (String) -> Unit,
+    onEditPendingPackage: ((String) -> Unit)? = null,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
 
@@ -88,13 +89,15 @@ fun ImportPackageCard(
                     fontFamily = QuickSand,
                 )
                 // QRCodeScreen(id = importPackage.idImportPackages)
-                Image(
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable { onEditPendingPackage(importPackage.id) },
-                    painter = painterResource(id = R.drawable.icons8_edit),
-                    contentDescription = "Delete"
-                )
+                if (onEditPendingPackage != null && roleUiState) {
+                    Image(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { onEditPendingPackage(importPackage.id) },
+                        painter = painterResource(id = R.drawable.icons8_edit),
+                        contentDescription = "Delete"
+                    )
+                }
             }
             Divider()
             Row(

@@ -4,6 +4,7 @@ import com.example.warehousemanagement.data.mapper.convertToModel
 import com.example.warehousemanagement.data.mapper.convertToRequest
 import com.example.warehousemanagement.data.mapper.convertToResponse
 import com.example.warehousemanagement.data.network.dto.CostByMonthResponse
+import com.example.warehousemanagement.data.network.dto.DetailStorageResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
 import com.example.warehousemanagement.data.network.dto.MessageChatBoxResponse
@@ -73,6 +74,10 @@ class WareHouseRepositoryImpl @Inject constructor(
     override suspend fun getSearchedStorageLocationByName(query: String): List<StorageLocation> {
         return retrofit.getSearchedStorageLocationByName(value = query).body()
             ?.mapNotNull { it.convertToModel() } ?: listOf()
+    }
+
+    override suspend fun getProductsBelongStorage(id: String): DetailStorageResponse {
+        return retrofit.getProductsBelongStorage(id = id).body()!!
     }
 
     override suspend fun getAllSuppliers(): List<Supplier> {

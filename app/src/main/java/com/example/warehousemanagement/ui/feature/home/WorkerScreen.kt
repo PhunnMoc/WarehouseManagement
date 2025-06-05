@@ -32,6 +32,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.warehousemanagement.ui.common.FunctionContainer
+import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
@@ -106,6 +107,7 @@ fun PackageBox(modifier: Modifier = Modifier, label: String, painter: Painter, x
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkerScreen(
+    onNavigateToChatbox: () -> Unit,
     onNavigateToScranQrScreen: () -> Unit,
     onNavigateToProduct: () -> Unit,
     onNavigateToStorageLocation: () -> Unit,
@@ -152,8 +154,12 @@ fun WorkerScreen(
                     modifier = Modifier
                         .size(Dimens.SIZE_ICON_35_DP)
                         .padding(end = Dimens.PADDING_5_DP),
+                    onClickIcon = onNavigateToScranQrScreen,
                 )
-                SearchBarWithSuggestion()
+                SearchBarPreview(
+                    enabled = false,
+                    modifier = Modifier.clickable { onNavigateToChatbox() }
+                )
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -163,7 +169,7 @@ fun WorkerScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
             FunctionContainer(
-                modifier = Modifier.padding( Dimens.PADDING_20_DP),
+                modifier = Modifier.padding(Dimens.PADDING_20_DP),
                 onNavigateToProduct = onNavigateToProduct,
                 onNavigateToStorageLocation = onNavigateToStorageLocation,
                 onNavigateToGenre = onNavigateToGenre,

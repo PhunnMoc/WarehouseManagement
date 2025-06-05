@@ -194,7 +194,9 @@ fun StorageLocationScreen(
                 is StorageLocationUiState.Success -> {
                     LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
                         items(storageLocation.listStorageLocation) { area ->
-                            WarehouseAreaCard(area, onConfirmDismiss = {})
+                            WarehouseAreaCard(
+                                area, onConfirmDismiss = onNavigationDetail,
+                            )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
@@ -209,7 +211,7 @@ fun StorageLocationScreen(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WarehouseAreaCard(
-    area: StorageLocation, onConfirmDismiss: () -> Unit
+    area: StorageLocation, onConfirmDismiss: (String) -> Unit,
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
@@ -220,7 +222,7 @@ fun WarehouseAreaCard(
             cancelText = "No",
             onConfirm = {
                 showDialog = false
-                onConfirmDismiss()
+                onConfirmDismiss(area.id)
             },
             onCancel = {
                 showDialog = false
@@ -251,11 +253,12 @@ fun WarehouseAreaCard(
             }
         },
         dismissContent = {
-            Card(shape = RoundedCornerShape(10.dp),
+            Card(
+                shape = RoundedCornerShape(10.dp),
                 elevation = 10.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { }) {
+            ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,

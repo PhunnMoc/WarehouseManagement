@@ -15,6 +15,7 @@ import com.example.warehousemanagement.ui.theme.Dimens
 
 @Composable
 fun PendingExportPackage(
+    roleUiState: Boolean,
     modifier: Modifier = Modifier,
     exportPackagePendingUiState: ExportPackageUiState,
     onNavigationDetailExportPackages: (String) -> Unit,
@@ -31,6 +32,7 @@ fun PendingExportPackage(
                         onCardClick = {},
                         onLongPress = onNavigationDetailExportPackages,
                         onEditPendingPackage = onEditPendingPackage,
+                        roleUiState = roleUiState,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

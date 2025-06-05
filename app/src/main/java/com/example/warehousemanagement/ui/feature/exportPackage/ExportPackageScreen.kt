@@ -66,12 +66,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.Customer
+import com.example.warehousemanagement.ui.common.AIButton
 import com.example.warehousemanagement.ui.common.CustomerCard
 import com.example.warehousemanagement.ui.common.DialogWithInput
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
+import com.example.warehousemanagement.ui.feature.chatBox.QuestionForChatBox
 import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.ExportPackageUiState
 import com.example.warehousemanagement.ui.feature.exportPackage.viewModel.ExportPackageViewMode
 import com.example.warehousemanagement.ui.feature.search.viewModel.SearchCustomerUiState
@@ -87,6 +89,7 @@ fun ExportPackageScreen(
     onBackClick: () -> Unit,
     onNavigationDetailExportPackage: (String) -> Unit,
     onEditPendingPackage: (String) -> Unit,
+    onNavigateToChatBox: (String) -> Unit,
     viewModel: ExportPackageViewMode = hiltViewModel(),
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -95,6 +98,7 @@ fun ExportPackageScreen(
     val exportPackagePendingUiState by viewModel.exportPackagePendingUiState.collectAsState()
     val exportPackageDoneUiState by viewModel.exportPackageDoneUiState.collectAsState()
 
+    val roleUiState by viewModel.roleUiState.collectAsStateWithLifecycle()
     val customerUiState by viewModel.customerUiState.collectAsStateWithLifecycle()
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -187,7 +191,11 @@ fun ExportPackageScreen(
                                 onBackClick()
                             })
                 },
-                endContent = {},
+                endContent = {
+                    AIButton(
+                        onClick = { onNavigateToChatBox(QuestionForChatBox.ExportPackage) },
+                    )
+                },
                 scrollBehavior = scrollBehavior
             )
         }) { innerpadding ->
@@ -205,6 +213,7 @@ fun ExportPackageScreen(
                 //               FilterAndSortButtons(onFilterClick = { isFilter = true }, onSortClick = {})
             }
             TabBarExport(
+                roleUiState = roleUiState,
                 onEditPendingPackage = onEditPendingPackage,
                 exportPackagePendingUiState = exportPackagePendingUiState,
                 exportPackageDoneUiState = exportPackageDoneUiState,
@@ -216,6 +225,7 @@ fun ExportPackageScreen(
 
 @Composable
 fun TabBarExport(
+    roleUiState: Boolean,
     onNavigationDetailExportPackage: (String) -> Unit,
     onEditPendingPackage: (String) -> Unit,
     exportPackagePendingUiState: ExportPackageUiState,
@@ -255,6 +265,7 @@ fun TabBarExport(
         when (selectedTabIndex) {
             0 -> {
                 PendingExportPackage(
+                    roleUiState = roleUiState,
                     onEditPendingPackage = onEditPendingPackage,
                     exportPackagePendingUiState = exportPackagePendingUiState,
                     onNavigationDetailExportPackages = onNavigationDetailExportPackage,
@@ -263,7 +274,7 @@ fun TabBarExport(
 
             1 -> {
                 DoneExportPackage(
-                    onEditPendingPackage = {},
+                    roleUiState = roleUiState,
                     exportPackageDoneUiState = exportPackageDoneUiState,
                     onNavigationDetailExportPackages = onNavigationDetailExportPackage,
                 )

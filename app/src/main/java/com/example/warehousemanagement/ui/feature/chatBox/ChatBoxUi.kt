@@ -64,6 +64,7 @@ fun ChatBoxScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val resultChatBox by viewModel.resultChatBox.collectAsStateWithLifecycle()
+    val navigatMessage by viewModel.navigatMessage.collectAsStateWithLifecycle()
 
     Scaffold(containerColor = colorResource(id = R.color.background_white),
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -84,8 +85,9 @@ fun ChatBoxScreen(
         }) { innerpadding ->
 
         ChatScreen(
+            navigatMessage = navigatMessage,
             resultChatBox = resultChatBox,
-            sendChat = viewModel::getAnswerChatBox,
+            sendChat = viewModel::sendMessage,
             modifier = Modifier.padding(innerpadding)
         )
     }
@@ -95,15 +97,21 @@ data class Message(val content: String, val isSentByCurrentUser: Boolean)
 
 @Composable
 fun ChatScreen(
+    navigatMessage: String,
     resultChatBox: ChatBoxUiState,
     sendChat: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var messages by remember { mutableStateOf(listOf<Message>()) }
-    var textInput by remember { mutableStateOf(TextFieldValue("")) }
+    var textInput by remember { mutableStateOf(TextFieldValue()) }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
+    LaunchedEffect(Unit) {
+        if (navigatMessage.isNotBlank()) {
+            messages = messages + Message(navigatMessage, true)
+        }
+    }
     Column(
         modifier = modifier
             .fillMaxSize()

@@ -3,6 +3,7 @@ package com.example.warehousemanagement.data.repository
 import androidx.room.Delete
 import com.example.warehousemanagement.data.network.dto.CostByMonthResponse
 import com.example.warehousemanagement.data.network.dto.CustomerResponse
+import com.example.warehousemanagement.data.network.dto.DetailStorageResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.ExportPackageResponse
 import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
@@ -78,6 +79,10 @@ interface ApiWarehouse {
         @Query("value") value: String
     ): Response<List<StorageLocationResponse>>
 
+    @GET("/product/storage/{id}")
+    suspend fun getProductsBelongStorage(
+        @Path("id") id: String
+    ): Response<DetailStorageResponse>
 
     @GET("/supplier")
     suspend fun getAllSupplier(): Response<List<SupplierResponse>>

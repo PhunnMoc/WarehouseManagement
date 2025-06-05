@@ -21,6 +21,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import androidx.navigation.compose.*
+import com.example.warehousemanagement.ui.common.AIButton
+import com.example.warehousemanagement.ui.feature.chatBox.QuestionForChatBox
 import com.example.warehousemanagement.ui.feature.report.ui.GenreByRangeDay
 import com.example.warehousemanagement.ui.feature.report.ui.RevenueCostScreen
 import kotlinx.coroutines.launch
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReportScreen(
+    onNavigateToChatBox: (String) -> Unit,
     navigateToExportDetail: (String) -> Unit,
     navigateToImportDetail: (String) -> Unit,
 ) {
@@ -52,9 +55,15 @@ fun ReportScreen(
                         )
                     }
                 },
+                endContent = {
+                    AIButton(
+                        onClick = { onNavigateToChatBox(QuestionForChatBox.Analyze) },
+                    )
+                },
                 scrollBehavior = scrollBehavior,
             )
         },
+
         drawerContent = {
             DrawerContent(navController = navController, scaffoldState = scaffoldState)
         }

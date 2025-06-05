@@ -18,8 +18,9 @@ class DoneImportPackage {
 
 @Composable
 fun DoneImportPackage(
+    roleUiState: Boolean,
     modifier: Modifier = Modifier,
-    importPackageDoneDoneUiState : ImportPackageUiState,
+    importPackageDoneDoneUiState: ImportPackageUiState,
     onNavigationDetailImportPackages: (String) -> Unit,
 ) {
 
@@ -33,7 +34,7 @@ fun DoneImportPackage(
                         importPackage = importPackage,
                         onCardClick = {},
                         onLongPress = onNavigationDetailImportPackages,
-                        onEditPendingPackage = {},
+                        roleUiState = roleUiState,
                     )
                     Spacer(modifier = Modifier.height(Dimens.PADDING_10_DP))
                 }

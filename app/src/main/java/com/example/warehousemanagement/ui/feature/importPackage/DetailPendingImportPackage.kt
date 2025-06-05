@@ -269,10 +269,10 @@ fun ImportPackage(
                             importPackage.listProducts.forEach { product ->
                                 ProductItemDetail(
                                     openObjectCounting = openObjectCounting,
-                                    product = product
+                                    product = product,
+                                    shouldShowCounting = isPending,
                                 )
                             }
-
                         }
                     }
                 }
@@ -286,6 +286,7 @@ fun ProductItemDetail(
     modifier: Modifier = Modifier,
     product: Product,
     openObjectCounting: (String, Int) -> Unit,
+    shouldShowCounting: Boolean,
 ) {
     var isCompactView by remember { mutableStateOf(false) }
 
@@ -311,6 +312,7 @@ fun ProductItemDetail(
             Column {
                 AnimatedVisibility(visible = !isCompactView) {
                     ExpandedImportView(
+                        shouldShowCounting = shouldShowCounting,
                         openObjectCounting = {
                             openObjectCounting(
                                 product.productName,
@@ -336,8 +338,9 @@ fun ProductItemDetail(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ExpandedImportView(
+    shouldShowCounting: Boolean,
     openObjectCounting: () -> Unit,
-    product: Product
+    product: Product,
 ) {
     Column {
         Row(verticalAlignment = Alignment.Top) {
@@ -367,13 +370,15 @@ fun ExpandedImportView(
                             modifier = Modifier.padding(vertical = 5.dp)
                         )
                     }
-                    Image(
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable { openObjectCounting() },
-                        painter = painterResource(id = R.drawable.camera_tool),
-                        contentDescription = "Delete"
-                    )
+                    if (shouldShowCounting) {
+                        Image(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable { openObjectCounting() },
+                            painter = painterResource(id = R.drawable.camera_tool),
+                            contentDescription = "Delete"
+                        )
+                    }
                 }
                 Text(
                     text = "${product.description}",

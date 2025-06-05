@@ -28,12 +28,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.common.AIButton
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.ProductCard
 import com.example.warehousemanagement.ui.common.SearchBarPreview
+import com.example.warehousemanagement.ui.feature.chatBox.QuestionForChatBox
 import com.example.warehousemanagement.ui.feature.filter.FilterProductScreen
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductUiState
 import com.example.warehousemanagement.ui.feature.product.viewModel.ProductViewModel
@@ -43,6 +45,7 @@ import com.example.warehousemanagement.ui.theme.WarehouseManagementTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductsScreen(
+    onNavigateToChatBox: (String) -> Unit,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onClickSearch: () -> Unit,
@@ -50,7 +53,6 @@ fun ProductsScreen(
     viewModel: ProductViewModel = hiltViewModel()
 ) {
     val productUiState by viewModel.productUiState.collectAsStateWithLifecycle()
-    var isExpanded by remember { mutableStateOf(false) }
     var isFilter by rememberSaveable {
         mutableStateOf(false)
     }
@@ -71,7 +73,11 @@ fun ProductsScreen(
                             })
                 },
                 mainTitleText = stringResource(id = R.string.screen_product_main_title),
-                endContent = {})
+                endContent = {
+                    AIButton(
+                        onClick = { onNavigateToChatBox(QuestionForChatBox.Product) },
+                    )
+                })
         }) { innerpadding ->
         Column(
             modifier = Modifier.padding(innerpadding)

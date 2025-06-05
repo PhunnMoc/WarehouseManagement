@@ -1,6 +1,7 @@
 package com.example.warehousemanagement.domain.repository
 
 import com.example.warehousemanagement.data.network.dto.CostByMonthResponse
+import com.example.warehousemanagement.data.network.dto.DetailStorageResponse
 import com.example.warehousemanagement.data.network.dto.ExportPackagePendingDto
 import com.example.warehousemanagement.data.network.dto.GenreByRangeSummaryResponse
 import com.example.warehousemanagement.data.network.dto.MonthlyCostResponse
@@ -45,6 +46,7 @@ interface WareHouseRepository {
     suspend fun getAllStoLocDetails(): List<StorageLocation>
 
     suspend fun getSearchedStorageLocationByName(query: String): List<StorageLocation>
+    suspend fun getProductsBelongStorage(id: String): DetailStorageResponse
 
     suspend fun getPendingImportPackages(): List<ImportPackages>
     suspend fun getPendingImportPackageById(id: String): ImportPackages

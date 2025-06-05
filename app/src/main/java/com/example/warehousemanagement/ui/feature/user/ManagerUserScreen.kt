@@ -45,10 +45,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
 import com.example.warehousemanagement.domain.model.User
+import com.example.warehousemanagement.ui.common.AIButton
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.SearchBarPreview
+import com.example.warehousemanagement.ui.feature.chatBox.QuestionForChatBox
 import com.example.warehousemanagement.ui.feature.user.viewModel.ManagerUserUiState
 import com.example.warehousemanagement.ui.feature.user.viewModel.ManagerUserViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -57,6 +59,7 @@ import com.example.warehousemanagement.ui.theme.QuickSand
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManagerUserScreen(
+    onNavigateToChatBox: (String) -> Unit,
     onNavigationBack: () -> Unit,
     onNavigateToAddNewUser: () -> Unit,
     modifier: Modifier = Modifier,
@@ -102,7 +105,11 @@ fun ManagerUserScreen(
                                 onNavigationBack()
                             })
                 },
-                endContent = {},
+                endContent = {
+                    AIButton(
+                        onClick = { onNavigateToChatBox(QuestionForChatBox.ManagerAccount) },
+                    )
+                },
                 scrollBehavior = scrollBehavior
             )
         }) { innerpadding ->

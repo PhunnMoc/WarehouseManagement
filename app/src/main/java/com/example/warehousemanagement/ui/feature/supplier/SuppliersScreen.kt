@@ -44,12 +44,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.warehousemanagement.R
+import com.example.warehousemanagement.ui.common.AIButton
 import com.example.warehousemanagement.ui.common.FilterAndSortButtons
 import com.example.warehousemanagement.ui.common.HeaderOfScreen
 import com.example.warehousemanagement.ui.common.IndeterminateCircularIndicator
 import com.example.warehousemanagement.ui.common.NothingText
 import com.example.warehousemanagement.ui.common.SearchBarPreview
 import com.example.warehousemanagement.ui.common.SuplierCard
+import com.example.warehousemanagement.ui.feature.chatBox.QuestionForChatBox
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.SupplierUIState
 import com.example.warehousemanagement.ui.feature.supplier.viewModel.SupplierViewModel
 import com.example.warehousemanagement.ui.theme.Dimens
@@ -62,6 +64,7 @@ fun SuppliersScreen(
     onClickAddSupplier: () -> Unit,
     onClickSearch: () -> Unit,
     onNavigationDetailSupplier: (String) -> Unit,
+    onNavigateToChatBox: (String) -> Unit,
     onNavigationEditSupplierScreen: (String) -> Unit,
     onBackClick: () -> Unit,
     viewModel: SupplierViewModel = hiltViewModel()
@@ -139,7 +142,11 @@ fun SuppliersScreen(
                                 onBackClick()
                             })
                 },
-                endContent = {},
+                endContent = {
+                    AIButton(
+                        onClick = { onNavigateToChatBox(QuestionForChatBox.Supplier) },
+                    )
+                },
                 scrollBehavior = scrollBehavior
             )
         }) { innerpadding ->

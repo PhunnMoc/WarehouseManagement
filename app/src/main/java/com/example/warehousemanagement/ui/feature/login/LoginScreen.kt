@@ -164,7 +164,7 @@ fun LoginScreen(
             }
 
             is LoginUiState.Success -> {
-                Text(temp.token ?: " D co gi")
+                IndeterminateCircularIndicator()
             }
 
             is LoginUiState.Loading -> IndeterminateCircularIndicator()

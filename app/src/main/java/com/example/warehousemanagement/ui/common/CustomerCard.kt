@@ -52,7 +52,8 @@ import com.example.warehousemanagement.ui.theme.Dimens
 @Composable
 fun CustomerCard(
     roleUiState: Boolean,
-    modifier: Modifier = Modifier, customer: Customer, // Add this parameter
+    modifier: Modifier = Modifier,
+    customer: Customer,
     onCardClick: () -> Unit,
     onEditCustomer: (String) -> Unit,
     onLongPress: (String) -> Unit,
