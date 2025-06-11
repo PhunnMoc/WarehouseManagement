@@ -12,6 +12,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -159,15 +161,7 @@ fun CameraPreview(
         val boxConstraint = this
         val sizeWith = with(LocalDensity.current) { boxConstraint.maxWidth.toPx() }
         val sizeHeight = with(LocalDensity.current) { boxConstraint.maxHeight.toPx() }
-        Column {
-            Text(
-                modifier = Modifier.zIndex(1f),
-                color = Color.Red,
-                fontWeight = FontWeight.Bold,
-                text = "Product: ${pendingProduct} \nDetected: ${detectionListObject.size.toString()} object - ${quantity.toString()} "
-            )
-            BigButton(labelname = "Confirm", onClick = onBack)
-        }
+
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { ctx ->
@@ -215,7 +209,20 @@ fun CameraPreview(
                 previewView
             }
         )
-
+        Column(
+            modifier = Modifier.zIndex(1f).background(Color.White, shape = RoundedCornerShape(10)).padding(10.dp)
+        ) {
+            Text(
+                modifier = Modifier.zIndex(1f),
+                color = Color.Red,
+                fontWeight = FontWeight.Bold,
+                text = "Product: ${pendingProduct} \nDetected: ${detectionListObject.size.toString()} "
+            )
+            BigButton(
+                enabled = true,
+                labelname = "Confirm", onClick = onBack
+            )
+        }
         if (drawCanvas) {
             Canvas(
                 modifier = Modifier.fillMaxSize(),

@@ -37,5 +37,5 @@ val client = OkHttpClient.Builder()
     .build()
 
 object RetrofitHandle {
-    const val BASE_URL: String = "http://192.168.59.1:8081/"
+    const val BASE_URL: String = "http://192.168.1.72:8081/"
 }

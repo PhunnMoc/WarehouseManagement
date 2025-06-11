@@ -341,7 +341,7 @@ fun AppNavigation(
                     FormEditImportProduct(
                         navigateToAddNewGenre = { navigationController.navigate(Routes.AddGenres) },
                         navigateToAddNewSupplier = { navigationController.navigate(Routes.AddSuppliers) },
-                        onBackClick = { navigationController.navigate(Routes.ImportPackage) })
+                        onBackClick = { navigationController.popBackStack() })
                     isShowNavigation = false
                 }
                 composable<Routes.EditExportPackages> {
@@ -517,7 +517,11 @@ fun AppNavigation(
                     SetStorageLocationPendingProduct(navigateToImportPackageScreen = {
                         navigationController.navigate(
                             Routes.ImportPackage
-                        )
+                        ) {
+                            popUpTo<Routes.SetStorageImportPackage> {
+                                inclusive = true
+                            }
+                        }
                     })
                 }
 

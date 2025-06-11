@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -170,7 +173,10 @@ fun GenreScreen(
                 is GenreUiState.Loading -> IndeterminateCircularIndicator()
                 is GenreUiState.Error -> NothingText()
                 is GenreUiState.Success -> {
-                    LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
+                    LazyVerticalGrid(
+                        modifier = Modifier.padding(Dimens.PADDING_10_DP),
+                        columns = GridCells.Adaptive(150.dp),
+                    ) {
                         items(genres.listGenre) { genre ->
                             GenreCard(genre, onConfirmDismiss = {})
                             Spacer(modifier = Modifier.height(8.dp))
@@ -178,84 +184,42 @@ fun GenreScreen(
                     }
                 }
 
-                else -> {
-                    // Xử lý trường hợp còn lại, mặc dù không cần thiết nếu Result là sealed class
-                    println("Unknown state")
-                }
             }
 
         }
     }
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun GenreCard(
-    genre: Genre, onConfirmDismiss: () -> Unit
+    genre: Genre, onConfirmDismiss: (String) -> Unit
 ) {
-    var showDialog by remember { mutableStateOf(false) }
 
-    if (showDialog) {
-        DialogView(title = "Confirm Dismiss",
-            message = "Are you sure you want to dismiss this item?",
-            confirmText = "Yes",
-            cancelText = "No",
-            onConfirm = {
-                showDialog = false
-                onConfirmDismiss()
-            },
-            onCancel = {
-                showDialog = false
-            })
-    }
-
-    // SwipeToDismiss component
-    SwipeToDismiss(modifier = Modifier.shadow(elevation = 2.dp, shape = RoundedCornerShape(10.dp)),
-        state = rememberDismissState(confirmStateChange = { dismissValue ->
-            if (dismissValue == DismissValue.DismissedToStart) {
-                showDialog = true
-            }
-            false
-        }),
-        background = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Red),
-                contentAlignment = Alignment.CenterEnd
-            ) {
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .shadow(elevation = 2.dp, shape = RoundedCornerShape(10.dp))
+            .clickable { onConfirmDismiss(genre.idGenre) },
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
+            Column {
                 Text(
-                    text = "Delete", color = Color.White, modifier = Modifier.padding(16.dp)
+                    text = "ID: ${genre.idGenre}",
+                    color = colorResource(id = R.color.text_color_light_gray)
+                )
+                Text(
+                    fontWeight = FontWeight.W600,
+                    fontSize = 16.sp,
+                    color = colorResource(id = R.color.text_color_light_black),
+                    text = "Name: ${genre.genreName}"
                 )
             }
-        },
-        dismissContent = {
-            Card(shape = RoundedCornerShape(10.dp),
-                elevation = 10.dp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { }) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Column {
-                        Text(
-                            text = "ID: ${genre.idGenre}",
-                            color = colorResource(id = R.color.text_color_light_gray)
-                        )
-                        Text(
-                            fontWeight = FontWeight.W600,
-                            fontSize = 16.sp,
-                            color = colorResource(id = R.color.text_color_light_black),
-                            text = "Name: ${genre.genreName}"
-                        )
-                    }
-                }
-            }
-        })
+        }
+    }
 }
 
 @Preview(showBackground = true)

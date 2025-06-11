@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -192,10 +195,14 @@ fun StorageLocationScreen(
                 is StorageLocationUiState.Loading -> IndeterminateCircularIndicator()
                 is StorageLocationUiState.Error -> NothingText()
                 is StorageLocationUiState.Success -> {
-                    LazyColumn(modifier = Modifier.padding(Dimens.PADDING_10_DP)) {
+                    LazyVerticalGrid(
+                        modifier = Modifier.padding(Dimens.PADDING_10_DP),
+                        columns = GridCells.Adaptive(150.dp),
+                    ) {
                         items(storageLocation.listStorageLocation) { area ->
                             WarehouseAreaCard(
-                                area, onConfirmDismiss = onNavigationDetail,
+                                area = area,
+                                onConfirmDismiss = onNavigationDetail,
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
@@ -208,87 +215,45 @@ fun StorageLocationScreen(
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun WarehouseAreaCard(
     area: StorageLocation, onConfirmDismiss: (String) -> Unit,
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-
-    if (showDialog) {
-        DialogView(title = "Confirm Dismiss",
-            message = "Are you sure you want to dismiss this item?",
-            confirmText = "Yes",
-            cancelText = "No",
-            onConfirm = {
-                showDialog = false
-                onConfirmDismiss(area.id)
-            },
-            onCancel = {
-                showDialog = false
-            })
-    }
-
-    // SwipeToDismiss component
-    SwipeToDismiss(modifier = Modifier.shadow(elevation = 2.dp, shape = RoundedCornerShape(10.dp)),
-        state = rememberDismissState(confirmStateChange = { dismissValue ->
-            if (dismissValue == DismissValue.DismissedToStart) {
-                showDialog = true
-            }
-            false
-        }),
-        background = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Red),
-                contentAlignment = Alignment.CenterEnd
-            ) {
+    Card(
+        modifier = Modifier
+            .padding(10.dp)
+            .shadow(elevation = 2.dp, shape = RoundedCornerShape(10.dp))
+            .clickable { onConfirmDismiss(area.id) },
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
+            Column {
                 Text(
                     fontFamily = QuickSand,
-                    text = "Delete",
-                    color = Color.White,
-                    modifier = Modifier.padding(16.dp)
+                    text = "ID: ${area.id}",
+                    //  color = colorResource(id = R.color.background_theme)
+                )
+                Text(
+                    fontFamily = QuickSand,
+                    fontWeight = FontWeight.W600,
+                    fontSize = 16.sp,
+                    color = colorResource(id = R.color.text_color_light_black),
+                    text = "Name: ${area.storageLocationName}"
                 )
             }
-        },
-        dismissContent = {
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                elevation = 10.dp,
+            Image(
+                painter = rememberAsyncImagePainter(model = area.storageLocationImage),
+                contentDescription = "",
                 modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Column {
-                        Text(
-                            fontFamily = QuickSand,
-                            text = "ID: ${area.id}",
-                            //  color = colorResource(id = R.color.background_theme)
-                        )
-                        Text(
-                            fontFamily = QuickSand,
-                            fontWeight = FontWeight.W600,
-                            fontSize = 16.sp,
-                            color = colorResource(id = R.color.text_color_light_black),
-                            text = "Name: ${area.storageLocationName}"
-                        )
-                    }
-                    Image(
-                        painter = rememberAsyncImagePainter(model = area.storageLocationImage),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .width(50.dp)
-                            .height(50.dp)
-                            .padding(top = 8.dp)
-                    )
-                }
-            }
-        })
+                    .width(50.dp)
+                    .height(50.dp)
+                    .padding(top = 8.dp)
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)

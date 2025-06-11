@@ -1,5 +1,6 @@
 package com.example.warehousemanagement.ui.feature.setting.viewModel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.warehousemanagement.data.util.Result
@@ -14,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -24,13 +26,9 @@ import javax.inject.Inject
 class SettingViewModel @Inject constructor(
     private val wareHouseRepository: WareHouseRepository,
     private val preferencesRepository: PreferencesRepository,
+    val savedStateHandle: SavedStateHandle,
     private val webSocketManager: WebSocketManager,
 ) : ViewModel() {
-
-//    override fun onCleared() {
-//        super.onCleared()
-//        webSocketManager.disconnect()
-//    }
 
     val informationUiState: StateFlow<InformationUiState> = getInformation().stateIn(
         scope = viewModelScope,
@@ -39,7 +37,12 @@ class SettingViewModel @Inject constructor(
     )
 
     private fun getInformation(): Flow<InformationUiState> =
-        preferencesRepository.getUserId().map { wareHouseRepository.getUserDetails(it) }.asResult()
+        savedStateHandle.getStateFlow("id", "")
+            .map {
+                it.ifBlank {
+                    preferencesRepository.getUserId().first()
+                }
+            }.map { wareHouseRepository.getUserDetails(it) }.asResult()
             .map { user ->
                 when (user) {
                     is Result.Success -> {

@@ -201,7 +201,6 @@ fun TabBarImport(
             .fillMaxSize()
             .background(colorResource(id = R.color.line_light_gray))
     ) {
-        // TabRow để hiển thị các tab
         TabRow(
             selectedTabIndex = selectedTabIndex,
             modifier = Modifier.fillMaxWidth(),

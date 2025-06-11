@@ -56,16 +56,15 @@ fun QRCodeScannerScreen(
         if (!cameraPermissionState.hasPermission) {
             cameraPermissionState.launchPermissionRequest()
         }
-        hasNavigated = false // Reset lại trạng thái khi quyền camera thay đổi
+        hasNavigated = false
     }
 
     if (cameraPermissionState.hasPermission) {
-        // Giải phóng tài nguyên camera khi rời khỏi màn hình
         DisposableEffect(key1 = cameraProviderFuture) {
             var cameraProvider: ProcessCameraProvider? = null
             val executor = Executors.newSingleThreadExecutor()
 
-            // Khởi tạo camera
+
             cameraProviderFuture.addListener({
                 cameraProvider = cameraProviderFuture.get()
                 val preview = Preview.Builder().build()
@@ -99,14 +98,12 @@ fun QRCodeScannerScreen(
                 )
             }, ContextCompat.getMainExecutor(context))
 
-            // 🛠️ **Giải phóng tài nguyên khi rời khỏi màn hình**
             onDispose {
-                cameraProvider?.unbindAll() // Giải phóng camera
-                executor.shutdown() // Tắt executor
+                cameraProvider?.unbindAll()
+                executor.shutdown()
             }
         }
 
-        // Hiển thị preview camera
         AndroidView(
             factory = { previewView },
             modifier = Modifier.fillMaxSize()
